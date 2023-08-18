@@ -12,6 +12,10 @@ export const theme = () => {
 			primary: {
                 main: LightGreen,
                 dark: DarkGreen,
+            },
+            secondary: {
+                main: Beige,
+                dark: Brown,
             }
 		}
 	});
