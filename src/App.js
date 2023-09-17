@@ -14,6 +14,7 @@ import TileWMS from 'ol/source/TileWMS.js';
 import MainMenu from './components/MainMenu';
 import LayerCard from './components/LayerCard';
 import Sidebar from './components/Sidebar';
+import { Grid } from '@mui/material';
 
 function App() {
 
@@ -171,8 +172,22 @@ function App() {
   return (
     <>
       <MainMenu />
-      <br />
-      <Sidebar />
+      <Grid container spacing={2} marginTop={1} marginBottom={1}>
+        <Grid item xs={3}>
+          <Sidebar />
+        </Grid>
+        <Grid item xs={9}>
+          <div
+            ref={mapTargetElement}
+            className="map"
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "relative",
+          }} >
+          </div>
+        </Grid>
+      </Grid>
       {/* <button onClick={() => lessZoom(map)}>lessZoom</button>
       <button onClick={() => zoom(map)}>zoom</button>
       <button onClick={() => increaseResolution(map)}>increaseResolution</button>

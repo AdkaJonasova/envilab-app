@@ -30,7 +30,7 @@ export default function MainMenu() {
           </Typography>
 
           <div>
-            <Button color="inherit" onClick={handleOpenSubMenu}>
+            <Button color="inherit" onClick={handleOpenSubMenu} sx={{marginRight: 5}}>
               {mainMenuViews}
             </Button>
 

@@ -5,8 +5,7 @@ export default function Sidebar() {
   return (
     <Box
       sx={{
-        width: "25%",
-        height: 650,
+        height: 640,
         backgroundColor: "beige",
         overflowY: "auto",
       }}>
