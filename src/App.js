@@ -11,6 +11,7 @@ import { earthquakesGeojson, geoJsonLayer, geojsonExample2, styles } from './dat
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { removeLayersWithName } from './utils/customFunctions';
 import TileWMS from 'ol/source/TileWMS.js';
+import MainMenu from './components/MainMenu';
 
 function App() {
 
@@ -167,7 +168,8 @@ function App() {
 
   return (
     <>
-      <button onClick={() => lessZoom(map)}>lessZoom</button>
+      <MainMenu />
+      {/* <button onClick={() => lessZoom(map)}>lessZoom</button>
       <button onClick={() => zoom(map)}>zoom</button>
       <button onClick={() => increaseResolution(map)}>increaseResolution</button>
       <button onClick={() => decreaseResolution(map)}>decreaseResolution</button>
@@ -190,7 +192,7 @@ function App() {
           position: "relative",
         }} >
 
-      </div>
+      </div> */}
     </>
   )
 }
