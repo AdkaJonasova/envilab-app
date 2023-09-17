@@ -13,6 +13,7 @@ import { removeLayersWithName } from './utils/customFunctions';
 import TileWMS from 'ol/source/TileWMS.js';
 import MainMenu from './components/MainMenu';
 import LayerCard from './components/LayerCard';
+import Sidebar from './components/Sidebar';
 
 function App() {
 
@@ -171,7 +172,7 @@ function App() {
     <>
       <MainMenu />
       <br />
-      <LayerCard />
+      <Sidebar />
       {/* <button onClick={() => lessZoom(map)}>lessZoom</button>
       <button onClick={() => zoom(map)}>zoom</button>
       <button onClick={() => increaseResolution(map)}>increaseResolution</button>
