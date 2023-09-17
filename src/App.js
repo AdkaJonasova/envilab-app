@@ -3,38 +3,37 @@ import './index.css'
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';
 import TileLayer from 'ol/layer/Tile.js';
-import OSM from 'ol/source/OSM.js';
-import ScaleLineControl from 'ol/control/ScaleLine';
+import {OSM, Vector as VectorSource} from 'ol/source.js';
 import FullScreenControl from 'ol/control/FullScreen';
-import { Zoom, Attribution, Rotate, MousePosition, ZoomSlider } from 'ol/control';
-import { createStringXY } from 'ol/coordinate';
+import { Zoom } from 'ol/control';
+import VectorLayer from 'ol/layer/Vector';
+import { earthquakesGeojson, geoJsonLayer, geojsonExample2, styles } from './data/layerData';
+import GeoJSON from 'ol/format/GeoJSON.js';
+import { removeLayersWithName } from './utils/customFunctions';
+import TileWMS from 'ol/source/TileWMS.js';
 
 function App() {
 
-  const rotateControl = new Rotate();
-  const zoomSliderControl = new ZoomSlider();
-  const scaleLineControl = new ScaleLineControl();
   const fullScreenControl = new FullScreenControl();
-  const attrControl = new Attribution()
   const zoomControl = new Zoom({})
-  const mousePositionControl = new MousePosition({
-    coordinateFormat: createStringXY(4),
-    projection: 'EPSG:4326',
-    className: 'custom-mouse-position',
-  });
 
   const mapTargetElement = useRef()
   const [map, setMap] = useState(null)
+
+  const [L1, setL1] = useState("Add");
+  const [L2, setL2] = useState("Add");
+  const [L3, setL3] = useState("Add");
+  const [L4, setL4] = useState("Add");
 
   useEffect(() => {
     const map = new Map({
       layers: [
         new TileLayer({ source: new OSM() }),
       ],
-      controls: [fullScreenControl, scaleLineControl, zoomControl, attrControl, mousePositionControl, rotateControl, zoomSliderControl],
+      controls: [fullScreenControl, zoomControl],
       view: new View({
         center: [0, 0],
-        zoom: 0,
+        zoom: 2,
         minZoom: 0,
         maxZoom: 28,
       }),
@@ -74,20 +73,6 @@ function App() {
     view.setResolution(newResolution);
   };
 
-  const rotateLeft = (map) => {
-    const view = map.getView();
-    const currentRotation = view.getRotation();
-    const newRotation = currentRotation - Math.PI / 6;
-    view.setRotation(newRotation);
-  };
-
-  const rotateRight = (map) => {
-    const view = map.getView();
-    const currentRotation = view.getRotation();
-    const newRotation = currentRotation + Math.PI / 6;
-    view.setRotation(newRotation);
-  };
-
   const originalCenter = (map) => {
     const view = map.getView();
     const currentCenter = view.getCenter();
@@ -102,22 +87,106 @@ function App() {
     view.setCenter(newCenter);
   };
 
+  const handleL1 = (map) => {
+    if (L1 === "Add") {
+      const vectorSource = new VectorSource({
+        features: new GeoJSON().readFeatures(geoJsonLayer),
+      });
+      const vectorLayer1 = new VectorLayer({
+        source: vectorSource,
+        style: styles.geoJsonLayerStyle,
+        name: 'layer1',
+      });
+     
+      map.addLayer(vectorLayer1);
+      setL1("Remove");
+    } else {
+      removeLayer(map, "layer1");
+      setL1("Add");
+    }
+  }
+
+  const handleL2 = (map) => {
+    if (L2 === "Add") {
+      var layer = new VectorLayer ({
+        source: new VectorSource ({
+          url: earthquakesGeojson,
+          format: new GeoJSON(),
+        }),
+        name: 'layer2',
+      })
+      map.addLayer(layer); 
+      setL2("Remove");
+    } else {
+      removeLayer(map, "layer2");
+      setL2("Add");
+    }
+  }
+
+  const handleL3 = (map) => {
+    if (L3 === "Add") {
+      var l = new TileLayer({
+        extent: [-13884991, 2870341, -7455066, 6338219],
+        source: new TileWMS({
+          url: 'https://ahocevar.com/geoserver/wms',
+          params: {'LAYERS': 'topp:states', 'TILED': true},
+          serverType: 'geoserver',
+          // Countries have transparency, so do not fade tiles:
+          transition: 0,
+        }),
+        name: "layer3",
+      });
+      map.addLayer(l);
+      setL3("Remove");
+    } else {
+      removeLayer(map, "layer3");
+      setL3("Add");
+    }
+  }
+
+  const handleL4 = (map) => {
+    if (L4 === "Add") {
+      var layer = new VectorLayer ({
+        source: new VectorSource ({
+          url: geojsonExample2,
+          format: new GeoJSON(),
+        }),
+        name: 'layer4',
+      })
+      map.addLayer(layer);
+      setL4("Remove");
+    } else {
+      removeLayer(map, "layer4");
+      setL4("Add");
+    }
+  }
+
+  const removeLayer = (map, layerName) => {
+    removeLayersWithName(map, layerName);
+  }
+
   return (
     <>
       <button onClick={() => lessZoom(map)}>lessZoom</button>
       <button onClick={() => zoom(map)}>zoom</button>
       <button onClick={() => increaseResolution(map)}>increaseResolution</button>
       <button onClick={() => decreaseResolution(map)}>decreaseResolution</button>
-      <button onClick={() => rotateRight(map)}>rotateRight</button>
-      <button onClick={() => rotateLeft(map)}>rotateLeft</button>
       <button onClick={() => changeCenter(map)}>changeCenter</button>
       <button onClick={() => originalCenter(map)}>originalCenter</button>
+
+      <br />
+      <button onClick={() => handleL1(map)}>{L1 + " basic"}</button>
+      <button onClick={() => handleL2(map)}>{L2 + " point"}</button>
+      <button onClick={() => handleL3(map)}>{L3 + " geo"}</button>
+      <button onClick={() => handleL4(map)}>{L4 + " veg"}</button>
+
       <div
         ref={mapTargetElement}
         className="map"
         style={{
-          width: "100%",
-          height: "400px",
+          alignSelf: "flex-end",
+          width: "75%",
+          height: "500px",
           position: "relative",
         }} >
 
