@@ -12,6 +12,7 @@ import GeoJSON from 'ol/format/GeoJSON.js';
 import { removeLayersWithName } from './utils/customFunctions';
 import TileWMS from 'ol/source/TileWMS.js';
 import MainMenu from './components/MainMenu';
+import LayerCard from './components/LayerCard';
 
 function App() {
 
@@ -169,6 +170,8 @@ function App() {
   return (
     <>
       <MainMenu />
+      <br />
+      <LayerCard />
       {/* <button onClick={() => lessZoom(map)}>lessZoom</button>
       <button onClick={() => zoom(map)}>zoom</button>
       <button onClick={() => increaseResolution(map)}>increaseResolution</button>
