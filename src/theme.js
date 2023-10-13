@@ -1,16 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 28,
-        },
-      },
-    },
-  },
-
   palette: {
     mainGreen: {
       main: "#8B958A",
@@ -23,6 +13,36 @@ const theme = createTheme({
 
     sideGreen: {
       main: "#59745D",
+    },
+  },
+
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 28,
+        },
+      },
+    },
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          width: "100%",
+        },
+        indicator: {
+          backgroundColor: "#59745D",
+          height: 3,
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            color: "#59745D",
+          },
+        },
+      },
     },
   },
 });
