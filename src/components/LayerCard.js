@@ -14,21 +14,27 @@ export default function LayerCard(layer) {
         margin: "auto",
         maxWidth: 500,
         flexGrow: 1,
-        backgroundColor: "#fff",
       }}
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={2} color="sideBrown">
         <Grid item xs={8}>
           <Typography variant="subtitle">{layer.name}</Typography>
         </Grid>
         <Grid item xs={4} container direction="column" spacing={2}>
           <Grid item>
-            <Button color="inherit" onClick={addLayerToMap(layer.source)}>
+            <Button
+              size="small"
+              variant="contained"
+              color="sideBrown"
+              onClick={addLayerToMap(layer.source)}
+            >
               {layerCardAdd}
             </Button>
           </Grid>
           <Grid item>
-            <Button color="inherit">{layerCardCustomize}</Button>
+            <Button size="small" variant="contained" color="sideBrown">
+              {layerCardCustomize}
+            </Button>
           </Grid>
         </Grid>
       </Grid>
