@@ -1,10 +1,4 @@
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
-} from "@mui/material";
+import { Box, InputAdornment, OutlinedInput } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PropTypes from "prop-types";
 
