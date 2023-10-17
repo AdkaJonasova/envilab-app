@@ -10,7 +10,6 @@ import PropTypes from "prop-types";
 
 function getCardsByType(data, type, addLayerToMap, removeLayerFromMap) {
   if (type === "layers") {
-    console.log("-- maping layers to cards");
     let layerCards = data.map((layer) => {
       return (
         <LayerCard
@@ -22,7 +21,6 @@ function getCardsByType(data, type, addLayerToMap, removeLayerFromMap) {
     });
     return layerCards;
   } else if (type === "areas") {
-    console.log("-- maping areas to cards");
     let areaCards = data.map((area) => {
       return <AreaCard area={area} />;
     });
@@ -47,9 +45,6 @@ export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
   );
 
   useEffect(() => {
-    console.log(
-      "--- I am in useEffect with filter=" + filter + " and barType=" + barType
-    );
     setFilteredData(filterDataByName(getDataByType(barType), filter));
   }, [barType, filter]);
 

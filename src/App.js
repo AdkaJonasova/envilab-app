@@ -7,15 +7,9 @@ import { OSM, Vector as VectorSource } from "ol/source.js";
 import FullScreenControl from "ol/control/FullScreen";
 import { Zoom } from "ol/control";
 import VectorLayer from "ol/layer/Vector";
-import {
-  earthquakesGeojson,
-  geoJsonLayer,
-  geojsonExample2,
-  styles,
-} from "./data/layerData";
+import { geoJsonLayer, styles } from "./data/layerData";
 import GeoJSON from "ol/format/GeoJSON.js";
 import { removeLayersWithId } from "./utils/customFunctions";
-import TileWMS from "ol/source/TileWMS.js";
 import MainMenu from "./components/MainMenu";
 import Sidebar from "./components/Sidebar";
 import { Grid } from "@mui/material";
@@ -31,9 +25,6 @@ function App() {
   const [map, setMap] = useState(null);
 
   const [L1, setL1] = useState("Add");
-  const [L2, setL2] = useState("Add");
-  const [L3, setL3] = useState("Add");
-  const [L4, setL4] = useState("Add");
 
   useEffect(() => {
     const map = new Map({
@@ -114,68 +105,11 @@ function App() {
     }
   };
 
-  const handleL2 = (map) => {
-    if (L2 === "Add") {
-      var layer = new VectorLayer({
-        source: new VectorSource({
-          url: earthquakesGeojson,
-          format: new GeoJSON(),
-        }),
-        name: "layer2",
-      });
-      map.addLayer(layer);
-      setL2("Remove");
-    } else {
-      removeLayer(map, "layer2");
-      setL2("Add");
-    }
-  };
-
-  const handleL3 = (map) => {
-    if (L3 === "Add") {
-      var l = new TileLayer({
-        extent: [-13884991, 2870341, -7455066, 6338219],
-        source: new TileWMS({
-          url: "https://ahocevar.com/geoserver/wms",
-          params: { LAYERS: "topp:states", TILED: true },
-          serverType: "geoserver",
-          // Countries have transparency, so do not fade tiles:
-          transition: 0,
-        }),
-        name: "layer3",
-      });
-      map.addLayer(l);
-      setL3("Remove");
-    } else {
-      removeLayer(map, "layer3");
-      setL3("Add");
-    }
-  };
-
-  const handleL4 = (map) => {
-    if (L4 === "Add") {
-      var layer = new VectorLayer({
-        source: new VectorSource({
-          url: geojsonExample2,
-          format: new GeoJSON(),
-        }),
-        name: "layer4",
-      });
-      map.addLayer(layer);
-      setL4("Remove");
-    } else {
-      removeLayer(map, "layer4");
-      setL4("Add");
-    }
-  };
-
   const removeLayer = (map, layerName) => {
     removeLayersWithId(map, layerName);
   };
 
   function addLayerToMap(layer) {
-    console.log("Som v app add");
-    console.log("Layer type v app: " + typeof layer);
     map.addLayer(layer);
   }
 
@@ -210,31 +144,6 @@ function App() {
           </Grid>
         </ThemeProvider>
       </React.Fragment>
-
-      {/* <button onClick={() => lessZoom(map)}>lessZoom</button>
-      <button onClick={() => zoom(map)}>zoom</button>
-      <button onClick={() => increaseResolution(map)}>increaseResolution</button>
-      <button onClick={() => decreaseResolution(map)}>decreaseResolution</button>
-      <button onClick={() => changeCenter(map)}>changeCenter</button>
-      <button onClick={() => originalCenter(map)}>originalCenter</button>
-
-      <br />
-      <button onClick={() => handleL1(map)}>{L1 + " basic"}</button>
-      <button onClick={() => handleL2(map)}>{L2 + " point"}</button>
-      <button onClick={() => handleL3(map)}>{L3 + " geo"}</button>
-      <button onClick={() => handleL4(map)}>{L4 + " veg"}</button>
-
-      <div
-        ref={mapTargetElement}
-        className="map"
-        style={{
-          alignSelf: "flex-end",
-          width: "75%",
-          height: "500px",
-          position: "relative",
-        }} >
-
-      </div> */}
     </>
   );
 }

@@ -6,9 +6,7 @@ import PropTypes from "prop-types";
 
 export default function SideBarTabs({ currValue, setCurrValue }) {
   const handleChange = (event, newValue) => {
-    console.log(newValue);
     setCurrValue(newValue);
-    console.log("--new value set");
   };
 
   return (

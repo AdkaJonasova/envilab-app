@@ -14,7 +14,6 @@ function addEditButton(isEditable) {
 }
 
 export default function AreaCard({ area }) {
-  console.log("---I am in AreaCard: " + typeof area);
   return (
     <Paper
       key={area.areaId}
