@@ -8,7 +8,11 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { createLayerByType } from "../../utils/customFunctions";
 
-export default function LayerCard(layer, addLayerToMap, removeLayerFromMap) {
+export default function LayerCard({
+  layer,
+  addLayerToMap,
+  removeLayerFromMap,
+}) {
   const [buttonText, setButtonText] = useState(layerCardAdd);
 
   function handleAddRemove(layer) {
