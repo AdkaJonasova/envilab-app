@@ -6,11 +6,12 @@ import SideBarTabs from "./SideBarTabs";
 import AreaCard from "./areas/AreaCard";
 import SearchBar from "./SearchBar";
 import { filterDataByName } from "../utils/customFunctions";
+import PropTypes from "prop-types";
 
-function getCardsByType(data, type) {
+function getCardsByType(data, type, addLayerToMap, removeLayerFromMap) {
   if (type === "layers") {
     let layerCards = data.map((layer) => {
-      return LayerCard(layer);
+      return LayerCard(layer, addLayerToMap, removeLayerFromMap);
     });
     return layerCards;
   } else if (type === "areas") {
@@ -29,7 +30,7 @@ function getDataByType(sideBarType) {
   }
 }
 
-export default function Sidebar() {
+export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
   const [barType, setBarType] = useState("layers");
   const [filter, setFilter] = useState("");
   const filteredData = filterDataByName(getDataByType(barType), filter);
@@ -43,7 +44,12 @@ export default function Sidebar() {
     >
       <SideBarTabs currValue={barType} setCurrValue={setBarType} />
       <SearchBar setFilter={setFilter} />
-      {getCardsByType(filteredData, barType)}
+      {getCardsByType(filteredData, barType, addLayerToMap, removeLayerFromMap)}
     </Box>
   );
 }
+
+Sidebar.propTypes = {
+  addLayerToMap: PropTypes.func,
+  removeLayerFromMap: PropTypes.func,
+};

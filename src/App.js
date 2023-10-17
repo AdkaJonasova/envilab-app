@@ -14,7 +14,7 @@ import {
   styles,
 } from "./data/layerData";
 import GeoJSON from "ol/format/GeoJSON.js";
-import { removeLayersWithName } from "./utils/customFunctions";
+import { removeLayersWithId } from "./utils/customFunctions";
 import TileWMS from "ol/source/TileWMS.js";
 import MainMenu from "./components/MainMenu";
 import Sidebar from "./components/Sidebar";
@@ -170,8 +170,18 @@ function App() {
   };
 
   const removeLayer = (map, layerName) => {
-    removeLayersWithName(map, layerName);
+    removeLayersWithId(map, layerName);
   };
+
+  function addLayerToMap(layer) {
+    console.log("Som v app add");
+    console.log("Layer type v app: " + typeof layer);
+    map.addLayer(layer);
+  }
+
+  function removeLayerFromMap(layer) {
+    removeLayersWithId(map, layer.layerId);
+  }
 
   return (
     <>
@@ -180,7 +190,11 @@ function App() {
           <MainMenu />
           <Grid container spacing={2} marginTop={1} marginBottom={1}>
             <Grid item xs={3}>
-              <Sidebar />
+              <Sidebar
+                map={map}
+                addLayerToMap={addLayerToMap}
+                removeLayerFromMap={removeLayerFromMap}
+              />
             </Grid>
             <Grid item xs={9}>
               <div

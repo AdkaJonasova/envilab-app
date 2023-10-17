@@ -1,9 +1,21 @@
 import { Button, Grid, Paper, Typography } from "@mui/material";
-import { layerCardAdd, layerCardCustomize } from "../../utils/data";
+import {
+  layerCardAdd,
+  layerCardCustomize,
+  layerCardRemove,
+} from "../../utils/data";
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { createLayerByType } from "../../utils/customFunctions";
 
-export default function LayerCard(layer) {
-  function addLayerToMap(source) {
-    console.log("layer to map");
+export default function LayerCard(layer, addLayerToMap, removeLayerFromMap) {
+  const [buttonText, setButtonText] = useState(layerCardAdd);
+
+  function handleAddRemove(layer) {
+    setButtonText(buttonText === layerCardAdd ? layerCardRemove : layerCardAdd);
+    buttonText === layerCardAdd
+      ? addLayerToMap(createLayerByType(layer))
+      : removeLayerFromMap(layer);
   }
 
   return (
@@ -25,9 +37,9 @@ export default function LayerCard(layer) {
               size="small"
               variant="contained"
               color="sideBrown"
-              onClick={addLayerToMap(layer.source)}
+              onClick={(e) => handleAddRemove(layer)}
             >
-              {layerCardAdd}
+              {buttonText}
             </Button>
           </Grid>
           <Grid item>
@@ -42,11 +54,7 @@ export default function LayerCard(layer) {
 }
 
 LayerCard.propTypes = {
-  layer: {
-    layerId: Number,
-    name: String,
-    source: String,
-    description: String,
-    type: String,
-  },
+  layer: PropTypes.object,
+  addLayerToMap: PropTypes.func,
+  removeLayerFromMap: PropTypes.func,
 };

@@ -1,3 +1,5 @@
+import { LayerTypes } from "../utils/enums";
+
 // Mock layer data
 const pointLayer = {
   layerId: 0,
@@ -6,15 +8,15 @@ const pointLayer = {
     "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson",
   description:
     "This layer is showing where the eartquake has been this year so far.",
-  type: "vector",
+  type: LayerTypes.Vector,
 };
 
 const usaStatesLayer = {
   layerId: 1,
   name: "USA states layer",
   source: "https://ahocevar.com/geoserver/wms",
-  description: "This layer show states of the USA with their borders",
-  type: "tile",
+  description: "This layer shows states of the USA with their borders",
+  type: LayerTypes.Tile,
 };
 
 const vegetationLayer = {
@@ -23,7 +25,7 @@ const vegetationLayer = {
   source: "https://openlayers.org/data/vector/ecoregions.json",
   description:
     "This layer shows different kinds of vegetation types on the earth",
-  type: "vector",
+  type: LayerTypes.Vector,
 };
 
 export const mockLayers = [pointLayer, usaStatesLayer, vegetationLayer];
