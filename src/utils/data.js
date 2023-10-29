@@ -1,3 +1,8 @@
+// Navigation
+const layerViewPage = { pageName: "Layer view", pagePath: "/layerView" };
+const selectViewPage = { pageName: "Select view", pagePath: "/selectView" };
+export const viewPages = [layerViewPage, selectViewPage];
+
 // Main menu bar
 export const pageName = "ENVILAB";
 export const mainMenuViews = "Views";

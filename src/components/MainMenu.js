@@ -5,12 +5,12 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import YardIcon from "@mui/icons-material/Yard";
+import { useNavigate } from "react-router-dom";
 import {
   mainMenuSettings,
   mainMenuViews,
   pageName,
-  subMenuLayer,
-  subMenuSelect,
+  viewPages,
 } from "../utils/data";
 import { Button, Toolbar } from "@mui/material";
 
@@ -23,6 +23,13 @@ export default function MainMenu() {
 
   const handleCloseSubMenu = () => {
     setSubMenu(null);
+  };
+
+  const navigate = useNavigate();
+
+  const navigateViewAction = (path) => {
+    handleCloseSubMenu();
+    navigate(path);
   };
 
   return (
@@ -52,14 +59,22 @@ export default function MainMenu() {
               }}
               keepMounted
               transformOrigin={{
-                vertical: "bottom",
+                vertical: "top",
                 horizontal: "center",
               }}
               open={Boolean(subMenu)}
               onClose={handleCloseSubMenu}
             >
-              <MenuItem onClick={handleCloseSubMenu}>{subMenuLayer}</MenuItem>
-              <MenuItem onClick={handleCloseSubMenu}>{subMenuSelect}</MenuItem>
+              {viewPages.map((page) => (
+                <MenuItem
+                  key={page.pageName}
+                  onClick={() => {
+                    navigateViewAction(page.pagePath);
+                  }}
+                >
+                  <Typography textAlign="center">{page.pageName}</Typography>
+                </MenuItem>
+              ))}
             </Menu>
           </div>
           <Button color="inherit">{mainMenuSettings}</Button>
