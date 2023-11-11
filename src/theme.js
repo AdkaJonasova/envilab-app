@@ -1,6 +1,36 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-const theme = createTheme({
+let theme = createTheme({
+  typography: {
+    h1: {
+      fontSize: "1.8rem",
+      color: "#59745D",
+      textAlign: "center",
+      marginBottom: 5,
+      marginTop: 5,
+    },
+    h2: {
+      fontSize: "1rem",
+      marginTop: 5,
+      marginBottom: 10,
+    },
+    h3: {
+      fontSize: "1.3rem",
+      color: "#59745D",
+      textAlign: "center",
+      marginTop: 5,
+      marginBottom: 10,
+    },
+    h4: {
+      fontSize: "1rem",
+      textAlign: "left",
+      margin: 5,
+    },
+    body1: {
+      fontSize: "0.9rem",
+    },
+  },
+
   palette: {
     mainGreen: {
       main: "#8B958A",
@@ -17,6 +47,22 @@ const theme = createTheme({
   },
 
   components: {
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          marginBottom: 5,
+          marginTop: 15,
+          backgroundColor: "#59745D",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          margin: 5,
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -46,5 +92,7 @@ const theme = createTheme({
     },
   },
 });
+
+theme = responsiveFontSizes(theme);
 
 export default theme;
