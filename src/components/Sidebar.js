@@ -8,6 +8,7 @@ import SearchBar from "./SearchBar";
 import { filterDataByName } from "../utils/customFunctions";
 import PropTypes from "prop-types";
 import AreaList from "./areas/AreaList";
+import LayerList from "./layers/LayerList";
 
 export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
   const [barType, setBarType] = useState("layers");
@@ -25,16 +26,13 @@ export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
 
   function getCardsByType(data, type, addLayerToMap, removeLayerFromMap) {
     if (type === "layers") {
-      let layerCards = data.map((layer) => {
-        return (
-          <LayerCard
-            layer={layer}
-            addLayerToMap={addLayerToMap}
-            removeLayerFromMap={removeLayerFromMap}
-          />
-        );
-      });
-      return layerCards;
+      return (
+        <LayerList
+          layers={data}
+          addLayerToMap={addLayerToMap}
+          removeLayerFromMap={removeLayerFromMap}
+        />
+      );
     } else if (type === "areas") {
       return <AreaList areas={data} />;
     }
