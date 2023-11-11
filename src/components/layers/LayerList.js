@@ -1,15 +1,8 @@
 import * as React from "react";
-import { Edit } from "@mui/icons-material";
-import {
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Switch,
-} from "@mui/material";
+import { List } from "@mui/material";
 import PropTypes from "prop-types";
 import { createLayerByType } from "../../utils/customFunctions";
+import LayerListItem from "./LayerListItem";
 
 export default function LayerList({
   layers,
@@ -22,7 +15,7 @@ export default function LayerList({
     return checked.indexOf(layer.layerId) !== -1;
   }
 
-  function handleToggle(event, layer) {
+  function handleToggle(layer) {
     const currentIndex = checked.indexOf(layer.layerId);
     const newChecked = [...checked];
 
@@ -38,30 +31,12 @@ export default function LayerList({
   }
 
   function getLayerItem(layer) {
-    let paddingSize = 4;
     return (
-      <div>
-        <ListItem
-          id={`switch-list-item-${layer.layerId}`}
-          sx={{ pl: paddingSize }}
-        >
-          <ListItemText
-            id={`switch-list-text-label-${layer.layerId}`}
-            primary={layer.name}
-          />
-          <IconButton size="small" color="sideBrown">
-            <Edit />
-          </IconButton>
-          <Switch
-            edge="end"
-            size="small"
-            color="sideBrown"
-            onChange={(e) => handleToggle(e, layer)}
-            checked={isLayerChecked(layer)}
-          />
-        </ListItem>
-        <Divider />
-      </div>
+      <LayerListItem
+        layer={layer}
+        handleToggle={handleToggle}
+        isChecked={isLayerChecked}
+      />
     );
   }
   return (
