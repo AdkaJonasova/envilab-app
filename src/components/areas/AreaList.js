@@ -1,11 +1,8 @@
 import * as React from "react";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Switch from "@mui/material/Switch";
 import PropTypes from "prop-types";
-import { Collapse, Divider, IconButton } from "@mui/material";
-import { Edit, ExpandLess, ExpandMore } from "@mui/icons-material";
+import { Collapse } from "@mui/material";
+import AreaListItem from "./AreaListItem";
 
 export default function AreaList({ areas }) {
   const [checked, setChecked] = React.useState([]);
@@ -37,74 +34,39 @@ export default function AreaList({ areas }) {
     setOpened(newOpened);
   };
 
-  function addEditButton(isEditable) {
-    if (isEditable) {
-      return (
-        <IconButton size="small" color="sideBrown">
-          <Edit />
-        </IconButton>
-      );
-    }
-    return null;
+  function isAreaChecked(area) {
+    return checked.indexOf(area.areaId) !== -1;
   }
 
-  function addExpandCollapseItem(area) {
-    return (
-      <IconButton size="small" onClick={handleExpandCollapse(area)}>
-        {opened.indexOf(area.areaId) !== -1 ? <ExpandLess /> : <ExpandMore />}
-      </IconButton>
-    );
+  function isAreaOpened(area) {
+    return opened.indexOf(area.areaId) !== -1;
   }
 
   function getAreaItem(area, level) {
-    let paddingSize = level * 2;
-    let paddingSizeBigger = level * 2 + 4;
-
     if (area.subAreas.length === 0) {
       return (
-        <div>
-          <ListItem
-            id={`switch-list-item-${area.areaId}`}
-            sx={{ pl: paddingSizeBigger }}
-          >
-            <ListItemText
-              id={`switch-list-text-label-${area.areaId}`}
-              primary={area.name}
-            />
-            {addEditButton(area.isEditable)}
-            <Switch
-              edge="end"
-              size="small"
-              color="sideBrown"
-              onChange={handleToggle(area)}
-              checked={checked.indexOf(area.areaId) !== -1}
-            />
-          </ListItem>
-          <Divider />
-        </div>
+        <AreaListItem
+          area={area}
+          hierarchyLevel={level}
+          isExpandable={false}
+          handleToggle={handleToggle}
+          handleExpandCollapse={handleExpandCollapse}
+          isChecked={isAreaChecked}
+          isOpened={isAreaOpened}
+        />
       );
     } else {
       return (
         <div>
-          <ListItem
-            sx={{ pl: paddingSize }}
-            id={`switch-list-item-${area.areaId}`}
-          >
-            {addExpandCollapseItem(area)}
-            <ListItemText
-              id={`switch-list-text-label-${area.areaId}`}
-              primary={area.name}
-            />
-            {addEditButton(area.isEditable)}
-            <Switch
-              edge="end"
-              size="small"
-              color="sideBrown"
-              onChange={handleToggle(area)}
-              checked={checked.indexOf(area.areaId) !== -1}
-            />
-          </ListItem>
-          <Divider />
+          <AreaListItem
+            area={area}
+            hierarchyLevel={level}
+            isExpandable={true}
+            handleToggle={handleToggle}
+            handleExpandCollapse={handleExpandCollapse}
+            isChecked={isAreaChecked}
+            isOpened={isAreaOpened}
+          />
           <Collapse
             in={opened.indexOf(area.areaId) !== -1}
             timeout={"auto"}
