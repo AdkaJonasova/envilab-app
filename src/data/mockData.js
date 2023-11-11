@@ -31,11 +31,20 @@ const vegetationLayer = {
 export const mockLayers = [pointLayer, usaStatesLayer, vegetationLayer];
 
 // Mock area data
+const subArea1 = {
+  areaId: 10,
+  name: "Jihomoravsky kraj",
+  source: "",
+  isEditable: false,
+  subAreas: [],
+};
+
 const area1 = {
   areaId: 0,
   name: "Czech republic",
   source: "",
   isEditable: false,
+  subAreas: [subArea1],
 };
 
 const area2 = {
@@ -43,6 +52,7 @@ const area2 = {
   name: "Slovakia",
   source: "",
   isEditable: false,
+  subAreas: [],
 };
 
 const customArea1 = {
@@ -50,6 +60,7 @@ const customArea1 = {
   name: "Custom area 1",
   source: "",
   isEditable: true,
+  subAreas: [],
 };
 
 export const mockAreas = [area1, area2, customArea1];

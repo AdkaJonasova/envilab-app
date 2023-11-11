@@ -1,4 +1,11 @@
-import { Button, Grid, Paper, Typography } from "@mui/material";
+import {
+  Button,
+  Grid,
+  IconButton,
+  Paper,
+  Switch,
+  Typography,
+} from "@mui/material";
 import {
   layerCardAdd,
   layerCardCustomize,
@@ -7,50 +14,49 @@ import {
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { createLayerByType } from "../../utils/customFunctions";
+import EditIcon from "@mui/icons-material/Edit";
+import { Edit } from "@mui/icons-material";
 
 export default function LayerCard({
   layer,
   addLayerToMap,
   removeLayerFromMap,
 }) {
-  const [buttonText, setButtonText] = useState(layerCardAdd);
+  const [isActive, setIsActive] = useState(false);
 
-  function handleAddRemove(layer) {
-    setButtonText(buttonText === layerCardAdd ? layerCardRemove : layerCardAdd);
-    buttonText === layerCardAdd
-      ? addLayerToMap(createLayerByType(layer))
-      : removeLayerFromMap(layer);
+  function handleAddRemove(event, layer) {
+    setIsActive(event.target.checked);
+    isActive
+      ? removeLayerFromMap(layer)
+      : addLayerToMap(createLayerByType(layer));
   }
 
   return (
     <Paper
       key={layer.layerId}
       sx={{
-        p: 2,
+        p: 1,
         margin: "auto",
         flexGrow: 1,
+        verticalAlign: "baseline",
       }}
     >
-      <Grid container spacing={2} color="sideBrown">
+      <Grid container spacing={1} color="sideBrown">
         <Grid item xs={8}>
           <Typography variant="subtitle">{layer.name}</Typography>
         </Grid>
-        <Grid item xs={3} container direction="column" spacing={2}>
-          <Grid item>
-            <Button
-              size="small"
-              variant="contained"
-              color="sideBrown"
-              onClick={(e) => handleAddRemove(layer)}
-            >
-              {buttonText}
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button size="small" variant="contained" color="sideBrown">
-              {layerCardCustomize}
-            </Button>
-          </Grid>
+        <Grid item xs={2}>
+          <Switch
+            color="sideBrown"
+            size="small"
+            checked={isActive}
+            onChange={(e) => handleAddRemove(e, layer)}
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <IconButton color="sideBrown" size="small">
+            <Edit />
+          </IconButton>
         </Grid>
       </Grid>
     </Paper>

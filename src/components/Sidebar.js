@@ -1,40 +1,13 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import LayerCard from "./layers/LayerCard";
 import { mockAreas, mockLayers } from "../data/mockData";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import SideBarTabs from "./SideBarTabs";
 import AreaCard from "./areas/AreaCard";
 import SearchBar from "./SearchBar";
 import { filterDataByName } from "../utils/customFunctions";
 import PropTypes from "prop-types";
-
-function getCardsByType(data, type, addLayerToMap, removeLayerFromMap) {
-  if (type === "layers") {
-    let layerCards = data.map((layer) => {
-      return (
-        <LayerCard
-          layer={layer}
-          addLayerToMap={addLayerToMap}
-          removeLayerFromMap={removeLayerFromMap}
-        />
-      );
-    });
-    return layerCards;
-  } else if (type === "areas") {
-    let areaCards = data.map((area) => {
-      return <AreaCard area={area} />;
-    });
-    return areaCards;
-  }
-}
-
-function getDataByType(sideBarType) {
-  if (sideBarType === "layers") {
-    return mockLayers;
-  } else if (sideBarType === "areas") {
-    return mockAreas;
-  }
-}
+import AreaList from "./areas/AreaList";
 
 export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
   const [barType, setBarType] = useState("layers");
@@ -44,9 +17,36 @@ export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
     filterDataByName(getDataByType(barType), filter)
   );
 
-  useEffect(() => {
-    setFilteredData(filterDataByName(getDataByType(barType), filter));
+  useMemo(() => {
+    let dataByType = getDataByType(barType);
+    let filteredData = filterDataByName(dataByType, filter);
+    setFilteredData(filteredData);
   }, [barType, filter]);
+
+  function getCardsByType(data, type, addLayerToMap, removeLayerFromMap) {
+    if (type === "layers") {
+      let layerCards = data.map((layer) => {
+        return (
+          <LayerCard
+            layer={layer}
+            addLayerToMap={addLayerToMap}
+            removeLayerFromMap={removeLayerFromMap}
+          />
+        );
+      });
+      return layerCards;
+    } else if (type === "areas") {
+      return <AreaList areas={data} />;
+    }
+  }
+
+  function getDataByType(sideBarType) {
+    if (sideBarType === "layers") {
+      return mockLayers;
+    } else if (sideBarType === "areas") {
+      return mockAreas;
+    }
+  }
 
   return (
     <Box

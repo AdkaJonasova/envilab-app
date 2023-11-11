@@ -47,15 +47,6 @@ let theme = createTheme({
   },
 
   components: {
-    MuiDivider: {
-      styleOverrides: {
-        root: {
-          marginBottom: 5,
-          marginTop: 15,
-          backgroundColor: "#59745D",
-        },
-      },
-    },
     MuiTextField: {
       styleOverrides: {
         root: {
