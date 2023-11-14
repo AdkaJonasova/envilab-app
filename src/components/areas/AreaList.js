@@ -10,16 +10,41 @@ export default function AreaList({ areas }) {
 
   const handleToggle = (area) => () => {
     const currentIndex = checked.indexOf(area.areaId);
-    const newChecked = [...checked];
+    let newChecked = [...checked];
 
     if (currentIndex === -1) {
       newChecked.push(area.areaId);
+      newChecked = activateChildToggles(area, newChecked);
+      setChecked(newChecked);
     } else {
       newChecked.splice(currentIndex, 1);
+      newChecked = deactivateChildToggle(area, newChecked);
+      setChecked(newChecked);
     }
-
-    setChecked(newChecked);
   };
+
+  function activateChildToggles(area, newChecked) {
+    const subAreas = area.subAreas;
+    for (let i = 0; i < subAreas.length; i++) {
+      const subArea = subAreas[i];
+      if (!newChecked.includes(subArea.areaId)) {
+        newChecked.push(subArea.areaId);
+      }
+    }
+    return newChecked;
+  }
+
+  function deactivateChildToggle(area, newChecked) {
+    const subAreas = area.subAreas;
+    for (let i = 0; i < subAreas.length; i++) {
+      const subArea = subAreas[i];
+      const currentIndex = newChecked.indexOf(subArea.areaId);
+      if (currentIndex !== -1) {
+        newChecked.splice(currentIndex, 1);
+      }
+    }
+    return newChecked;
+  }
 
   const handleExpandCollapse = (area) => () => {
     const currentIndex = opened.indexOf(area.areaId);
