@@ -1,7 +1,7 @@
 import * as React from "react";
 import List from "@mui/material/List";
 import PropTypes from "prop-types";
-import { Collapse } from "@mui/material";
+import { Button, Collapse, Grid } from "@mui/material";
 import AreaListItem from "./AreaListItem";
 
 export default function AreaList({ areas }) {
@@ -107,9 +107,23 @@ export default function AreaList({ areas }) {
   }
 
   return (
-    <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-      {areas.map((area) => getAreaItem(area, 0))}
-    </List>
+    <div>
+      <Grid container marginY={1} spacing={1} paddingX={1}>
+        <Grid item xs={6}>
+          <Button variant="outlined" color="sideGreen" size="small" fullWidth>
+            {"Create area set"}
+          </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button variant="outlined" color="sideGreen" size="small" fullWidth>
+            {"Choose area set"}
+          </Button>
+        </Grid>
+      </Grid>
+      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+        {areas.map((area) => getAreaItem(area, 0))}
+      </List>
+    </div>
   );
 }
 
