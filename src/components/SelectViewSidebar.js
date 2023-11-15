@@ -20,7 +20,7 @@ import PropTypes from "prop-types";
 import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-export default function SelectViewSidebar({ points }) {
+export default function SelectViewSidebar({ points, deletePoint }) {
   return (
     <Box>
       <Typography variant="h3">{selectViewSidebarTitle}</Typography>
@@ -44,10 +44,15 @@ export default function SelectViewSidebar({ points }) {
       </Grid>
       <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
         {points.map((point) => (
-          <ListItem id="list-point-item">
+          <ListItem id={`point-list-item-${point.pointId}`}>
             <ListItemText variant="body1">{point.x}</ListItemText>
             <ListItemText variant="body1">{point.y}</ListItemText>
-            <IconButton edge="end" size="small" color="error">
+            <IconButton
+              edge="end"
+              size="small"
+              color="error"
+              onClick={(e) => deletePoint(e, point)}
+            >
               <ClearIcon />
             </IconButton>
           </ListItem>
@@ -62,4 +67,5 @@ export default function SelectViewSidebar({ points }) {
 
 SelectViewSidebar.propTypes = {
   points: PropTypes.array,
+  deletePoint: PropTypes.func,
 };

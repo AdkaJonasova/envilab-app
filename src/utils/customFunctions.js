@@ -5,6 +5,10 @@ import GeoJSON from "ol/format/GeoJSON.js";
 import TileLayer from "ol/layer/Tile.js";
 import TileWMS from "ol/source/TileWMS.js";
 
+export function getMaxIdInList(list) {
+  return list.length > 0 ? Math.max([...list]) : 0;
+}
+
 export function removeLayersWithId(map, layerId) {
   map
     .getLayers()
