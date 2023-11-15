@@ -34,8 +34,11 @@ const SelectViewPage = () => {
   function onPointSelect(event) {
     const cords = toLonLat(event.coordinate);
 
-    const point = { x: cords[0], y: cords[1] };
+    const strigifyFunc = createStringXY(4);
+    const formatedCords = strigifyFunc(cords);
+    const splitFormatedCords = formatedCords.split(",");
 
+    const point = { x: splitFormatedCords[0], y: splitFormatedCords[1] };
     setPoints((current) => [...current, point]);
   }
 
