@@ -3,26 +3,50 @@ import { useEffect, useRef, useState } from "react";
 
 import Map from "ol/Map.js";
 import FullScreenControl from "ol/control/FullScreen";
-import { Zoom } from "ol/control";
+import { Zoom, MousePosition } from "ol/control";
 import { OSM } from "ol/source.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
 import { Grid, Typography } from "@mui/material";
-import { selectViewSubtitle, selectViewTitle } from "../utils/data";
+import { selectViewSubtitle } from "../utils/data";
 import SelectViewSidebar from "../components/SelectViewSidebar";
-import { points } from "../data/mockData";
+import { createStringXY } from "ol/coordinate";
+import VectorSource from "ol/source/Vector";
+import VectorLayer from "ol/layer/Vector";
+import Draw from "ol/interaction/Draw.js";
+import { toLonLat } from "ol/proj";
 
 const SelectViewPage = () => {
   const fullScreenControl = new FullScreenControl();
   const zoomControl = new Zoom({});
+  const mousePositionControl = new MousePosition({
+    coordinateFormat: createStringXY(4),
+    projection: "EPSG:4326",
+    className: "mouse-position",
+  });
 
   const mapTargetElement = useRef();
   const [map, setMap] = useState(null);
+  const [points, setPoints] = useState([]);
+
+  let draw;
+
+  function onPointSelect(event) {
+    const cords = toLonLat(event.coordinate);
+
+    const point = { x: cords[0], y: cords[1] };
+
+    setPoints((current) => [...current, point]);
+  }
 
   useEffect(() => {
-    const map = new Map({
-      layers: [new TileLayer({ source: new OSM() })],
-      controls: [fullScreenControl, zoomControl],
+    const source = new VectorSource({ wrapX: false });
+    const vectorDrawLayer = new VectorLayer({ source: source });
+    const tileBaseLayer = new TileLayer({ source: new OSM() });
+
+    const newMap = new Map({
+      layers: [tileBaseLayer, vectorDrawLayer],
+      controls: [fullScreenControl, zoomControl, mousePositionControl],
       view: new View({
         center: [0, 0],
         zoom: 2,
@@ -31,9 +55,17 @@ const SelectViewPage = () => {
       }),
     });
 
-    map.setTarget(mapTargetElement.current || "");
-    setMap(map);
-    return () => map.setTarget("");
+    draw = new Draw({
+      source: source,
+      type: "Point",
+    });
+    newMap.addInteraction(draw);
+
+    newMap.setTarget(mapTargetElement.current || "");
+    newMap.on("click", (e) => onPointSelect(e));
+    setMap(newMap);
+
+    return () => newMap.setTarget("");
   }, []);
 
   return (

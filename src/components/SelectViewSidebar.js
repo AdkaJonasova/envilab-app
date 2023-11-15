@@ -4,11 +4,13 @@ import {
   Divider,
   Grid,
   IconButton,
+  List,
+  ListItem,
+  ListItemText,
   TextField,
   Typography,
 } from "@mui/material";
 import {
-  sViewSidebarNewPointBtnText,
   selectViewAreaName,
   selectViewSaveBtnText,
   selectViewSelectedPoints,
@@ -17,13 +19,11 @@ import {
 import PropTypes from "prop-types";
 import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
 
 export default function SelectViewSidebar({ points }) {
   return (
     <Box>
       <Typography variant="h3">{selectViewSidebarTitle}</Typography>
-      <Divider />
       <Typography variant="h4">{selectViewAreaName}</Typography>
       <TextField
         id="area-name-input"
@@ -31,7 +31,7 @@ export default function SelectViewSidebar({ points }) {
         variant="outlined"
         size="small"
       ></TextField>
-      <Divider />
+      <Divider sx={{ marginBottom: 1, marginTop: 2 }} />
       <Grid container spacing={1} marginRight={1}>
         <Grid item xs={11}>
           <Typography variant="h4">{selectViewSelectedPoints}</Typography>
@@ -42,23 +42,17 @@ export default function SelectViewSidebar({ points }) {
           </IconButton>
         </Grid>
       </Grid>
-      {points.map((point) => (
-        <Box display={"flex"}>
-          <Grid container spacing={1} marginX={1} marginY={1}>
-            <Grid item xs={5}>
-              <Typography variant="body1">X: {point.x}</Typography>
-            </Grid>
-            <Grid item xs={5}>
-              <Typography variant="body1">Y: {point.y}</Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <IconButton color="error" size="small">
-                <CancelIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Box>
-      ))}
+      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+        {points.map((point) => (
+          <ListItem id="list-point-item">
+            <ListItemText variant="body1">{point.x}</ListItemText>
+            <ListItemText variant="body1">{point.y}</ListItemText>
+            <IconButton edge="end" size="small" color="error">
+              <ClearIcon />
+            </IconButton>
+          </ListItem>
+        ))}
+      </List>
       <Button fullWidth variant="outlined" color="sideGreen">
         {selectViewSaveBtnText}
       </Button>
