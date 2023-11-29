@@ -82,3 +82,37 @@ const point3 = {
 };
 
 export let points = [point1, point2, point3];
+
+// mock table data window data
+const alaska = {
+  name: "Alaska",
+  population: 7335830,
+  area: 1723337,
+};
+
+const texas = {
+  name: "Texas",
+  population: 30029572,
+  area: 695662,
+};
+
+const california = {
+  name: "California",
+  population: 39029342,
+  area: 423967,
+};
+
+const montana = {
+  name: "Montana",
+  population: 1122867,
+  area: 3800831,
+};
+
+const newMexico = {
+  name: "New Mexico",
+  population: 2113344,
+  area: 314917,
+};
+
+export const states = [alaska, texas, california, montana, newMexico];
+export const statesHeaders = ["State name", "Population", "Area"];

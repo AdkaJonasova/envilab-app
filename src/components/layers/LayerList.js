@@ -3,13 +3,23 @@ import { List } from "@mui/material";
 import PropTypes from "prop-types";
 import { createLayerByType } from "../../utils/customFunctions";
 import LayerListItem from "./LayerListItem";
+import { useEffect } from "react";
 
 export default function LayerList({
   layers,
   addLayerToMap,
   removeLayerFromMap,
+  setShowTableWindow,
 }) {
   const [checked, setChecked] = React.useState([]);
+
+  useEffect(() => {
+    if (checked.indexOf(1) !== -1) {
+      setShowTableWindow(true);
+    } else {
+      setShowTableWindow(false);
+    }
+  }, [checked]);
 
   function isLayerChecked(layer) {
     return checked.indexOf(layer.layerId) !== -1;
@@ -50,4 +60,5 @@ LayerList.propTypes = {
   layers: PropTypes.array,
   addLayerToMap: PropTypes.func,
   removeLayerFromMap: PropTypes.func,
+  setShowTableWindow: PropTypes.func,
 };

@@ -47,6 +47,13 @@ let theme = createTheme({
   },
 
   components: {
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#E1BDA5",
+        },
+      },
+    },
     MuiTextField: {
       styleOverrides: {
         root: {

@@ -7,7 +7,7 @@ import { Zoom, MousePosition } from "ol/control";
 import { OSM } from "ol/source.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { selectViewSubtitle } from "../utils/data";
 import SelectViewSidebar from "../components/SelectViewSidebar";
 import { createStringXY } from "ol/coordinate";
@@ -94,8 +94,21 @@ const SelectViewPage = () => {
           <SelectViewSidebar points={points} deletePoint={onPointDelete} />
         </Grid>
         <Grid item xs={9} container direction="column" spacing={1}>
-          <Grid item>
-            <Typography variant="h2">{selectViewSubtitle}</Typography>
+          <Grid item container direction="row">
+            <Grid item xs={10}>
+              <Typography variant="h2">{selectViewSubtitle}</Typography>
+            </Grid>
+            <Grid
+              item
+              xs={2}
+              container
+              justifyContent={"flex-end"}
+              paddingX={2}
+            >
+              <Button color="mainGreen" variant="contained" size="small">
+                {"Import area"}
+              </Button>
+            </Grid>
           </Grid>
           <Grid item>
             <div

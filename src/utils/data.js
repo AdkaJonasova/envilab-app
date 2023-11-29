@@ -11,6 +11,10 @@ export const mainMenuSettings = "Settings";
 export const subMenuLayer = "Layer view";
 export const subMenuSelect = "Select view";
 
+// Layer customization
+export const layerCustomizationHeader = "Customize";
+export const layerCustomizationOpacity = "Opacity";
+
 // Layer card
 export const layerCardAdd = "Add";
 export const layerCardRemove = "Remove";

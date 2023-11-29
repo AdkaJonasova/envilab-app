@@ -1,16 +1,18 @@
 import { Box, CircularProgress } from "@mui/material";
-import LayerCard from "./layers/LayerCard";
 import { mockAreas, mockLayers } from "../data/mockData";
 import React, { useState, useEffect, useMemo } from "react";
 import SideBarTabs from "./SideBarTabs";
-import AreaCard from "./areas/AreaCard";
 import SearchBar from "./SearchBar";
 import { filterDataByName } from "../utils/customFunctions";
 import PropTypes from "prop-types";
 import AreaList from "./areas/AreaList";
 import LayerList from "./layers/LayerList";
 
-export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
+export default function Sidebar({
+  addLayerToMap,
+  removeLayerFromMap,
+  setShowTableWindow,
+}) {
   const [barType, setBarType] = useState("layers");
   const [filter, setFilter] = useState("");
 
@@ -31,6 +33,7 @@ export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
           layers={data}
           addLayerToMap={addLayerToMap}
           removeLayerFromMap={removeLayerFromMap}
+          setShowTableWindow={setShowTableWindow}
         />
       );
     } else if (type === "areas") {
@@ -63,4 +66,5 @@ export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
 Sidebar.propTypes = {
   addLayerToMap: PropTypes.func,
   removeLayerFromMap: PropTypes.func,
+  setShowTableWindow: PropTypes.func,
 };

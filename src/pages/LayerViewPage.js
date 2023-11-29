@@ -11,6 +11,8 @@ import View from "ol/View.js";
 import Sidebar from "../components/Sidebar";
 import { Grid } from "@mui/material";
 import { removeLayersWithId } from "../utils/customFunctions";
+import TableDataWindow from "../components/dataWindows/TableDataWindow";
+import { states, statesHeaders } from "../data/mockData";
 
 const LayerViewPage = () => {
   const fullScreenControl = new FullScreenControl();
@@ -18,6 +20,7 @@ const LayerViewPage = () => {
 
   const mapTargetElement = useRef();
   const [map, setMap] = useState(null);
+  const [showTableWindow, setShowTableWindow] = useState(false);
 
   useEffect(() => {
     const map = new Map({
@@ -44,29 +47,70 @@ const LayerViewPage = () => {
     removeLayersWithId(map, layer.layerId);
   }
 
-  return (
-    <div>
-      <Grid container spacing={2} marginTop={1} marginBottom={1}>
-        <Grid item xs={3}>
-          <Sidebar
-            addLayerToMap={addLayerToMap}
-            removeLayerFromMap={removeLayerFromMap}
-          />
-        </Grid>
-        <Grid item xs={9}>
-          <div
-            ref={mapTargetElement}
-            className="map"
-            style={{
-              width: "100%",
-              height: "100%",
-              position: "relative",
-            }}
-          ></div>
-        </Grid>
-      </Grid>
-    </div>
-  );
+  function getPageContent() {
+    if (showTableWindow) {
+      return (
+        <div>
+          <Grid
+            container
+            spacing={2}
+            marginTop={1}
+            marginBottom={1}
+            paddingX={2}
+          >
+            <Grid item xs={3}>
+              <Sidebar
+                addLayerToMap={addLayerToMap}
+                removeLayerFromMap={removeLayerFromMap}
+                setShowTableWindow={setShowTableWindow}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <div
+                ref={mapTargetElement}
+                className="map"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "relative",
+                }}
+              ></div>
+            </Grid>
+            <Grid item xs={3}>
+              <TableDataWindow headers={statesHeaders} data={states} />
+            </Grid>
+          </Grid>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Grid container spacing={2} marginTop={1} marginBottom={1}>
+            <Grid item xs={3}>
+              <Sidebar
+                addLayerToMap={addLayerToMap}
+                removeLayerFromMap={removeLayerFromMap}
+                setShowTableWindow={setShowTableWindow}
+              />
+            </Grid>
+            <Grid item xs={9}>
+              <div
+                ref={mapTargetElement}
+                className="map"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "relative",
+                }}
+              ></div>
+            </Grid>
+          </Grid>
+        </div>
+      );
+    }
+  }
+
+  return getPageContent();
 };
 
 export default LayerViewPage;
