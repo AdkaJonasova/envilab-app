@@ -1,3 +1,5 @@
+import { Layers, Public } from "@mui/icons-material";
+
 // Navigation
 const layerViewPage = { pageName: "Layer view", pagePath: "/layerView" };
 const selectViewPage = { pageName: "Select view", pagePath: "/selectView" };
@@ -7,6 +9,7 @@ export const viewPages = [layerViewPage, selectViewPage];
 export const pageName = "ENVILAB";
 export const mainMenuViews = "Views";
 export const mainMenuSettings = "Settings";
+export const settingsPath = "/settings";
 
 export const subMenuLayer = "Layer view";
 export const subMenuSelect = "Select view";
@@ -36,3 +39,8 @@ export const selectViewAreaName = "Area name";
 export const selectViewSaveBtnText = "Save";
 export const selectViewTooltip = "Tooltip coordinates";
 export const sViewSidebarNewPointBtnText = "New point";
+
+// Settings
+const layerSettingsTab = { tabId: 0, tabName: "Layers", icon: <Layers /> };
+const areaSettingsTab = { tabId: 1, tabName: "Areas", icon: <Public /> };
+export const settingsTabs = [layerSettingsTab, areaSettingsTab];

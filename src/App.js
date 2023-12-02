@@ -6,6 +6,7 @@ import theme from "./theme";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import LayerViewPage from "./pages/LayerViewPage";
 import SelectViewPage from "./pages/SelectViewPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   // const lessZoom = (map) => {
@@ -65,6 +66,7 @@ function App() {
               ></Route>
               <Route path="/layerView" element={<LayerViewPage />}></Route>
               <Route path="/selectView" element={<SelectViewPage />}></Route>
+              <Route path="/settings" element={<SettingsPage />}></Route>
             </Routes>
           </main>
         </ThemeProvider>

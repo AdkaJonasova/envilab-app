@@ -10,6 +10,7 @@ import {
   mainMenuSettings,
   mainMenuViews,
   pageName,
+  settingsPath,
   viewPages,
 } from "../utils/data";
 import { Button, Toolbar } from "@mui/material";
@@ -77,7 +78,9 @@ export default function MainMenu() {
               ))}
             </Menu>
           </div>
-          <Button color="inherit">{mainMenuSettings}</Button>
+          <Button color="inherit" onClick={navigate(settingsPath)}>
+            {mainMenuSettings}
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
