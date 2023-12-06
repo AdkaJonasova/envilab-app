@@ -1,5 +1,11 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
+const lighterBrown = "#F0DED2";
+const mediumBrown = "#E1BDA5";
+
+const mediumGreen = "#8B958A";
+const darkerGreen = "#59745D";
+
 let theme = createTheme({
   typography: {
     h1: {
@@ -47,6 +53,15 @@ let theme = createTheme({
   },
 
   components: {
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            backgroundColor: "#F0DED2",
+          },
+        },
+      },
+    },
     MuiTableHead: {
       styleOverrides: {
         root: {

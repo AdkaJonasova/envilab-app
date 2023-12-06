@@ -66,7 +66,18 @@ function App() {
               ></Route>
               <Route path="/layerView" element={<LayerViewPage />}></Route>
               <Route path="/selectView" element={<SelectViewPage />}></Route>
-              <Route path="/settings" element={<SettingsPage />}></Route>
+              <Route
+                path="/settings"
+                element={<Navigate replace to={"/settings/layers"} />}
+              ></Route>
+              <Route
+                path="/settings/layers"
+                element={<SettingsPage tab={"layers"} />}
+              ></Route>
+              <Route
+                path="/settings/areas"
+                element={<SettingsPage tab={"areas"} />}
+              ></Route>
             </Routes>
           </main>
         </ThemeProvider>

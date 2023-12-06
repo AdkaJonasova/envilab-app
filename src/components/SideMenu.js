@@ -6,21 +6,23 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { settingsTabs } from "../utils/data";
+import { useNavigate } from "react-router-dom";
 
 export default function SideMenu() {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  const navigate = useNavigate();
 
   const handleListItemClick = (_event, tab) => {
     setSelectedIndex(tab.tabId);
+    navigate(tab.navigation);
   };
 
   function getSideMenuItem(tab) {
     return (
-      <div>
+      <div key={`side-menu-list-item${tab.tabId}`}>
         <ListItemButton
-          id={tab.tabId}
           selected={selectedIndex === tab.tabId}
-          background
           onClick={(event) => handleListItemClick(event, tab)}
         >
           <ListItemIcon>{tab.icon}</ListItemIcon>

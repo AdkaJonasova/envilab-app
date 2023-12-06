@@ -4,6 +4,7 @@ import { Vector as VectorSource } from "ol/source.js";
 import GeoJSON from "ol/format/GeoJSON.js";
 import TileLayer from "ol/layer/Tile.js";
 import TileWMS from "ol/source/TileWMS.js";
+import { favoriteMockLayers } from "../data/mockData";
 
 export function getMaxIdInList(list) {
   return list.length > 0 ? Math.max([...list]) : 0;

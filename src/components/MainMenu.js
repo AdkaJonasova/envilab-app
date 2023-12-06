@@ -33,6 +33,10 @@ export default function MainMenu() {
     navigate(path);
   };
 
+  const navigateAction = (path) => {
+    navigate(path);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="mainGreen">
@@ -78,7 +82,7 @@ export default function MainMenu() {
               ))}
             </Menu>
           </div>
-          <Button color="inherit" onClick={navigate(settingsPath)}>
+          <Button color="inherit" onClick={() => navigateAction(settingsPath)}>
             {mainMenuSettings}
           </Button>
         </Toolbar>

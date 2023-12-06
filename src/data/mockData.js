@@ -29,6 +29,7 @@ const vegetationLayer = {
 };
 
 export const mockLayers = [pointLayer, usaStatesLayer, vegetationLayer];
+export let favoriteMockLayers = [pointLayer];
 
 // Mock area data
 const subArea1 = {

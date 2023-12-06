@@ -1,4 +1,6 @@
 import { Layers, Public } from "@mui/icons-material";
+import LayerSettingsPage from "../pages/partials/LayerSettingsPage";
+import AreaSettingsPage from "../pages/partials/AreaSettingsPage";
 
 // Navigation
 const layerViewPage = { pageName: "Layer view", pagePath: "/layerView" };
@@ -41,6 +43,31 @@ export const selectViewTooltip = "Tooltip coordinates";
 export const sViewSidebarNewPointBtnText = "New point";
 
 // Settings
-const layerSettingsTab = { tabId: 0, tabName: "Layers", icon: <Layers /> };
-const areaSettingsTab = { tabId: 1, tabName: "Areas", icon: <Public /> };
+const layerSettingsTab = {
+  tabId: 0,
+  tabName: "Layers",
+  icon: <Layers />,
+  navigation: "/settings/layers",
+};
+const areaSettingsTab = {
+  tabId: 1,
+  tabName: "Areas",
+  icon: <Public />,
+  navigation: "/settings/areas",
+};
 export const settingsTabs = [layerSettingsTab, areaSettingsTab];
+
+export const settingsPageMapping = new Map([
+  ["layers", <LayerSettingsPage />],
+  ["areas", <AreaSettingsPage />],
+]);
+
+export const layerSettingsTitle = "Layers settings";
+export const layerSettingsAnnotation =
+  "Select your favorite layers, which are going to be displayed in the side bar in the Layers' view";
+export const areaSettingsTitle = "Area settings";
+export const areaSettingsAnnotation =
+  "Select your favorite area, which are going to be displayed in the side bar in the Areas' view";
+
+export const settingsSaveBtn = "Save changes";
+export const settingsResetBtn = "Reset changes";
