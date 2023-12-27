@@ -66,3 +66,14 @@ class LayerRepository:
                  .where(user_layers.userID == user_id))
 
         cursor.execute(str(query))
+
+    def add_layer_to_favorites_for_user(self, layer_id, user_id):
+        cursor = self.connection.cursor()
+
+        user_layers = Table(self.TABLE_NAME)
+        query = (Query().update(user_layers)
+                 .set(user_layers.isFavorite, 'true')
+                 .where(user_layers.layerID == layer_id)
+                 .where(user_layers.userID == user_id))
+
+        cursor.execute(str(query))
