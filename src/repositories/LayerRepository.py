@@ -19,3 +19,14 @@ class LayerRepository:
 
         cursor.execute(str(query))
         return cursor.fetchall()
+
+    def get_all_active(self, user_id):
+        cursor = self.connection.cursor()
+
+        user_layers = Table(self.TABLE_NAME)
+        query = (Query().from_(user_layers)
+                 .select(user_layers.layerID, user_layers.isActive, user_layers.isFavorite, user_layers.userID)
+                 .where(user_layers.isActive == 'true'))
+
+        cursor.execute(str(query))
+        return cursor.fetchall()
