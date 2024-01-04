@@ -1,6 +1,6 @@
 import { LayerTypes } from "../utils/enums";
 
-// Mock layer data
+// ----------------------------------------------------------- Mock layer data -----------------------------------------------------------
 const pointLayer = {
   layerId: 0,
   name: "Point layer",
@@ -28,10 +28,55 @@ const vegetationLayer = {
   type: LayerTypes.Vector,
 };
 
-export const mockLayers = [pointLayer, usaStatesLayer, vegetationLayer];
-export let favoriteMockLayers = [pointLayer];
+const testLayer1 = {
+  layerId: 3,
+  name: "Test layer 1",
+};
+const testLayer2 = {
+  layerId: 4,
+  name: "Test layer 2",
+};
+const testLayer3 = {
+  layerId: 5,
+  name: "Test layer 3",
+};
+const testLayer4 = {
+  layerId: 6,
+  name: "Test layer 4",
+};
+const testLayer5 = {
+  layerId: 7,
+  name: "Test layer 5",
+};
+const testLayer6 = {
+  layerId: 8,
+  name: "Test layer 6",
+};
+const testLayer7 = {
+  layerId: 9,
+  name: "Test layer 7",
+};
+const testLayer8 = {
+  layerId: 10,
+  name: "Test layer 8",
+};
 
-// Mock area data
+export const mockLayers = [
+  pointLayer,
+  usaStatesLayer,
+  vegetationLayer,
+  testLayer1,
+  testLayer2,
+  testLayer3,
+  testLayer4,
+  testLayer5,
+  testLayer6,
+  testLayer7,
+  testLayer8,
+];
+export const favoriteMockLayers = [pointLayer, usaStatesLayer, vegetationLayer];
+
+// ----------------------------------------------------------- Mock area data -----------------------------------------------------------
 const subArea1 = {
   areaId: 10,
   name: "Jihomoravsky kraj",
@@ -66,7 +111,7 @@ const customArea1 = {
 
 export const mockAreas = [area1, area2, customArea1];
 
-// Mock point data
+// ----------------------------------------------------------- Mock point data -----------------------------------------------------------
 const point1 = {
   x: 12.23654,
   y: 25.23647,
@@ -84,7 +129,7 @@ const point3 = {
 
 export let points = [point1, point2, point3];
 
-// mock table data window data
+// ----------------------------------------------------------- Mock table data window data -----------------------------------------------------------
 const alaska = {
   name: "Alaska",
   population: 7335830,
