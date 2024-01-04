@@ -39,12 +39,6 @@ const LayerSettingsPage = () => {
     }
   }
 
-  function getStarIconForItem(layer) {
-    if (favoriteLayers.indexOf(layer) !== -1) {
-      <IconButton size="small"></IconButton>;
-    }
-  }
-
   function getLayerItem(layer) {
     return (
       <div>
@@ -73,7 +67,7 @@ const LayerSettingsPage = () => {
         annotation={layerSettingsAnnotation}
         setFilter={setFilter}
       />
-      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {layers.map((layer) => getLayerItem(layer))}
       </List>
     </div>

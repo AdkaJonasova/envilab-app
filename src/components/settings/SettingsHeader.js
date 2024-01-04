@@ -14,12 +14,12 @@ export default function SettingsHeader({ title, annotation, setFilter }) {
         <Grid item xs={8}>
           <SearchBar setFilter={setFilter} />
         </Grid>
-        <Grid item xs={2} container justifyContent={"flex-end"} padding={1}>
+        <Grid item xs={2} container justifyContent={"flex-end"} padding={1.5}>
           <Button color="mainGreen" variant="contained" size="small">
             {settingsResetBtn}
           </Button>
         </Grid>
-        <Grid item xs={2} container justifyContent={"flex-start"} padding={1}>
+        <Grid item xs={2} container justifyContent={"flex-start"} padding={1.5}>
           <Button color="mainGreen" variant="contained" size="small">
             {settingsSaveBtn}
           </Button>

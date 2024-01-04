@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import SideMenu from "../components/SideMenu";
 import { settingsPageMapping } from "../utils/data";
 
@@ -13,6 +13,7 @@ const SettingsPage = ({ tab }) => {
         <Grid item xs={2}>
           <SideMenu />
         </Grid>
+        <Divider orientation="vertical" flexItem sx={{ mr: "-1px" }} />
         <Grid item xs={10} paddingLeft={3}>
           {getPageByTab()}
         </Grid>
