@@ -21,9 +21,20 @@ export default function LayerList({
     if (activeLayers) {
       var newActiveIds = activeLayers.map((aLayer) => aLayer[0]);
       setActiveIds(newActiveIds);
+
+      addActiveToMap();
       setInitialized(true);
     }
   }, [activeLayers]);
+
+  function addActiveToMap() {
+    var newActiveLayers = layers.filter(
+      (layer) => activeIds.indexOf(layer.layerId) !== -1
+    );
+    newActiveLayers.forEach((layer) => {
+      addLayerToMap(createLayerByType(layer));
+    });
+  }
 
   function isLayerChecked(layer) {
     return activeIds.indexOf(layer.layerId) !== -1;
