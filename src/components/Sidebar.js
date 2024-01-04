@@ -1,5 +1,5 @@
-import { Box, CircularProgress } from "@mui/material";
-import { mockAreas, mockLayers } from "../data/mockData";
+import { Box } from "@mui/material";
+import { favoriteMockLayers, mockAreas } from "../data/mockData";
 import React, { useState, useEffect, useMemo } from "react";
 import SideBarTabs from "./SideBarTabs";
 import SearchBar from "./SearchBar";
@@ -43,7 +43,7 @@ export default function Sidebar({
 
   function getDataByType(sideBarType) {
     if (sideBarType === "layers") {
-      return mockLayers;
+      return favoriteMockLayers;
     } else if (sideBarType === "areas") {
       return mockAreas;
     }

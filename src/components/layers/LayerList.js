@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { createLayerByType } from "../../utils/customFunctions";
 import LayerListItem from "./LayerListItem";
 import { useEffect } from "react";
+import { useActiveLayers } from "../../hooks/layerHooks";
+import Loading from "../global/Loading";
 
 export default function LayerList({
   layers,
@@ -11,23 +13,25 @@ export default function LayerList({
   removeLayerFromMap,
   setShowTableWindow,
 }) {
-  const [checked, setChecked] = React.useState([]);
+  const [initialized, setInitialized] = React.useState(false);
+  const [activeIds, setActiveIds] = React.useState([]);
+  const { data: activeLayers } = useActiveLayers();
 
   useEffect(() => {
-    if (checked.indexOf(1) !== -1) {
-      setShowTableWindow(true);
-    } else {
-      setShowTableWindow(false);
+    if (activeLayers) {
+      var newActiveIds = activeLayers.map((aLayer) => aLayer[0]);
+      setActiveIds(newActiveIds);
+      setInitialized(true);
     }
-  }, [checked]);
+  }, [activeLayers]);
 
   function isLayerChecked(layer) {
-    return checked.indexOf(layer.layerId) !== -1;
+    return activeIds.indexOf(layer.layerId) !== -1;
   }
 
   function handleToggle(layer) {
-    const currentIndex = checked.indexOf(layer.layerId);
-    const newChecked = [...checked];
+    const currentIndex = activeIds.indexOf(layer.layerId);
+    const newChecked = [...activeIds];
 
     if (currentIndex === -1) {
       newChecked.push(layer.layerId);
@@ -37,7 +41,7 @@ export default function LayerList({
       removeLayerFromMap(layer);
     }
 
-    setChecked(newChecked);
+    setActiveIds(newChecked);
   }
 
   function getLayerItem(layer) {
@@ -49,6 +53,11 @@ export default function LayerList({
       />
     );
   }
+
+  if (!initialized) {
+    return <Loading />;
+  }
+
   return (
     <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       {layers.map((layer) => getLayerItem(layer))}
