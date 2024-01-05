@@ -10,14 +10,55 @@ class AreaRepository:
     def __int__(self):
         self.connection = connect()
 
+    def get_areas_for_user(self, user_id):
+        cursor = self.connection.cursor()
+
+        user_areas = Table(self.USER_AREA_TABLE_NAME)
+        query = (Query().from_(user_areas)
+                 .select(user_areas.areaID, user_areas.isActive, user_areas.isFavorite, user_areas.isCustom, user_areas.userID)
+                 .where(user_areas.userID == user_id))
+
+        cursor.execute(str(query))
+        return cursor.fetchall()
+
     def get_active_areas_for_user(self, user_id):
-        return
+        cursor = self.connection.cursor()
+
+        user_areas = Table(self.USER_AREA_TABLE_NAME)
+        query = (Query().from_(user_areas)
+                 .select(user_areas.areaID, user_areas.isActive, user_areas.isFavorite, user_areas.isCustom,
+                         user_areas.userID)
+                 .where(user_areas.userID == user_id)
+                 .where(user_areas.isActive == 'true'))
+
+        cursor.execute(str(query))
+        return cursor.fetchall()
 
     def get_favorite_areas_for_user(self, user_id):
-        return
+        cursor = self.connection.cursor()
+
+        user_areas = Table(self.USER_AREA_TABLE_NAME)
+        query = (Query().from_(user_areas)
+                 .select(user_areas.areaID, user_areas.isActive, user_areas.isFavorite, user_areas.isCustom,
+                         user_areas.userID)
+                 .where(user_areas.userID == user_id)
+                 .where(user_areas.isFavorite == 'true'))
+
+        cursor.execute(str(query))
+        return cursor.fetchall()
 
     def get_custom_areas_for_user(self, user_id):
-        return
+        cursor = self.connection.cursor()
+
+        user_areas = Table(self.USER_AREA_TABLE_NAME)
+        query = (Query().from_(user_areas)
+                 .select(user_areas.areaID, user_areas.isActive, user_areas.isFavorite, user_areas.isCustom,
+                         user_areas.userID)
+                 .where(user_areas.userID == user_id)
+                 .where(user_areas.isCustom == 'true'))
+
+        cursor.execute(str(query))
+        return cursor.fetchall()
 
     def activate_area_for_user(self, user_id, layer_id):
         return
