@@ -1,3 +1,5 @@
+from pypika import Table, Query
+
 from src.utils.DatabaseUtil import connect
 
 
@@ -37,7 +39,26 @@ class AreaRepository:
 
     # Private methods
     def __create_area_for_user(self, user_id, area_id, is_active, is_favorite, is_custom):
-        return
+        cursor = self.connection.cursor()
+
+        areas = Table(self.AREA_TABLE_NAME)
+        user_areas = Table(self.USER_AREA_TABLE_NAME)
+
+        area_query = Query().into(areas).insert(area_id)
+        user_area_query = Query().into(user_areas).insert(area_id, user_id, is_active, is_favorite, is_custom)
+
+        cursor.execute(str(area_query))
+        cursor.execute(str(user_area_query))
 
     def __update_area_for_user(self, user_id, area_id, is_active, is_favorite, is_custom):
-        return
+        cursor = self.connection.cursor()
+
+        user_areas = Table(self.USER_AREA_TABLE_NAME)
+
+        query = (Query().update(user_areas)
+                 .set(user_areas.isFavorite, is_favorite)
+                 .set(user_areas.isActive, is_active)
+                 .set(user_areas.isCustom, is_custom)
+                 .where(user_areas.areaID == area_id)
+                 .where(user_areas.userID == user_id))
+        cursor.execute(str(query))
