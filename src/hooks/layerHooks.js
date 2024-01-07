@@ -11,7 +11,7 @@ export const useActiveLayers = (userId) =>
     apiClient.get(`/layers/active/${userId}`).then((r) => r.data)
   );
 
-export const userLayers = (userId) =>
+export const useLayers = (userId) =>
   useQuery("layers", () =>
     apiClient.get(`/layers/${userId}`).then((r) => r.data)
   );
