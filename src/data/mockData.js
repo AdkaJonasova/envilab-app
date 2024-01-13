@@ -111,24 +111,6 @@ const customArea1 = {
 
 export const mockAreas = [area1, area2, customArea1];
 
-// ----------------------------------------------------------- Mock point data -----------------------------------------------------------
-const point1 = {
-  x: 12.23654,
-  y: 25.23647,
-};
-
-const point2 = {
-  x: 85.7596,
-  y: -56.58336,
-};
-
-const point3 = {
-  x: 14.45681,
-  y: -36.4587,
-};
-
-export let points = [point1, point2, point3];
-
 // ----------------------------------------------------------- Mock table data window data -----------------------------------------------------------
 const alaska = {
   name: "Alaska",

@@ -20,31 +20,19 @@ export const useCustomAreas = (userId) =>
   );
 
 export const activateArea = (userId, areaId) =>
-  useQuery("activateArea", () =>
-    apiClient.post(`/areas/activate/${userId}/${areaId}`)
-  );
+  apiClient.post(`/areas/activate/${userId}/${areaId}`);
 
 export const deactivateArea = (userId, areaId) =>
-  useQuery("deactivateArea", () =>
-    apiClient.post(`/areas/deactivate/${userId}/${areaId}`)
-  );
+  apiClient.post(`/areas/deactivate/${userId}/${areaId}`);
 
 export const addFavoriteArea = (userId, areaId) =>
-  useQuery("addFavoriteArea", () =>
-    apiClient.post(`/areas/addFavorite/${userId}/${areaId}`)
-  );
+  apiClient.post(`/areas/addFavorite/${userId}/${areaId}`);
 
 export const removeFavoriteArea = (userId, areaId) =>
-  useQuery("removeFavoriteArea", () =>
-    apiClient.post(`/areas/removeFavorite/${userId}/${areaId}`)
-  );
+  apiClient.post(`/areas/removeFavorite/${userId}/${areaId}`);
 
 export const addCustomArea = (userId, areaId) =>
-  useQuery("addCustomArea", () =>
-    apiClient.post(`/areas/addCustom/${userId}/${areaId}`)
-  );
+  apiClient.post(`/areas/addCustom/${userId}/${areaId}`);
 
 export const removeCustomArea = (userId, areaId) =>
-  useQuery("removeCustomArea", () =>
-    apiClient.post(`/areas/removeCustom/${userId}/${areaId}`)
-  );
+  apiClient.post(`/areas/removeCustom/${userId}/${areaId}`);

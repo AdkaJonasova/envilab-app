@@ -15,15 +15,11 @@ export const useAreaSetsForArea = (areaId) =>
   );
 
 export const addAreaToSet = (areaSetId, areaId) =>
-  useQuery("addAreaToSet", () =>
-    apiClient.post(`/areaSets/addArea/${areaSetId}/${areaId}`)
-  );
+  apiClient.post(`/areaSets/addArea/${areaSetId}/${areaId}`);
 
 export const removeAreaFromSet = (areaSetId, areaId) =>
-  useQuery("removeAreaFromSet", () =>
-    apiClient.post(`/areaSets/removeArea/${areaSetId}/${areaId}`)
-  );
+  apiClient.post(`/areaSets/removeArea/${areaSetId}/${areaId}`);
 
 // TODO: resolve how to call this endpoint
 export const createAreaSet = (areaSetName, areas) =>
-  useQuery("createAreaSet", () => apiClient.put("/areaSets/new/"));
+  apiClient.put("/areaSets/new/");

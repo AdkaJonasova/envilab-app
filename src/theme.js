@@ -1,42 +1,6 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-const lighterBrown = "#F0DED2";
-const mediumBrown = "#E1BDA5";
-
-const mediumGreen = "#8B958A";
-const darkerGreen = "#59745D";
-
 let theme = createTheme({
-  typography: {
-    h1: {
-      fontSize: "1.8rem",
-      color: "#59745D",
-      textAlign: "center",
-      marginBottom: 5,
-      marginTop: 5,
-    },
-    h2: {
-      fontSize: "1rem",
-      marginTop: 5,
-      marginBottom: 10,
-    },
-    h3: {
-      fontSize: "1.3rem",
-      color: "#59745D",
-      textAlign: "center",
-      marginTop: 5,
-      marginBottom: 10,
-    },
-    h4: {
-      fontSize: "1rem",
-      textAlign: "left",
-      margin: 5,
-    },
-    body1: {
-      fontSize: "0.9rem",
-    },
-  },
-
   palette: {
     mainGreen: {
       main: "#8B958A",
@@ -49,6 +13,38 @@ let theme = createTheme({
 
     sideGreen: {
       main: "#59745D",
+    },
+  },
+});
+
+theme = createTheme(theme, {
+  typography: {
+    h1: {
+      fontSize: "1.8rem",
+      color: theme.palette.sideGreen.main,
+      textAlign: "center",
+      marginBottom: 5,
+      marginTop: 5,
+    },
+    h2: {
+      fontSize: "1rem",
+      marginTop: 5,
+      marginBottom: 10,
+    },
+    h3: {
+      fontSize: "1.3rem",
+      color: theme.palette.sideGreen.main,
+      textAlign: "center",
+      marginTop: 5,
+      marginBottom: 10,
+    },
+    h4: {
+      fontSize: "1rem",
+      textAlign: "left",
+      margin: 5,
+    },
+    body1: {
+      fontSize: "0.9rem",
     },
   },
 
@@ -65,7 +61,7 @@ let theme = createTheme({
     MuiTableHead: {
       styleOverrides: {
         root: {
-          backgroundColor: "#E1BDA5",
+          backgroundColor: theme.palette.sideBrown.main,
         },
       },
     },
@@ -89,7 +85,7 @@ let theme = createTheme({
           width: "100%",
         },
         indicator: {
-          backgroundColor: "#59745D",
+          backgroundColor: theme.palette.sideGreen.main,
           height: 3,
         },
       },
@@ -98,7 +94,7 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           "&.Mui-selected": {
-            color: "#59745D",
+            color: theme.palette.sideGreen.main,
           },
         },
       },
