@@ -1,7 +1,7 @@
 import { Button, Grid, Typography } from "@mui/material";
-import PropTypes from "prop-types";
-import SearchBar from "../SearchBar";
+import SearchBar from "../global/SearchBar";
 import { settingsResetBtn, settingsSaveBtn } from "../../utils/data";
+import PropTypes from "prop-types";
 
 export default function SettingsHeader({ title, annotation, setFilter }) {
   return (

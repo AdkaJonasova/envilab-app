@@ -1,70 +1,72 @@
 import * as React from "react";
 import List from "@mui/material/List";
-import PropTypes from "prop-types";
 import { Button, Collapse, Grid } from "@mui/material";
 import AreaListItem from "./AreaListItem";
+import { chooseAreaSet, createAreaSet } from "../../utils/data";
+import PropTypes from "prop-types";
 
 export default function AreaList({ areas }) {
-  const [checked, setChecked] = React.useState([]);
-  const [opened, setOpened] = React.useState([]);
+  const [usedAreas, setUsedAreas] = React.useState([]);
+  const [expandedAreas, setExpandedAreas] = React.useState([]);
 
-  const handleToggle = (area) => () => {
-    const currentIndex = checked.indexOf(area.areaId);
-    let newChecked = [...checked];
+  //#region Methods
+  const handleUseArea = (area) => () => {
+    const currentIndex = usedAreas.indexOf(area.areaId);
+    let newUsedAreas = [...usedAreas];
 
     if (currentIndex === -1) {
-      newChecked.push(area.areaId);
-      newChecked = activateChildToggles(area, newChecked);
-      setChecked(newChecked);
+      newUsedAreas.push(area.areaId);
+      newUsedAreas = activateSubAreas(area, newUsedAreas);
+      setUsedAreas(newUsedAreas);
     } else {
-      newChecked.splice(currentIndex, 1);
-      newChecked = deactivateChildToggle(area, newChecked);
-      setChecked(newChecked);
+      newUsedAreas.splice(currentIndex, 1);
+      newUsedAreas = deactivateSubAreas(area, newUsedAreas);
+      setUsedAreas(newUsedAreas);
     }
   };
 
-  function activateChildToggles(area, newChecked) {
+  function activateSubAreas(area, newUsedAreas) {
     const subAreas = area.subAreas;
     for (let i = 0; i < subAreas.length; i++) {
       const subArea = subAreas[i];
-      if (!newChecked.includes(subArea.areaId)) {
-        newChecked.push(subArea.areaId);
+      if (!newUsedAreas.includes(subArea.areaId)) {
+        newUsedAreas.push(subArea.areaId);
       }
     }
-    return newChecked;
+    return newUsedAreas;
   }
 
-  function deactivateChildToggle(area, newChecked) {
+  function deactivateSubAreas(area, newUsedAreas) {
     const subAreas = area.subAreas;
     for (let i = 0; i < subAreas.length; i++) {
       const subArea = subAreas[i];
-      const currentIndex = newChecked.indexOf(subArea.areaId);
+      const currentIndex = newUsedAreas.indexOf(subArea.areaId);
       if (currentIndex !== -1) {
-        newChecked.splice(currentIndex, 1);
+        newUsedAreas.splice(currentIndex, 1);
       }
     }
-    return newChecked;
+    return newUsedAreas;
   }
 
   const handleExpandCollapse = (area) => () => {
-    const currentIndex = opened.indexOf(area.areaId);
-    const newOpened = [...opened];
+    const currentIndex = expandedAreas.indexOf(area.areaId);
+    const newExpanded = [...expandedAreas];
 
     if (currentIndex === -1) {
-      newOpened.push(area.areaId);
+      newExpanded.push(area.areaId);
     } else {
-      newOpened.splice(currentIndex, 1);
+      newExpanded.splice(currentIndex, 1);
     }
 
-    setOpened(newOpened);
+    setExpandedAreas(newExpanded);
   };
 
-  function isAreaChecked(area) {
-    return checked.indexOf(area.areaId) !== -1;
+  function isAreaUsed(area) {
+    return usedAreas.indexOf(area.areaId) !== -1;
   }
 
-  function isAreaOpened(area) {
-    return opened.indexOf(area.areaId) !== -1;
+  function isAreaExpanded(area) {
+    return expandedAreas.indexOf(area.areaId) !== -1;
   }
 
   function getAreaItem(area, level) {
@@ -74,10 +76,10 @@ export default function AreaList({ areas }) {
           area={area}
           hierarchyLevel={level}
           isExpandable={false}
-          handleToggle={handleToggle}
+          handleUseArea={handleUseArea}
           handleExpandCollapse={handleExpandCollapse}
-          isChecked={isAreaChecked}
-          isOpened={isAreaOpened}
+          isUsed={isAreaUsed}
+          isExpanded={isAreaExpanded}
         />
       );
     } else {
@@ -87,13 +89,13 @@ export default function AreaList({ areas }) {
             area={area}
             hierarchyLevel={level}
             isExpandable={true}
-            handleToggle={handleToggle}
+            handleUseArea={handleUseArea}
             handleExpandCollapse={handleExpandCollapse}
-            isChecked={isAreaChecked}
-            isOpened={isAreaOpened}
+            isUsed={isAreaUsed}
+            isExpanded={isAreaExpanded}
           />
           <Collapse
-            in={opened.indexOf(area.areaId) !== -1}
+            in={expandedAreas.indexOf(area.areaId) !== -1}
             timeout={"auto"}
             unmountOnExit
           >
@@ -105,18 +107,19 @@ export default function AreaList({ areas }) {
       );
     }
   }
+  //#endregion
 
   return (
     <div>
       <Grid container marginY={1} spacing={1} paddingX={1}>
         <Grid item xs={6}>
           <Button variant="outlined" color="sideGreen" size="small" fullWidth>
-            {"Create area set"}
+            {createAreaSet}
           </Button>
         </Grid>
         <Grid item xs={6}>
           <Button variant="outlined" color="sideGreen" size="small" fullWidth>
-            {"Choose area set"}
+            {chooseAreaSet}
           </Button>
         </Grid>
       </Grid>

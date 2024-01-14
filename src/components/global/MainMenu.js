@@ -1,19 +1,19 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import YardIcon from "@mui/icons-material/Yard";
-import { useNavigate } from "react-router-dom";
+import { Button, Toolbar } from "@mui/material";
 import {
   mainMenuSettings,
   mainMenuViews,
   pageName,
   settingsPath,
   viewPages,
-} from "../utils/data";
-import { Button, Toolbar } from "@mui/material";
+} from "../../utils/data";
 
 export default function MainMenu() {
   const [subMenu, setSubMenu] = React.useState(null);

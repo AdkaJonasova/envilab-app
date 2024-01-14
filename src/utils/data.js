@@ -3,8 +3,11 @@ import LayerSettingsPage from "../pages/partials/LayerSettingsPage";
 import AreaSettingsPage from "../pages/partials/AreaSettingsPage";
 
 // Navigation
-const layerViewPage = { pageName: "Layer view", pagePath: "/layerView" };
-const selectViewPage = { pageName: "Select view", pagePath: "/selectView" };
+const layerViewPage = { pageName: "Layering tool", pagePath: "/layerView" };
+const selectViewPage = {
+  pageName: "Area editor tool",
+  pagePath: "/selectView",
+};
 export const viewPages = [layerViewPage, selectViewPage];
 
 // Main menu bar
@@ -13,8 +16,9 @@ export const mainMenuViews = "Views";
 export const mainMenuSettings = "Settings";
 export const settingsPath = "/settings";
 
-export const subMenuLayer = "Layer view";
-export const subMenuSelect = "Select view";
+// Tabs
+export const LayersTab = "Layers";
+export const AreasTab = "Areas";
 
 // Layer customization
 export const layerCustomizationHeader = "Customize";
@@ -28,6 +32,10 @@ export const layerCardCustomize = "Customize";
 // Area card
 export const areaCardUse = "Use";
 export const areaCardEdit = "Edit";
+
+// Area list
+export const createAreaSet = "Create area set";
+export const chooseAreaSet = "Choose area set";
 
 // Select view
 export const selectViewTitle = "Select area view";

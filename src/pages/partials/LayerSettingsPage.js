@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { Star, StarBorder } from "@mui/icons-material";
 import {
   Divider,
   IconButton,
@@ -6,10 +8,8 @@ import {
   ListItemText,
 } from "@mui/material";
 import { layerSettingsAnnotation, layerSettingsTitle } from "../../utils/data";
-import { useState } from "react";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { favoriteMockLayers, mockLayers } from "../../data/mockData";
-import { Star, StarBorder } from "@mui/icons-material";
 
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
@@ -17,21 +17,21 @@ const LayerSettingsPage = () => {
   const [favoriteLayers, setFavoriteLayers] = useState(favoriteMockLayers);
 
   function addLayerToFavorites(layer) {
-    let newFavorite = [...favoriteLayers];
-    newFavorite.push(layer);
-    setFavoriteLayers(newFavorite);
+    let newFavoriteLayers = [...favoriteLayers];
+    newFavoriteLayers.push(layer);
+    setFavoriteLayers(newFavoriteLayers);
   }
 
   function removeLayerFromFavorites(layer) {
-    let newFavorite = [...favoriteLayers];
-    let index = newFavorite.indexOf(layer);
+    let newFavoriteLayers = [...favoriteLayers];
+    let index = newFavoriteLayers.indexOf(layer);
     if (index !== -1) {
-      newFavorite.splice(index, 1);
+      newFavoriteLayers.splice(index, 1);
     }
-    setFavoriteLayers(newFavorite);
+    setFavoriteLayers(newFavoriteLayers);
   }
 
-  function handleStartClick(layer) {
+  function handleStarClick(layer) {
     if (favoriteLayers.indexOf(layer) !== -1) {
       removeLayerFromFavorites(layer);
     } else {
@@ -46,7 +46,7 @@ const LayerSettingsPage = () => {
           <IconButton
             size="small"
             color="sideBrown"
-            onClick={() => handleStartClick(layer)}
+            onClick={() => handleStarClick(layer)}
           >
             {favoriteLayers.indexOf(layer) !== -1 ? <Star /> : <StarBorder />}
           </IconButton>

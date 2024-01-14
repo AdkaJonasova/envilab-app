@@ -10,6 +10,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import {
   selectViewAreaName,
   selectViewSaveBtnText,
@@ -17,8 +19,6 @@ import {
   selectViewSidebarTitle,
 } from "../utils/data";
 import PropTypes from "prop-types";
-import ClearIcon from "@mui/icons-material/Clear";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 export default function SelectViewSidebar({ points, deletePoint }) {
   return (

@@ -1,76 +1,81 @@
 import * as React from "react";
-import { List } from "@mui/material";
-import PropTypes from "prop-types";
-import { createLayerByType } from "../../utils/customFunctions";
-import LayerListItem from "./LayerListItem";
 import { useEffect } from "react";
+import { List } from "@mui/material";
+import LayerListItem from "./LayerListItem";
+import { createLayerByType } from "../../utils/customFunctions";
 import { useActiveLayers } from "../../hooks/layerHooks";
+import { userId } from "../../data/mockData";
 import Loading from "../global/Loading";
+import PropTypes from "prop-types";
 
 export default function LayerList({
   layers,
   addLayerToMap,
   removeLayerFromMap,
-  setShowTableWindow,
 }) {
   const [initialized, setInitialized] = React.useState(false);
-  const [activeIds, setActiveIds] = React.useState([]);
-  const { data: activeLayers } = useActiveLayers();
+  const [activaLayerIds, setActiveLayerIds] = React.useState([]);
+  const { data: activeLayers } = useActiveLayers(userId);
 
   useEffect(() => {
     if (activeLayers) {
-      var newActiveIds = activeLayers.map((aLayer) => aLayer[0]);
-      setActiveIds(newActiveIds);
+      var newActiveLayerIds = activeLayers.map((layer) => layer[0]);
+      setActiveLayerIds(newActiveLayerIds);
 
-      addActiveToMap();
+      addActiveLayersToMap();
       setInitialized(true);
     }
   }, [activeLayers]);
 
-  function addActiveToMap() {
+  //#region Methods
+  function addActiveLayersToMap() {
     var newActiveLayers = layers.filter(
-      (layer) => activeIds.indexOf(layer.layerId) !== -1
+      (layer) => activaLayerIds.indexOf(layer.layerId) !== -1
     );
     newActiveLayers.forEach((layer) => {
       addLayerToMap(createLayerByType(layer));
     });
   }
 
-  function isLayerChecked(layer) {
-    return activeIds.indexOf(layer.layerId) !== -1;
+  function isLayerActive(layer) {
+    return activaLayerIds.indexOf(layer.layerId) !== -1;
   }
 
-  function handleToggle(layer) {
-    const currentIndex = activeIds.indexOf(layer.layerId);
-    const newChecked = [...activeIds];
+  function handleActivateLayer(layer) {
+    const currentIndex = activaLayerIds.indexOf(layer.layerId);
+    const newActiveLayers = [...activaLayerIds];
 
     if (currentIndex === -1) {
-      newChecked.push(layer.layerId);
+      newActiveLayers.push(layer.layerId);
       addLayerToMap(createLayerByType(layer));
     } else {
-      newChecked.splice(currentIndex, 1);
+      newActiveLayers.splice(currentIndex, 1);
       removeLayerFromMap(layer);
     }
 
-    setActiveIds(newChecked);
+    setActiveLayerIds(newActiveLayers);
   }
 
   function getLayerItem(layer) {
     return (
       <LayerListItem
         layer={layer}
-        handleToggle={handleToggle}
-        isChecked={isLayerChecked}
+        handleActivateLayer={handleActivateLayer}
+        isActive={isLayerActive}
       />
     );
   }
+  //#endregion
 
   if (!initialized) {
     return <Loading />;
   }
 
   return (
-    <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+    <List
+      key={"layer-list"}
+      sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+    >
       {layers.map((layer) => getLayerItem(layer))}
     </List>
   );
@@ -80,5 +85,4 @@ LayerList.propTypes = {
   layers: PropTypes.array,
   addLayerToMap: PropTypes.func,
   removeLayerFromMap: PropTypes.func,
-  setShowTableWindow: PropTypes.func,
 };

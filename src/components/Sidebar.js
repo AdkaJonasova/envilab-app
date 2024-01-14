@@ -1,19 +1,16 @@
+import React, { useState, useMemo } from "react";
 import { Box } from "@mui/material";
-import { favoriteMockLayers, mockAreas } from "../data/mockData";
-import React, { useState, useEffect, useMemo } from "react";
 import SideBarTabs from "./SideBarTabs";
-import SearchBar from "./SearchBar";
-import { filterDataByName } from "../utils/customFunctions";
-import PropTypes from "prop-types";
+import SearchBar from "./global/SearchBar";
 import AreaList from "./areas/AreaList";
 import LayerList from "./layers/LayerList";
+import { favoriteMockLayers, mockAreas } from "../data/mockData";
+import { filterDataByName } from "../utils/customFunctions";
+import { SidebarTypes } from "../utils/enums";
+import PropTypes from "prop-types";
 
-export default function Sidebar({
-  addLayerToMap,
-  removeLayerFromMap,
-  setShowTableWindow,
-}) {
-  const [barType, setBarType] = useState("layers");
+export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
+  const [barType, setBarType] = useState(SidebarTypes.Layers);
   const [filter, setFilter] = useState("");
 
   const [filteredData, setFilteredData] = useState(
@@ -27,24 +24,23 @@ export default function Sidebar({
   }, [barType, filter]);
 
   function getCardsByType(data, type, addLayerToMap, removeLayerFromMap) {
-    if (type === "layers") {
+    if (type === SidebarTypes.Layers) {
       return (
         <LayerList
           layers={data}
           addLayerToMap={addLayerToMap}
           removeLayerFromMap={removeLayerFromMap}
-          setShowTableWindow={setShowTableWindow}
         />
       );
-    } else if (type === "areas") {
+    } else if (type === SidebarTypes.Areas) {
       return <AreaList areas={data} />;
     }
   }
 
   function getDataByType(sideBarType) {
-    if (sideBarType === "layers") {
+    if (sideBarType === SidebarTypes.Layers) {
       return favoriteMockLayers;
-    } else if (sideBarType === "areas") {
+    } else if (sideBarType === SidebarTypes.Areas) {
       return mockAreas;
     }
   }
@@ -56,7 +52,7 @@ export default function Sidebar({
         overflowY: "auto",
       }}
     >
-      <SideBarTabs currValue={barType} setCurrValue={setBarType} />
+      <SideBarTabs selectedTab={barType} setSelectedTab={setBarType} />
       <SearchBar setFilter={setFilter} />
       {getCardsByType(filteredData, barType, addLayerToMap, removeLayerFromMap)}
     </Box>

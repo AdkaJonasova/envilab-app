@@ -13,7 +13,7 @@ export default function TableDataWindow({ headers, data }) {
   return (
     <div>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 180 }} size="small" aria-label="a dense table">
+        <Table sx={{ minWidth: 180 }} size="small">
           <TableHead>
             <TableRow className="dialog-table-head">
               <TableCell align="center">{headers[0]}</TableCell>

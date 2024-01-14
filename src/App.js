@@ -1,5 +1,5 @@
 import "./index.css";
-import MainMenu from "./components/MainMenu";
+import MainMenu from "./components/global/MainMenu";
 import { ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import theme from "./theme";

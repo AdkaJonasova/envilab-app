@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Box } from "@mui/material";
 import { areaSettingsAnnotation, areaSettingsTitle } from "../../utils/data";
-import { useState } from "react";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 
 const AreaSettingsPage = () => {

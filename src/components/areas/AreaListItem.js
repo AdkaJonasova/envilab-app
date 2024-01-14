@@ -12,17 +12,21 @@ export default function AreaListItem({
   area,
   hierarchyLevel,
   isExpandable,
-  handleToggle,
+  handleUseArea,
   handleExpandCollapse,
-  isChecked,
-  isOpened,
+  isUsed,
+  isExpanded,
 }) {
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
-  function addEditButton(isEditable) {
-    if (isEditable) {
+  function addEditButton(area) {
+    if (area.isEditable) {
       return (
-        <IconButton size="small" color="sideBrown">
+        <IconButton
+          key={`area-list-edit-btn-${area.areaId}`}
+          size="small"
+          color="sideBrown"
+        >
           <Edit />
         </IconButton>
       );
@@ -32,27 +36,32 @@ export default function AreaListItem({
 
   function addExpandCollapseItem(area) {
     return (
-      <IconButton size="small" onClick={handleExpandCollapse(area)}>
-        {isOpened(area) ? <ExpandLess /> : <ExpandMore />}
+      <IconButton
+        key={`area-list-expand-btn-${area.areaId}`}
+        size="small"
+        onClick={handleExpandCollapse(area)}
+      >
+        {isExpanded(area) ? <ExpandLess /> : <ExpandMore />}
       </IconButton>
     );
   }
 
   return (
     <div>
-      <ListItem id={`switch-list-item-${area.areaId}`} sx={{ pl: paddingSize }}>
+      <ListItem key={`area-list-item-${area.areaId}`} sx={{ pl: paddingSize }}>
         {isExpandable ? addExpandCollapseItem(area) : ""}
         <ListItemText
-          id={`switch-list-text-label-${area.areaId}`}
+          key={`area-list-text-label-${area.areaId}`}
           primary={area.name}
         />
-        {addEditButton(area.isEditable)}
+        {addEditButton(area)}
         <Switch
+          id={`area-list-switch-btn-${area.areaId}`}
           edge="end"
           size="small"
           color="sideBrown"
-          onChange={handleToggle(area)}
-          checked={isChecked(area)}
+          onChange={handleUseArea(area)}
+          checked={isUsed(area)}
         />
       </ListItem>
       <Divider />
@@ -64,8 +73,8 @@ AreaListItem.propTypes = {
   area: PropTypes.object,
   hierarchyLevel: PropTypes.number,
   isExpandable: PropTypes.bool,
-  handleToggle: PropTypes.func,
+  handleUseArea: PropTypes.func,
   handleExpandCollapse: PropTypes.func,
-  isChecked: PropTypes.func,
-  isOpened: PropTypes.func,
+  isUsed: PropTypes.func,
+  isExpanded: PropTypes.func,
 };

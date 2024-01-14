@@ -8,27 +8,36 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 
-export default function LayerListItem({ layer, handleToggle, isChecked }) {
+export default function LayerListItem({
+  layer,
+  handleActivateLayer,
+  isActive,
+}) {
   let paddingSize = 4;
   return (
     <div>
       <ListItem
-        id={`switch-list-item-${layer.layerId}`}
+        key={`layer-list-item-${layer.layerId}`}
         sx={{ pl: paddingSize }}
       >
         <ListItemText
-          id={`switch-list-text-label-${layer.layerId}`}
+          key={`layer-list-text-label-${layer.layerId}`}
           primary={layer.name}
         />
-        <IconButton size="small" color="sideBrown">
+        <IconButton
+          key={`layer-list-icon-btn-${layer.layerId}`}
+          size="small"
+          color="sideBrown"
+        >
           <Edit />
         </IconButton>
         <Switch
+          key={`layer-list-switch-btn-${layer.layerId}`}
           edge="end"
           size="small"
           color="sideBrown"
-          onChange={() => handleToggle(layer)}
-          checked={isChecked(layer)}
+          onChange={() => handleActivateLayer(layer)}
+          checked={isActive(layer)}
         />
       </ListItem>
       <Divider />
@@ -38,6 +47,6 @@ export default function LayerListItem({ layer, handleToggle, isChecked }) {
 
 LayerListItem.propTypes = {
   layer: PropTypes.object,
-  handleToggle: PropTypes.func,
-  isChecked: PropTypes.func,
+  handleActivateLayer: PropTypes.func,
+  isActive: PropTypes.func,
 };
