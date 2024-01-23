@@ -1,26 +1,27 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Box } from "@mui/material";
 import SideBarTabs from "./SideBarTabs";
 import SearchBar from "./global/SearchBar";
 import AreaList from "./areas/AreaList";
 import LayerList from "./layers/LayerList";
-import { favoriteMockLayers, mockAreas } from "../data/mockData";
+import { mockAreas } from "../data/mockData";
 import { filterDataByName } from "../utils/customFunctions";
 import { SidebarTypes } from "../utils/enums";
 import PropTypes from "prop-types";
 
-export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
+export default function Sidebar({ addLayerToMap, removeLayerFromMap, layers }) {
   const [barType, setBarType] = useState(SidebarTypes.Layers);
   const [filter, setFilter] = useState("");
 
   const [filteredData, setFilteredData] = useState(
-    filterDataByName(getDataByType(barType), filter)
+    filterDataByName(getDataByType(barType)),
+    filter
   );
 
-  useMemo(() => {
+  useEffect(() => {
     let dataByType = getDataByType(barType);
-    let filteredData = filterDataByName(dataByType, filter);
-    setFilteredData(filteredData);
+    let newFilteredData = filterDataByName(dataByType, filter);
+    setFilteredData(newFilteredData);
   }, [barType, filter]);
 
   function getCardsByType(data, type, addLayerToMap, removeLayerFromMap) {
@@ -39,7 +40,7 @@ export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
 
   function getDataByType(sideBarType) {
     if (sideBarType === SidebarTypes.Layers) {
-      return favoriteMockLayers;
+      return layers;
     } else if (sideBarType === SidebarTypes.Areas) {
       return mockAreas;
     }
@@ -62,5 +63,5 @@ export default function Sidebar({ addLayerToMap, removeLayerFromMap }) {
 Sidebar.propTypes = {
   addLayerToMap: PropTypes.func,
   removeLayerFromMap: PropTypes.func,
-  setShowTableWindow: PropTypes.func,
+  layers: PropTypes.array,
 };

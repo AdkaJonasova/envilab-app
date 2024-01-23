@@ -13,30 +13,9 @@ export default function LayerList({
   addLayerToMap,
   removeLayerFromMap,
 }) {
-  const [initialized, setInitialized] = React.useState(false);
-  const [activaLayerIds, setActiveLayerIds] = React.useState([]);
-  const { data: activeLayers } = useActiveLayers(userId);
-
-  useEffect(() => {
-    if (activeLayers) {
-      var newActiveLayerIds = activeLayers.map((layer) => layer[0]);
-      setActiveLayerIds(newActiveLayerIds);
-
-      addActiveLayersToMap();
-      setInitialized(true);
-    }
-  }, [activeLayers]);
+  const [activaLayerIds, setActiveLayerIds] = React.useState();
 
   //#region Methods
-  function addActiveLayersToMap() {
-    var newActiveLayers = layers.filter(
-      (layer) => activaLayerIds.indexOf(layer.layerId) !== -1
-    );
-    newActiveLayers.forEach((layer) => {
-      addLayerToMap(createLayerByType(layer));
-    });
-  }
-
   function isLayerActive(layer) {
     return activaLayerIds.indexOf(layer.layerId) !== -1;
   }
@@ -66,10 +45,6 @@ export default function LayerList({
     );
   }
   //#endregion
-
-  if (!initialized) {
-    return <Loading />;
-  }
 
   return (
     <List
