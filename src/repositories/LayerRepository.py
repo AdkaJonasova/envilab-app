@@ -1,3 +1,4 @@
+from psycopg2.extras import RealDictCursor
 from pypika import Query, Table
 
 from src.utils.DatabaseUtil import connect
@@ -10,7 +11,7 @@ class LayerRepository:
         self.connection = connect()
 
     def get_all_favorite_for_user(self, user_id):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
         query = (Query().from_(user_layers)
@@ -22,7 +23,7 @@ class LayerRepository:
         return cursor.fetchall()
 
     def get_all_active_for_user(self, user_id):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
         query = (Query().from_(user_layers)
@@ -34,7 +35,7 @@ class LayerRepository:
         return cursor.fetchall()
 
     def get_all_for_user(self, user_id):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
         query = (Query().from_(user_layers)
@@ -45,7 +46,7 @@ class LayerRepository:
         return cursor.fetchall()
 
     def get_layer_by_id_and_user(self, layer_id, user_id):
-        cursor = self.connection.cursor()
+        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
         query = (Query().from_(user_layers)

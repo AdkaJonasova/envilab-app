@@ -44,7 +44,7 @@ def get_active_layers_for_user(user_id: int):
     return layer_repo.get_all_active_for_user(user_id)
 
 
-@app.get('layers/{user_id}/{layer_id}')
+@app.get('layers/{user_id}/{}')
 def get_layer(user_id: int, layer_id: int):
     return layer_repo.get_layer_by_id_and_user(layer_id, user_id)
 
