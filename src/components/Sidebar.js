@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import SideBarTabs from "./SideBarTabs";
 import SearchBar from "./global/SearchBar";
@@ -13,10 +13,7 @@ export default function Sidebar({ addLayerToMap, removeLayerFromMap, layers }) {
   const [barType, setBarType] = useState(SidebarTypes.Layers);
   const [filter, setFilter] = useState("");
 
-  const [filteredData, setFilteredData] = useState(
-    filterDataByName(getDataByType(barType)),
-    filter
-  );
+  const [filteredData, setFilteredData] = useState(layers);
 
   useEffect(() => {
     let dataByType = getDataByType(barType);

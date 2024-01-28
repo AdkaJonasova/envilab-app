@@ -2,7 +2,9 @@ import { useQuery } from "react-query";
 import apiClient from "../http-common";
 
 export const useAreas = (userId) =>
-  useQuery("areas", () => apiClient.get(`/area/${userId}`).then((r) => r.data));
+  useQuery("areas", () =>
+    apiClient.get(`/areas/${userId}`).then((r) => r.data)
+  );
 
 export const useActiveAreas = (userId) =>
   useQuery("activeAreas", () =>

@@ -1,11 +1,7 @@
 import * as React from "react";
-import { useEffect } from "react";
 import { List } from "@mui/material";
 import LayerListItem from "./LayerListItem";
 import { createLayerByType } from "../../utils/customFunctions";
-import { useActiveLayers } from "../../hooks/layerHooks";
-import { userId } from "../../data/mockData";
-import Loading from "../global/Loading";
 import PropTypes from "prop-types";
 
 export default function LayerList({
@@ -13,7 +9,7 @@ export default function LayerList({
   addLayerToMap,
   removeLayerFromMap,
 }) {
-  const [activaLayerIds, setActiveLayerIds] = React.useState();
+  const [activaLayerIds, setActiveLayerIds] = React.useState([]);
 
   //#region Methods
   function isLayerActive(layer) {
