@@ -7,7 +7,7 @@ class AreaRepository:
     AREA_TABLE_NAME = "Area"
     USER_AREA_TABLE_NAME = "UserArea"
 
-    def __int__(self):
+    def __init__(self):
         self.connection = connect()
 
     def get_area_by_id_and_user(self, area_id, user_id):

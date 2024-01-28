@@ -7,7 +7,7 @@ class AreaSetRepository:
     AREA_SET_TABLE_NAME = "AreaSet"
     AREA_IN_SET_TABLE_NAME = "AreaInAreaSet"
 
-    def __int__(self):
+    def __init__(self):
         self.connection = connect()
 
     def get_area_sets(self):
