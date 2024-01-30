@@ -36,6 +36,12 @@ export const areaCardEdit = "Edit";
 // Area list
 export const createAreaSet = "Create area set";
 export const chooseAreaSet = "Choose area set";
+export const noFavoriteAreas =
+  "There are no areas to display. Please select your favorite areas in settings.";
+
+// Layer list
+export const noFavoriteLayers =
+  "There are no layers to display. Please select your favorite layers in settings.";
 
 // Select view
 export const selectViewTitle = "Select area view";

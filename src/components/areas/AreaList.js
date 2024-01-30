@@ -1,8 +1,12 @@
 import * as React from "react";
 import List from "@mui/material/List";
-import { Button, Collapse, Grid } from "@mui/material";
+import { Button, Collapse, Grid, Typography } from "@mui/material";
 import AreaListItem from "./AreaListItem";
-import { chooseAreaSet, createAreaSet } from "../../utils/data";
+import {
+  chooseAreaSet,
+  createAreaSet,
+  noFavoriteAreas,
+} from "../../utils/data";
 import PropTypes from "prop-types";
 
 export default function AreaList({ areas }) {
@@ -107,6 +111,10 @@ export default function AreaList({ areas }) {
       );
     }
   }
+
+  function getEmptyListText() {
+    return <Typography variant="body2">{noFavoriteAreas}</Typography>;
+  }
   //#endregion
 
   return (
@@ -124,7 +132,9 @@ export default function AreaList({ areas }) {
         </Grid>
       </Grid>
       <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-        {areas.map((area) => getAreaItem(area, 0))}
+        {areas.length === 0
+          ? getEmptyListText()
+          : areas.map((area) => getAreaItem(area, 0))}
       </List>
     </div>
   );

@@ -1,3 +1,4 @@
+import { grey } from "@mui/material/colors";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 let theme = createTheme({
@@ -13,6 +14,10 @@ let theme = createTheme({
 
     sideGreen: {
       main: "#59745D",
+    },
+
+    informationGrey: {
+      main: grey[400],
     },
   },
 });
@@ -45,6 +50,12 @@ theme = createTheme(theme, {
     },
     body1: {
       fontSize: "0.9rem",
+    },
+
+    body2: {
+      fontSize: "0.9rem",
+      textAlign: "center",
+      color: theme.palette.informationGrey.main,
     },
   },
 

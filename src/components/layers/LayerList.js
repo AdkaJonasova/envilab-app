@@ -1,35 +1,16 @@
 import * as React from "react";
-import { List } from "@mui/material";
+import { List, Typography } from "@mui/material";
 import LayerListItem from "./LayerListItem";
-import { createLayerByType } from "../../utils/customFunctions";
 import PropTypes from "prop-types";
+import { noFavoriteLayers } from "../../utils/data";
 
-export default function LayerList({
-  layers,
-  addLayerToMap,
-  removeLayerFromMap,
-}) {
-  const [activaLayerIds, setActiveLayerIds] = React.useState([]);
-
+export default function LayerList({ layers }) {
   //#region Methods
   function isLayerActive(layer) {
-    return activaLayerIds.indexOf(layer.layerId) !== -1;
+    return layer.isActive === true;
   }
 
-  function handleActivateLayer(layer) {
-    const currentIndex = activaLayerIds.indexOf(layer.layerId);
-    const newActiveLayers = [...activaLayerIds];
-
-    if (currentIndex === -1) {
-      newActiveLayers.push(layer.layerId);
-      addLayerToMap(createLayerByType(layer));
-    } else {
-      newActiveLayers.splice(currentIndex, 1);
-      removeLayerFromMap(layer);
-    }
-
-    setActiveLayerIds(newActiveLayers);
-  }
+  function handleActivateLayer(layer) {}
 
   function getLayerItem(layer) {
     return (
@@ -40,6 +21,10 @@ export default function LayerList({
       />
     );
   }
+
+  function getEmptyListText() {
+    return <Typography variant="body2">{noFavoriteLayers}</Typography>;
+  }
   //#endregion
 
   return (
@@ -47,13 +32,13 @@ export default function LayerList({
       key={"layer-list"}
       sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
     >
-      {layers.map((layer) => getLayerItem(layer))}
+      {layers.length === 0
+        ? getEmptyListText()
+        : layers.map((layer) => getLayerItem(layer))}
     </List>
   );
 }
 
 LayerList.propTypes = {
   layers: PropTypes.array,
-  addLayerToMap: PropTypes.func,
-  removeLayerFromMap: PropTypes.func,
 };
