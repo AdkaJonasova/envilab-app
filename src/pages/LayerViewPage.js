@@ -12,16 +12,15 @@ import { userId } from "../data/mockData";
 
 const LayerViewPage = () => {
   const { data: layers, isFetched: areLayersReady } = useFavoriteLayers(userId);
-  const { data: areaInfos, isFetched: areAreasInfosReady } =
-    useFavoriteAreas(userId);
+  const { data: areas, isFetched: areAreasReady } = useFavoriteAreas(userId);
 
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (areLayersReady && areAreasInfosReady) {
+    if (areLayersReady && areAreasReady) {
       setInitialized(true);
     }
-  }, [areLayersReady, areAreasInfosReady]);
+  }, [areLayersReady, areAreasReady]);
 
   if (!initialized) {
     return <Loading />;
@@ -31,10 +30,10 @@ const LayerViewPage = () => {
     <div>
       <Grid container spacing={2} marginTop={1} marginBottom={1}>
         <Grid item xs={3}>
-          <Sidebar layers={layers} />
+          <Sidebar layers={layers} areas={areas} />
         </Grid>
         <Grid item xs={9}>
-          <ReactMap layers={layers} />
+          <ReactMap layers={layers} areas={areas} />
         </Grid>
       </Grid>
     </div>

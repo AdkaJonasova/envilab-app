@@ -10,7 +10,7 @@ import { createLayerByType } from "../../utils/customFunctions";
 
 import PropTypes from "prop-types";
 
-export default function ReactMap({ layers }) {
+export default function ReactMap({ layers, areas }) {
   const [map, setMap] = useState(null);
   const mapTargetElement = useRef();
 
@@ -59,4 +59,5 @@ export default function ReactMap({ layers }) {
 
 ReactMap.propTypes = {
   layers: PropTypes.array,
+  areas: PropTypes.array,
 };

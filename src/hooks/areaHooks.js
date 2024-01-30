@@ -16,8 +16,8 @@ export const useActiveAreas = (userId) =>
   );
 
 export const useFavoriteAreas = (userId) =>
-  useQuery("favoriteAreas", () => {
-    let areaInfos = await(apiClient.get(`/areas/favorite/${userId}`)).data;
+  useQuery("favoriteAreas", async () => {
+    let areaInfos = (await apiClient.get(`/areas/favorite/${userId}`)).data;
     let geoAreas = mockAreas;
     return mergeAreas(geoAreas, areaInfos);
   });
