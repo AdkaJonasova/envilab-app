@@ -61,7 +61,7 @@ class LayerRepository:
         layers = self.get_layer_by_id_and_user(layer_id, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_id, 'true', found_layer[2], user_id)
+            self.__update_layer(layer_id, 'true', found_layer.get("isFavorite"), user_id)
         else:
             self.__insert_layer(layer_id, 'true', 'true', user_id)
 
@@ -71,7 +71,7 @@ class LayerRepository:
         layers = self.get_layer_by_id_and_user(layer_id, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_id, 'false', found_layer[2], user_id)
+            self.__update_layer(layer_id, 'false', found_layer.get("isFavorite"), user_id)
         else:
             self.__insert_layer(layer_id, 'false', 'true', user_id)
 
@@ -81,7 +81,7 @@ class LayerRepository:
         layers = self.get_layer_by_id_and_user(layer_id, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_id, found_layer[1], 'true', user_id)
+            self.__update_layer(layer_id, found_layer.get("isActive"), 'true', user_id)
         else:
             self.__insert_layer(layer_id, 'false', 'true', user_id)
 
@@ -91,7 +91,7 @@ class LayerRepository:
         layers = self.get_layer_by_id_and_user(layer_id, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_id, found_layer[1], 'false', user_id)
+            self.__update_layer(layer_id, found_layer.get("isActive"), 'false', user_id)
         else:
             self.__insert_layer(layer_id, 'false', 'false', user_id)
 
