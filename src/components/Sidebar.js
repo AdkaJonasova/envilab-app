@@ -4,7 +4,6 @@ import SideBarTabs from "./SideBarTabs";
 import SearchBar from "./global/SearchBar";
 import AreaList from "./areas/AreaList";
 import LayerList from "./layers/LayerList";
-import { mockAreas } from "../data/mockData";
 import { getSidebarDataByTypeAndFilter } from "../utils/customFunctions";
 import { SidebarTypes } from "../utils/enums";
 import PropTypes from "prop-types";
@@ -18,15 +17,6 @@ export default function Sidebar({ layers, areas }) {
       return <LayerList layers={data} />;
     } else if (type === SidebarTypes.Areas) {
       return <AreaList areas={data} />;
-    }
-  }
-
-  function getDataByType(sideBarType) {
-    console.log("I am in getDataByType with type = " + sideBarType);
-    if (sideBarType === SidebarTypes.Layers) {
-      return layers;
-    } else if (sideBarType === SidebarTypes.Areas) {
-      return mockAreas;
     }
   }
 
@@ -48,7 +38,6 @@ export default function Sidebar({ layers, areas }) {
 }
 
 Sidebar.propTypes = {
-  addLayerToMap: PropTypes.func,
-  removeLayerFromMap: PropTypes.func,
   layers: PropTypes.array,
+  areas: PropTypes.array,
 };
