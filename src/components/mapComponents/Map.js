@@ -6,7 +6,6 @@ import { Zoom, FullScreen } from "ol/control";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
 
-import { favoriteMockLayers } from "../../data/mockData";
 import { createLayerByType } from "../../utils/customFunctions";
 
 import PropTypes from "prop-types";
@@ -36,15 +35,12 @@ export default function ReactMap({ layers }) {
     return () => newMap.setTarget(null);
   }, []);
 
-  function getMapLayers(layerInfos) {
+  function getMapLayers(layers) {
     let initLayers = [new TileLayer({ source: new OSM() })];
-    let activeLayerIds = layerInfos
-      .filter((l) => l.isActive === true)
-      .map((l) => l.layerID);
-    let layersToActivate = favoriteMockLayers.filter(
-      (l) => activeLayerIds.indexOf(l.layerId) !== -1
+    let activeLayers = layers.filter(
+      (l) => l.isActive === true && l.geoLayer.source !== undefined
     );
-    layersToActivate.forEach((l) => initLayers.push(createLayerByType(l)));
+    activeLayers.forEach((l) => initLayers.push(createLayerByType(l.geoLayer)));
     return initLayers;
   }
 

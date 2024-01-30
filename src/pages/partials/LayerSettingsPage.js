@@ -14,7 +14,7 @@ import { favoriteMockLayers, mockLayers } from "../../data/mockData";
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [layers, setLayers] = useState(mockLayers);
-  const [favoriteLayers, setFavoriteLayers] = useState(favoriteMockLayers);
+  const [favoriteLayers, setFavoriteLayers] = useState(mockLayers);
 
   function addLayerToFavorites(layer) {
     let newFavoriteLayers = [...favoriteLayers];

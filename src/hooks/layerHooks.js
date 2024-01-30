@@ -1,10 +1,14 @@
 import { useQuery } from "react-query";
 import apiClient from "../http-common";
+import { mockLayers } from "../data/mockData";
+import { mergeLayers } from "./customHooks";
 
 export const useFavoriteLayers = (userId) =>
-  useQuery("favoriteLayers", () =>
-    apiClient.get(`/layers/favorite/${userId}`).then((r) => r.data)
-  );
+  useQuery("favoriteLayers", async () => {
+    let layerInfos = (await apiClient.get(`/layers/favorite/${userId}`)).data;
+    let geoLayers = mockLayers;
+    return mergeLayers(geoLayers, layerInfos);
+  });
 
 export const useActiveLayers = (userId) =>
   useQuery("activeLayers", () =>
@@ -12,9 +16,11 @@ export const useActiveLayers = (userId) =>
   );
 
 export const useLayers = (userId) =>
-  useQuery("layers", () =>
-    apiClient.get(`/layers/${userId}`).then((r) => r.data)
-  );
+  useQuery("layers", async () => {
+    let layerInfos = (await apiClient.get(`/layers/${userId}`)).data;
+    let geoLayers = mockLayers;
+    return mergeLayers(geoLayers, layerInfos, true);
+  });
 
 export const useLayerById = (userId, layerId) =>
   useQuery("layerById", () =>

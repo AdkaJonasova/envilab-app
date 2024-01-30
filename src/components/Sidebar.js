@@ -5,7 +5,7 @@ import SearchBar from "./global/SearchBar";
 import AreaList from "./areas/AreaList";
 import LayerList from "./layers/LayerList";
 import { mockAreas } from "../data/mockData";
-import { filterDataByName } from "../utils/customFunctions";
+import { filterDataByName, filterLayersByName } from "../utils/customFunctions";
 import { SidebarTypes } from "../utils/enums";
 import PropTypes from "prop-types";
 
@@ -17,7 +17,7 @@ export default function Sidebar({ addLayerToMap, removeLayerFromMap, layers }) {
 
   useEffect(() => {
     let dataByType = getDataByType(barType);
-    let newFilteredData = filterDataByName(dataByType, filter);
+    let newFilteredData = filterLayersByName(dataByType, filter);
     setFilteredData(newFilteredData);
   }, [barType, filter]);
 

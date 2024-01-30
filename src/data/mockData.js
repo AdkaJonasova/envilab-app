@@ -77,7 +77,6 @@ export const mockLayers = [
   testLayer7,
   testLayer8,
 ];
-export const favoriteMockLayers = [pointLayer, usaStatesLayer, vegetationLayer];
 
 // ----------------------------------------------------------- Mock area data -----------------------------------------------------------
 const subArea1 = {

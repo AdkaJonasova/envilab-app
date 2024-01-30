@@ -26,6 +26,15 @@ export function filterDataByName(data, filter) {
   );
 }
 
+export function filterLayersByName(layers, filter) {
+  if (!filter) {
+    return layers;
+  }
+  return layers.filter((l) =>
+    l.geoLayer.name.toLowerCase().includes(filter.toLowerCase())
+  );
+}
+
 export function createLayerByType(layer) {
   if (layer.type === LayerTypes.Vector) {
     var newLayer = new VectorLayer({

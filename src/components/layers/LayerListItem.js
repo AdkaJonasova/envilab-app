@@ -22,7 +22,7 @@ export default function LayerListItem({
       >
         <ListItemText
           key={`layer-list-text-label-${layer.layerId}`}
-          primary={layer.name}
+          primary={layer.geoLayer.name}
         />
         <IconButton
           key={`layer-list-icon-btn-${layer.layerId}`}
