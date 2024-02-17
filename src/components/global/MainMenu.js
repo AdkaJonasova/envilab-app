@@ -10,6 +10,7 @@ import { Button, Toolbar } from "@mui/material";
 import { pageName, settingsPath, viewPages } from "../../utils/data";
 import LanguageSelector from "./LanguageSelector";
 import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export default function MainMenu() {
   const [subMenu, setSubMenu] = React.useState(null);
@@ -23,6 +24,7 @@ export default function MainMenu() {
   };
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const navigateViewAction = (path) => {
     handleCloseSubMenu();
