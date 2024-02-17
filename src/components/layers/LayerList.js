@@ -3,21 +3,28 @@ import { List, Typography } from "@mui/material";
 import LayerListItem from "./LayerListItem";
 import PropTypes from "prop-types";
 import { noFavoriteLayers } from "../../utils/data";
+import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
+import { userId } from "../../data/mockData";
 
-export default function LayerList({ layers }) {
+export default function LayerList({ layers, refetch }) {
   //#region Methods
-  function isLayerActive(layer) {
-    return layer.isActive === true;
+  function handleLayerStateSwitch(layer) {
+    console.log("--- I am in handle switch");
+    if (layer.isActive) {
+      console.log("Deactivate");
+      deactivateLayer(userId, layer.layerId);
+    } else {
+      console.log("Activate");
+      activateLayer(userId, layer.layerId);
+    }
+    refetch();
   }
-
-  function handleActivateLayer(layer) {}
 
   function getLayerItem(layer) {
     return (
       <LayerListItem
         layer={layer}
-        handleActivateLayer={handleActivateLayer}
-        isActive={isLayerActive}
+        handleLayerStateSwitch={handleLayerStateSwitch}
       />
     );
   }
@@ -41,4 +48,5 @@ export default function LayerList({ layers }) {
 
 LayerList.propTypes = {
   layers: PropTypes.array,
+  refetch: PropTypes.func,
 };

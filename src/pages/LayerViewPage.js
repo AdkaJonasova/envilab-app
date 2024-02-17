@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Grid } from "@mui/material";
 
@@ -11,18 +10,26 @@ import { useFavoriteAreas } from "../hooks/areaHooks";
 import { userId } from "../data/mockData";
 
 const LayerViewPage = () => {
-  const { data: layers, isFetched: areLayersReady } = useFavoriteLayers(userId);
-  const { data: areas, isFetched: areAreasReady } = useFavoriteAreas(userId);
+  const {
+    data: layers,
+    isFetched: areLayersReady,
+    isRefetching: areLayersRefetching,
+    refetch: refetchLayers,
+  } = useFavoriteLayers(userId);
+  const {
+    data: areas,
+    isFetched: areAreasReady,
+    isRefetching: areAreasRefetching,
+    refetch: refetchAreas,
+  } = useFavoriteAreas(userId);
 
-  const [initialized, setInitialized] = useState(false);
-
-  useEffect(() => {
-    if (areLayersReady && areAreasReady) {
-      setInitialized(true);
-    }
-  }, [areLayersReady, areAreasReady]);
-
-  if (!initialized) {
+  if (
+    !areAreasReady ||
+    !areLayersReady ||
+    areAreasRefetching ||
+    areLayersRefetching
+  ) {
+    console.log("I am in loading");
     return <Loading />;
   }
 
@@ -30,7 +37,11 @@ const LayerViewPage = () => {
     <div>
       <Grid container spacing={2} marginTop={1} marginBottom={1}>
         <Grid item xs={3}>
-          <Sidebar layers={layers} areas={areas} />
+          <Sidebar
+            layers={layers}
+            areas={areas}
+            refetchLayers={refetchLayers}
+          />
         </Grid>
         <Grid item xs={9}>
           <ReactMap layers={layers} areas={areas} />

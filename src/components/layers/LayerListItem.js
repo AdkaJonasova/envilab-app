@@ -8,11 +8,7 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 
-export default function LayerListItem({
-  layer,
-  handleActivateLayer,
-  isActive,
-}) {
+export default function LayerListItem({ layer, handleLayerStateSwitch }) {
   let paddingSize = 4;
   return (
     <div>
@@ -36,8 +32,8 @@ export default function LayerListItem({
           edge="end"
           size="small"
           color="sideBrown"
-          onChange={() => handleActivateLayer(layer)}
-          checked={isActive(layer)}
+          onChange={() => handleLayerStateSwitch(layer)}
+          checked={layer.isActive}
         />
       </ListItem>
       <Divider />
@@ -47,6 +43,5 @@ export default function LayerListItem({
 
 LayerListItem.propTypes = {
   layer: PropTypes.object,
-  handleActivateLayer: PropTypes.func,
-  isActive: PropTypes.func,
+  handleLayerStateSwitch: PropTypes.func,
 };

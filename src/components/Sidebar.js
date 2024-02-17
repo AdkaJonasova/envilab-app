@@ -8,13 +8,13 @@ import { getSidebarDataByTypeAndFilter } from "../utils/customFunctions";
 import { SidebarTypes } from "../utils/enums";
 import PropTypes from "prop-types";
 
-export default function Sidebar({ layers, areas }) {
+export default function Sidebar({ layers, areas, refetchLayers }) {
   const [barType, setBarType] = useState(SidebarTypes.Layers);
   const [filter, setFilter] = useState("");
 
   function getCardsByType(data, type) {
     if (type === SidebarTypes.Layers) {
-      return <LayerList layers={data} />;
+      return <LayerList layers={data} refetch={refetchLayers} />;
     } else if (type === SidebarTypes.Areas) {
       return <AreaList areas={data} />;
     }
@@ -40,4 +40,5 @@ export default function Sidebar({ layers, areas }) {
 Sidebar.propTypes = {
   layers: PropTypes.array,
   areas: PropTypes.array,
+  refetchLayers: PropTypes.func,
 };
