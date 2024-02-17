@@ -1,9 +1,11 @@
 import { Button, Grid, Typography } from "@mui/material";
 import SearchBar from "../global/SearchBar";
-import { settingsResetBtn, settingsSaveBtn } from "../../utils/data";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function SettingsHeader({ title, annotation, setFilter }) {
+  const { t } = useTranslation();
+
   return (
     <div>
       <Typography variant="h3" padding={2} fontWeight={"bold"}>
@@ -16,12 +18,12 @@ export default function SettingsHeader({ title, annotation, setFilter }) {
         </Grid>
         <Grid item xs={2} container justifyContent={"flex-end"} padding={1.5}>
           <Button color="mainGreen" variant="contained" size="small">
-            {settingsResetBtn}
+            {t("settings.reset")}
           </Button>
         </Grid>
         <Grid item xs={2} container justifyContent={"flex-start"} padding={1.5}>
           <Button color="mainGreen" variant="contained" size="small">
-            {settingsSaveBtn}
+            {t("settings.save")}
           </Button>
         </Grid>
       </Grid>

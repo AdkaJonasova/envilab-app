@@ -8,7 +8,6 @@ import { OSM } from "ol/source.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
 import { Button, Grid, Typography } from "@mui/material";
-import { selectViewSubtitle } from "../utils/data";
 import SelectViewSidebar from "../components/SelectViewSidebar";
 import { createStringXY } from "ol/coordinate";
 import VectorSource from "ol/source/Vector";
@@ -16,6 +15,7 @@ import VectorLayer from "ol/layer/Vector";
 import Draw from "ol/interaction/Draw.js";
 import { toLonLat } from "ol/proj";
 import { getMaxIdInList } from "../utils/customFunctions";
+import { useTranslation } from "react-i18next";
 
 const SelectViewPage = () => {
   const fullScreenControl = new FullScreenControl();
@@ -29,6 +29,7 @@ const SelectViewPage = () => {
   const mapTargetElement = useRef();
   const [map, setMap] = useState(null);
   const [points, setPoints] = useState([]);
+  const { t } = useTranslation();
 
   let drawSource;
   let draw;
@@ -96,17 +97,17 @@ const SelectViewPage = () => {
         <Grid item xs={9} container direction="column" spacing={1}>
           <Grid item container direction="row">
             <Grid item xs={10}>
-              <Typography variant="h2">{selectViewSubtitle}</Typography>
+              <Typography variant="h2">{t("selectView.subtitle")}</Typography>
             </Grid>
             <Grid
               item
               xs={2}
-              container
+              containery
               justifyContent={"flex-end"}
               paddingX={2}
             >
               <Button color="mainGreen" variant="contained" size="small">
-                {"Import area"}
+                {t("selectView.importBtn")}
               </Button>
             </Grid>
           </Grid>

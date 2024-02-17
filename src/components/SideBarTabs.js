@@ -3,10 +3,12 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { SidebarTypes } from "../utils/enums";
-import { AreasTab, LayersTab } from "../utils/data";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function SideBarTabs({ selectedTab, setSelectedTab }) {
+  const { t } = useTranslation();
+
   const handleChangeTab = (_event, newSelectedTab) => {
     setSelectedTab(newSelectedTab);
   };
@@ -19,8 +21,14 @@ export default function SideBarTabs({ selectedTab, setSelectedTab }) {
         centered
         variant="fullWidth"
       >
-        <Tab value={SidebarTypes.Layers} label={LayersTab} />
-        <Tab value={SidebarTypes.Areas} label={AreasTab} />
+        <Tab
+          value={SidebarTypes.Layers}
+          label={t("layerViewSidebar.tabs.layerTab")}
+        />
+        <Tab
+          value={SidebarTypes.Areas}
+          label={t("layerViewSidebar.tabs.areaTab")}
+        />
       </Tabs>
     </Box>
   );

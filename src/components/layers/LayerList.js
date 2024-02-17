@@ -2,11 +2,13 @@ import * as React from "react";
 import { List, Typography } from "@mui/material";
 import LayerListItem from "./LayerListItem";
 import PropTypes from "prop-types";
-import { noFavoriteLayers } from "../../utils/data";
 import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
+import { useTranslation } from "react-i18next";
 
 export default function LayerList({ layers, refetch }) {
+  const { t } = useTranslation();
+
   //#region Methods
   function handleLayerStateSwitch(layer) {
     console.log("--- I am in handle switch");
@@ -30,7 +32,11 @@ export default function LayerList({ layers, refetch }) {
   }
 
   function getEmptyListText() {
-    return <Typography variant="body2">{noFavoriteLayers}</Typography>;
+    return (
+      <Typography variant="body2">
+        {t("layerViewSidebar.layerList.noLayers")}
+      </Typography>
+    );
   }
   //#endregion
 

@@ -7,10 +7,12 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { settingsTabs } from "../utils/data";
+import { useTranslation } from "react-i18next";
 
 export default function SideMenu() {
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
 
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleListItemClick = (_event, tab) => {
@@ -26,7 +28,7 @@ export default function SideMenu() {
           onClick={(event) => handleListItemClick(event, tab)}
         >
           <ListItemIcon>{tab.icon}</ListItemIcon>
-          <ListItemText primary={tab.tabName} />
+          <ListItemText primary={t(tab.tabName)} />
         </ListItemButton>
         <Divider />
       </div>

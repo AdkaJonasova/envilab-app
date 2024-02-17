@@ -12,19 +12,16 @@ import {
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import {
-  selectViewAreaName,
-  selectViewSaveBtnText,
-  selectViewSelectedPoints,
-  selectViewSidebarTitle,
-} from "../utils/data";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function SelectViewSidebar({ points, deletePoint }) {
+  const { t } = useTranslation();
+
   return (
     <Box>
-      <Typography variant="h3">{selectViewSidebarTitle}</Typography>
-      <Typography variant="h4">{selectViewAreaName}</Typography>
+      <Typography variant="h3">{t("selectViewSidebar.title")}</Typography>
+      <Typography variant="h4">{t("selectViewSidebar.areaName")}</Typography>
       <TextField
         id="area-name-input"
         fullWidth
@@ -34,7 +31,9 @@ export default function SelectViewSidebar({ points, deletePoint }) {
       <Divider sx={{ marginBottom: 1, marginTop: 2 }} />
       <Grid container spacing={1} marginRight={1}>
         <Grid item xs={11}>
-          <Typography variant="h4">{selectViewSelectedPoints}</Typography>
+          <Typography variant="h4">
+            {t("selectViewSidebar.selectedPoints")}
+          </Typography>
         </Grid>
         <Grid item xs={1}>
           <IconButton color="sideBrown" size="small">
@@ -59,7 +58,7 @@ export default function SelectViewSidebar({ points, deletePoint }) {
         ))}
       </List>
       <Button fullWidth variant="outlined" color="sideGreen">
-        {selectViewSaveBtnText}
+        {t("selectViewSidebar.save")}
       </Button>
     </Box>
   );

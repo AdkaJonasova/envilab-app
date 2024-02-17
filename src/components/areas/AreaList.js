@@ -2,16 +2,14 @@ import * as React from "react";
 import List from "@mui/material/List";
 import { Button, Collapse, Grid, Typography } from "@mui/material";
 import AreaListItem from "./AreaListItem";
-import {
-  chooseAreaSet,
-  createAreaSet,
-  noFavoriteAreas,
-} from "../../utils/data";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function AreaList({ areas }) {
   const [usedAreas, setUsedAreas] = React.useState([]);
   const [expandedAreas, setExpandedAreas] = React.useState([]);
+
+  const { t } = useTranslation();
 
   //#region Methods
   const handleUseArea = (area) => () => {
@@ -113,7 +111,11 @@ export default function AreaList({ areas }) {
   }
 
   function getEmptyListText() {
-    return <Typography variant="body2">{noFavoriteAreas}</Typography>;
+    return (
+      <Typography variant="body2">
+        {t("layerViewSidebar.areaList.noAreas")}
+      </Typography>
+    );
   }
   //#endregion
 
@@ -122,12 +124,12 @@ export default function AreaList({ areas }) {
       <Grid container marginY={1} spacing={1} paddingX={1}>
         <Grid item xs={6}>
           <Button variant="outlined" color="sideGreen" size="small" fullWidth>
-            {createAreaSet}
+            {t("layerViewSidebar.areaList.createSet")}
           </Button>
         </Grid>
         <Grid item xs={6}>
           <Button variant="outlined" color="sideGreen" size="small" fullWidth>
-            {chooseAreaSet}
+            {t("layerViewSidebar.areaList.chooseSet")}
           </Button>
         </Grid>
       </Grid>

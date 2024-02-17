@@ -7,13 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import YardIcon from "@mui/icons-material/Yard";
 import { Button, Toolbar } from "@mui/material";
-import {
-  mainMenuSettings,
-  mainMenuViews,
-  pageName,
-  settingsPath,
-  viewPages,
-} from "../../utils/data";
+import { pageName, settingsPath, viewPages } from "../../utils/data";
+import LanguageSelector from "./LanguageSelector";
+import { t } from "i18next";
 
 export default function MainMenu() {
   const [subMenu, setSubMenu] = React.useState(null);
@@ -52,7 +48,7 @@ export default function MainMenu() {
               onClick={handleOpenSubMenu}
               sx={{ marginRight: 5 }}
             >
-              {mainMenuViews}
+              {t("menu.views")}
             </Button>
 
             <Menu
@@ -72,19 +68,24 @@ export default function MainMenu() {
             >
               {viewPages.map((page) => (
                 <MenuItem
-                  key={page.pageName}
+                  key={page.pageKey}
                   onClick={() => {
                     navigateViewAction(page.pagePath);
                   }}
                 >
-                  <Typography textAlign="center">{page.pageName}</Typography>
+                  <Typography textAlign="center">{t(page.pageName)}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </div>
-          <Button color="inherit" onClick={() => navigateAction(settingsPath)}>
-            {mainMenuSettings}
+          <Button
+            sx={{ marginRight: 5 }}
+            color="inherit"
+            onClick={() => navigateAction(settingsPath)}
+          >
+            {t("menu.settings")}
           </Button>
+          <LanguageSelector />
         </Toolbar>
       </AppBar>
     </Box>

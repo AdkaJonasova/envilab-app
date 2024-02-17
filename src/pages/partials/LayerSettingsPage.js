@@ -7,14 +7,16 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import { layerSettingsAnnotation, layerSettingsTitle } from "../../utils/data";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { favoriteMockLayers, mockLayers } from "../../data/mockData";
+import { useTranslation } from "react-i18next";
 
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [layers, setLayers] = useState(mockLayers);
   const [favoriteLayers, setFavoriteLayers] = useState(mockLayers);
+
+  const { t } = useTranslation();
 
   function addLayerToFavorites(layer) {
     let newFavoriteLayers = [...favoriteLayers];
@@ -63,8 +65,8 @@ const LayerSettingsPage = () => {
   return (
     <div>
       <SettingsHeader
-        title={layerSettingsTitle}
-        annotation={layerSettingsAnnotation}
+        title={t("settings.layers.title")}
+        annotation={t("settings.layers.annotation")}
         setFilter={setFilter}
       />
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
