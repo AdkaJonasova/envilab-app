@@ -39,3 +39,10 @@ export const settingsPageMapping = new Map([
   [SidebarTypes.Layers, <LayerSettingsPage />],
   [SidebarTypes.Areas, <AreaSettingsPage />],
 ]);
+
+// Language selector
+export const languages = [
+  { code: "en", label: "menu.languages.english", flag: "🇺🇸" },
+  { code: "cz", label: "menu.languages.czech", flag: "🇨🇿" },
+  { code: "sk", label: "menu.languages.slovak", flag: "🇸🇰" },
+];

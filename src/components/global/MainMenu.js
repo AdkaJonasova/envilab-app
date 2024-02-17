@@ -79,7 +79,7 @@ export default function MainMenu() {
             </Menu>
           </div>
           <Button
-            sx={{ marginRight: 5 }}
+            sx={{ marginRight: 1 }}
             color="inherit"
             onClick={() => navigateAction(settingsPath)}
           >
