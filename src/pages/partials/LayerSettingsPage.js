@@ -8,37 +8,56 @@ import {
   ListItemText,
 } from "@mui/material";
 import SettingsHeader from "../../components/settings/SettingsHeader";
-import { favoriteMockLayers, mockLayers } from "../../data/mockData";
+import { userId } from "../../data/mockData";
 import { useTranslation } from "react-i18next";
+import {
+  addFavoriteLayer,
+  removeFavoriteLayer,
+  useLayers,
+} from "../../hooks/layerHooks";
+import Loading from "../../components/global/Loading";
 
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
-  const [layers, setLayers] = useState(mockLayers);
-  const [favoriteLayers, setFavoriteLayers] = useState(mockLayers);
+  const [changedLayers, setChangedLayers] = useState([]);
 
   const { t } = useTranslation();
+  const { data: layers, isFetched: areLayersReady } = useLayers(userId);
 
-  function addLayerToFavorites(layer) {
-    let newFavoriteLayers = [...favoriteLayers];
-    newFavoriteLayers.push(layer);
-    setFavoriteLayers(newFavoriteLayers);
+  if (!areLayersReady) {
+    return <Loading />;
   }
 
-  function removeLayerFromFavorites(layer) {
-    let newFavoriteLayers = [...favoriteLayers];
-    let index = newFavoriteLayers.indexOf(layer);
-    if (index !== -1) {
-      newFavoriteLayers.splice(index, 1);
-    }
-    setFavoriteLayers(newFavoriteLayers);
+  //#region Helper methods
+
+  function handleSave() {
+    changedLayers.forEach((l) => {
+      l.isFavorite
+        ? addFavoriteLayer(userId, l.layerId)
+        : removeFavoriteLayer(userId, l.layerId);
+    });
+  }
+
+  function handleReset() {
+    let newChangedLayers = [];
+    setChangedLayers(newChangedLayers);
   }
 
   function handleStarClick(layer) {
-    if (favoriteLayers.indexOf(layer) !== -1) {
-      removeLayerFromFavorites(layer);
-    } else {
-      addLayerToFavorites(layer);
-    }
+    let changedLayer = layer;
+    changedLayer.isFavorite = !layer.isFavorite;
+
+    let newChangedLayers = [...changedLayers];
+    newChangedLayers.push(changedLayer);
+    setChangedLayers(newChangedLayers);
+  }
+
+  function getStarForLayer(layer) {
+    const isFavorite =
+      changedLayers.find((l) => l.layerId === layer.layerId)?.isFavorite ??
+      layer.isFavorite;
+
+    return isFavorite ? <Star /> : <StarBorder />;
   }
 
   function getLayerItem(layer) {
@@ -50,11 +69,11 @@ const LayerSettingsPage = () => {
             color="sideBrown"
             onClick={() => handleStarClick(layer)}
           >
-            {favoriteLayers.indexOf(layer) !== -1 ? <Star /> : <StarBorder />}
+            {getStarForLayer(layer)}
           </IconButton>
           <ListItemText
             id={`settings-list-text-label-${layer.layerId}`}
-            primary={layer.name}
+            primary={layer.geoLayer.name}
           ></ListItemText>
         </ListItem>
         <Divider />
@@ -62,12 +81,16 @@ const LayerSettingsPage = () => {
     );
   }
 
+  //#endregion
+
   return (
     <div>
       <SettingsHeader
         title={t("settings.layers.title")}
         annotation={t("settings.layers.annotation")}
         setFilter={setFilter}
+        handleSettingsSave={handleSave}
+        handleSettingsReset={handleReset}
       />
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {layers.map((layer) => getLayerItem(layer))}

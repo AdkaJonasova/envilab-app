@@ -36,60 +36,58 @@ export default function MainMenu() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="mainGreen">
-        <Toolbar variant="dense">
-          <YardIcon size="large" edge="start" sx={{ mr: 2 }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {pageName}
-          </Typography>
+    <AppBar sx={{ height: "47px" }} position="static" color="mainGreen">
+      <Toolbar variant="dense">
+        <YardIcon size="large" edge="start" sx={{ mr: 2 }} />
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          {pageName}
+        </Typography>
 
-          <div>
-            <Button
-              color="inherit"
-              onClick={handleOpenSubMenu}
-              sx={{ marginRight: 5 }}
-            >
-              {t("menu.views")}
-            </Button>
-
-            <Menu
-              id="menu-appbar"
-              anchorEl={subMenu}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              open={Boolean(subMenu)}
-              onClose={handleCloseSubMenu}
-            >
-              {viewPages.map((page) => (
-                <MenuItem
-                  key={page.pageKey}
-                  onClick={() => {
-                    navigateViewAction(page.pagePath);
-                  }}
-                >
-                  <Typography textAlign="center">{t(page.pageName)}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </div>
+        <div>
           <Button
-            sx={{ marginRight: 1 }}
             color="inherit"
-            onClick={() => navigateAction(settingsPath)}
+            onClick={handleOpenSubMenu}
+            sx={{ marginRight: 5 }}
           >
-            {t("menu.settings")}
+            {t("menu.views")}
           </Button>
-          <LanguageSelector />
-        </Toolbar>
-      </AppBar>
-    </Box>
+
+          <Menu
+            id="menu-appbar"
+            anchorEl={subMenu}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            open={Boolean(subMenu)}
+            onClose={handleCloseSubMenu}
+          >
+            {viewPages.map((page) => (
+              <MenuItem
+                key={page.pageKey}
+                onClick={() => {
+                  navigateViewAction(page.pagePath);
+                }}
+              >
+                <Typography textAlign="center">{t(page.pageName)}</Typography>
+              </MenuItem>
+            ))}
+          </Menu>
+        </div>
+        <Button
+          sx={{ marginRight: 1 }}
+          color="inherit"
+          onClick={() => navigateAction(settingsPath)}
+        >
+          {t("menu.settings")}
+        </Button>
+        <LanguageSelector />
+      </Toolbar>
+    </AppBar>
   );
 }
