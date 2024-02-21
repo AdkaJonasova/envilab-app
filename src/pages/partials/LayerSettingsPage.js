@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Star, StarBorder } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { Star, StarBorder, Close } from "@mui/icons-material";
 import {
   Divider,
   IconButton,
   List,
   ListItem,
   ListItemText,
+  Snackbar,
 } from "@mui/material";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { userId } from "../../data/mockData";
@@ -19,10 +20,15 @@ import Loading from "../../components/global/Loading";
 
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [changedLayers, setChangedLayers] = useState([]);
 
   const { t } = useTranslation();
   const { data: layers, isFetched: areLayersReady } = useLayers(userId);
+
+  useEffect(() => {
+    console.log("Something changed");
+  }, [changedLayers]);
 
   if (!areLayersReady) {
     return <Loading />;
@@ -36,15 +42,15 @@ const LayerSettingsPage = () => {
         ? addFavoriteLayer(userId, l.layerId)
         : removeFavoriteLayer(userId, l.layerId);
     });
+    setSnackbarOpen(true);
   }
 
   function handleReset() {
-    let newChangedLayers = [];
-    setChangedLayers(newChangedLayers);
+    setChangedLayers([]);
   }
 
   function handleStarClick(layer) {
-    let changedLayer = layer;
+    let changedLayer = { ...layer };
     changedLayer.isFavorite = !layer.isFavorite;
 
     let newChangedLayers = [...changedLayers];
@@ -95,6 +101,21 @@ const LayerSettingsPage = () => {
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {layers.map((layer) => getLayerItem(layer))}
       </List>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message={t("settings.snackbarText")}
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}
+          >
+            <Close fontSize="small" />
+          </IconButton>
+        }
+      />
     </div>
   );
 };

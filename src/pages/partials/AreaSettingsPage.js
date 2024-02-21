@@ -6,9 +6,21 @@ import {
   removeFavoriteArea,
   useAreas,
 } from "../../hooks/areaHooks";
+import { userId } from "../../data/mockData";
+import Loading from "../../components/global/Loading";
+import { Close, Star, StarBorder } from "@mui/icons-material";
+import {
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Snackbar,
+} from "@mui/material";
 
 const AreaSettingsPage = () => {
   const [filter, setFilter] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [changesAreas, setChangedAreas] = useState([]);
 
   const { t } = useTranslation();
@@ -26,15 +38,15 @@ const AreaSettingsPage = () => {
         ? addFavoriteArea(userId, a.areaId)
         : removeFavoriteArea(userId, a.areaId);
     });
+    setSnackbarOpen(true);
   }
 
   function handleReset() {
-    let newChangedAreas = [];
-    setChangedAreas(newChangedAreas);
+    setChangedAreas([]);
   }
 
   function handleStarClick(area) {
-    let changedArea = area;
+    let changedArea = { ...area };
     changedArea.isFavorite = !area.isFavorite;
 
     let newChangedAreas = [...changesAreas];
@@ -85,6 +97,21 @@ const AreaSettingsPage = () => {
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>
         {areas.map((area) => getAreaItem(area))}
       </List>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message={t("settings.snackbarText")}
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}
+          >
+            <Close fontSize="small" />
+          </IconButton>
+        }
+      />
     </div>
   );
 };

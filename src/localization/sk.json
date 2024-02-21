@@ -51,7 +51,8 @@
       "annotation": "Vyberte svoje obľúbené oblasti, ktoré budú zobrazované v bočnom panely pri práci s oblasťami."
     },
     "save": "Uložiť zmeny",
-    "reset": "Vrátiť zmeny"
+    "reset": "Vrátiť zmeny",
+    "snackbarText": "Zmeny boli uložené!"
   },
   "selectView": {
     "title": "Editor oblastí",

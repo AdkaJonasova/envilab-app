@@ -51,7 +51,8 @@
       "annotation": "Select your favorite area, which are going to be displayed in the side bar in the Areas' view"
     },
     "save": "Save changes",
-    "reset": "Reset changes"
+    "reset": "Reset changes",
+    "snackbarText": "Changes were saved!"
   },
   "selectView": {
     "title": "Area editor",
