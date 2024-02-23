@@ -81,7 +81,7 @@ export default function AreaList({ areas }) {
 
   function getEmptyListText() {
     return (
-      <Typography variant="body2">
+      <Typography variant="body3">
         {t("layerViewSidebar.areaList.noAreas")}
       </Typography>
     );
@@ -102,7 +102,10 @@ export default function AreaList({ areas }) {
           </Button>
         </Grid>
       </Grid>
-      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+      <List
+        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+        dense
+      >
         {areas.length === 0
           ? getEmptyListText()
           : areas.map((area) => getAreaItem(area, 0))}

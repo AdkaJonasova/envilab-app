@@ -27,6 +27,7 @@ export const mergeAreas = (geoAreas, areaInfos, includeAll = false) => {
         isCustom: areaInfo ? areaInfo.isCustom : false,
         geoArea: a,
       };
+
       result.push(area);
     }
   });

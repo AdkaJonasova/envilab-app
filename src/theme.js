@@ -51,8 +51,7 @@ theme = createTheme(theme, {
     body1: {
       fontSize: "0.9rem",
     },
-
-    body2: {
+    body3: {
       fontSize: "0.9rem",
       textAlign: "center",
       color: theme.palette.informationGrey.main,

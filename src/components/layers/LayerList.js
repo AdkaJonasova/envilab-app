@@ -1,5 +1,5 @@
 import * as React from "react";
-import { List, Typography } from "@mui/material";
+import { List, ListSubheader, Typography } from "@mui/material";
 import LayerListItem from "./LayerListItem";
 import PropTypes from "prop-types";
 import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
@@ -33,7 +33,7 @@ export default function LayerList({ layers, refetch }) {
 
   function getEmptyListText() {
     return (
-      <Typography variant="body2">
+      <Typography variant="body3">
         {t("layerViewSidebar.layerList.noLayers")}
       </Typography>
     );
@@ -44,6 +44,7 @@ export default function LayerList({ layers, refetch }) {
     <List
       key={"layer-list"}
       sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+      dense
     >
       {layers.length === 0
         ? getEmptyListText()
