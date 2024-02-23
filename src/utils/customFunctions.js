@@ -5,6 +5,8 @@ import GeoJSON from "ol/format/GeoJSON.js";
 import TileLayer from "ol/layer/Tile.js";
 import TileWMS from "ol/source/TileWMS.js";
 import { settingsTabs } from "./data";
+import ReactVectorLayer from "../components/mapComponents/layers/ReactVectorLayer";
+import ReactTileLayer from "../components/mapComponents/layers/ReactTileLayer";
 
 export function getTabIdByType(tab) {
   let foundTab = settingsTabs.find((t) => t.type === tab);
@@ -59,28 +61,33 @@ export function filterDataByName(data, filter) {
 }
 
 export function createLayerByType(layer) {
-  if (layer.type === LayerTypes.Vector) {
-    var newLayer = new VectorLayer({
-      source: new VectorSource({
-        url: layer.source,
-        format: new GeoJSON(),
-      }),
-      name: layer.name,
-      id: layer.layerId,
-    });
-    return newLayer;
-  } else if (layer.type === LayerTypes.Tile) {
-    newLayer = new TileLayer({
-      extent: [-13884991, 2870341, -7455066, 6338219],
-      source: new TileWMS({
-        url: layer.source,
-        params: { LAYERS: "topp:states", TILED: true },
-        serverType: "geoserver",
-        transition: 0,
-      }),
-      name: layer.name,
-      id: layer.layerId,
-    });
-    return newLayer;
+  if (layer.geoLayer.type === LayerTypes.Vector) {
+    return (
+      <ReactVectorLayer
+        source={
+          new VectorSource({
+            url: layer.geoLayer.source,
+            format: new GeoJSON(),
+          })
+        }
+        name={layer.geoLayer.name}
+        id={layer.layerId}
+      />
+    );
+  } else if (layer.geoLayer.type === LayerTypes.Tile) {
+    return (
+      <ReactTileLayer
+        source={
+          new TileWMS({
+            url: layer.geoLayer.source,
+            params: { LAYERS: "topp:states", TILED: true },
+            serverType: "geoserver",
+            transition: 0,
+          })
+        }
+        name={layer.geoLayer.name}
+        id={layer.layerId}
+      />
+    );
   }
 }
