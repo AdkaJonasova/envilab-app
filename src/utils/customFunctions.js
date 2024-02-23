@@ -4,6 +4,12 @@ import { Vector as VectorSource } from "ol/source.js";
 import GeoJSON from "ol/format/GeoJSON.js";
 import TileLayer from "ol/layer/Tile.js";
 import TileWMS from "ol/source/TileWMS.js";
+import { settingsTabs } from "./data";
+
+export function getTabIdByType(tab) {
+  let foundTab = settingsTabs.find((t) => t.type === tab);
+  return foundTab ? foundTab.tabId : 0;
+}
 
 export function getSidebarDataByTypeAndFilter(layers, areas, barType, filter) {
   if (barType === SidebarTypes.Layers) {

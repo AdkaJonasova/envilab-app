@@ -6,49 +6,16 @@ import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
 export default function AreaList({ areas }) {
-  const [usedAreas, setUsedAreas] = React.useState([]);
   const [expandedAreas, setExpandedAreas] = React.useState([]);
 
   const { t } = useTranslation();
 
   //#region Methods
-  const handleUseArea = (area) => () => {
-    const currentIndex = usedAreas.indexOf(area.areaId);
-    let newUsedAreas = [...usedAreas];
+  const handleUseArea = (area) => () => {};
 
-    if (currentIndex === -1) {
-      newUsedAreas.push(area.areaId);
-      newUsedAreas = activateSubAreas(area, newUsedAreas);
-      setUsedAreas(newUsedAreas);
-    } else {
-      newUsedAreas.splice(currentIndex, 1);
-      newUsedAreas = deactivateSubAreas(area, newUsedAreas);
-      setUsedAreas(newUsedAreas);
-    }
-  };
+  function activateSubAreas(area, newUsedAreas) {}
 
-  function activateSubAreas(area, newUsedAreas) {
-    const subAreas = area.subAreas;
-    for (let i = 0; i < subAreas.length; i++) {
-      const subArea = subAreas[i];
-      if (!newUsedAreas.includes(subArea.areaId)) {
-        newUsedAreas.push(subArea.areaId);
-      }
-    }
-    return newUsedAreas;
-  }
-
-  function deactivateSubAreas(area, newUsedAreas) {
-    const subAreas = area.subAreas;
-    for (let i = 0; i < subAreas.length; i++) {
-      const subArea = subAreas[i];
-      const currentIndex = newUsedAreas.indexOf(subArea.areaId);
-      if (currentIndex !== -1) {
-        newUsedAreas.splice(currentIndex, 1);
-      }
-    }
-    return newUsedAreas;
-  }
+  function deactivateSubAreas(area, newUsedAreas) {}
 
   const handleExpandCollapse = (area) => () => {
     const currentIndex = expandedAreas.indexOf(area.areaId);
@@ -64,7 +31,7 @@ export default function AreaList({ areas }) {
   };
 
   function isAreaUsed(area) {
-    return usedAreas.indexOf(area.areaId) !== -1;
+    return false;
   }
 
   function isAreaExpanded(area) {
@@ -72,7 +39,7 @@ export default function AreaList({ areas }) {
   }
 
   function getAreaItem(area, level) {
-    if (area.subAreas.length === 0) {
+    if (area.geoArea.subAreas.length === 0) {
       return (
         <AreaListItem
           area={area}
@@ -102,7 +69,9 @@ export default function AreaList({ areas }) {
             unmountOnExit
           >
             <List disablePadding>
-              {area.subAreas.map((subArea) => getAreaItem(subArea, level + 1))}
+              {area.geoArea.subAreas.map((subArea) =>
+                getAreaItem(subArea, level + 1)
+              )}
             </List>
           </Collapse>
         </div>

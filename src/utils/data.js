@@ -23,12 +23,14 @@ export const pageName = "ENVILAB";
 // Settings navigation
 const layerSettingsTab = {
   tabId: 0,
+  type: SidebarTypes.Layers,
   tabName: "settings.tabs.layers",
   icon: <Layers />,
   navigation: "/settings/layers",
 };
 const areaSettingsTab = {
   tabId: 1,
+  type: SidebarTypes.Areas,
   tabName: "settings.tabs.areas",
   icon: <Public />,
   navigation: "/settings/areas",

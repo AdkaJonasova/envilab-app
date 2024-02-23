@@ -1,16 +1,22 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
+import {
+  Box,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 import { settingsTabs } from "../utils/data";
 import { useTranslation } from "react-i18next";
+import { getTabIdByType } from "../utils/customFunctions";
+import PropTypes from "prop-types";
 
-export default function SideMenu() {
-  const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
+export default function SideMenu({ tab }) {
+  const [selectedItemIndex, setSelectedItemIndex] = React.useState(
+    getTabIdByType(tab)
+  );
 
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -43,3 +49,7 @@ export default function SideMenu() {
     </Box>
   );
 }
+
+SideMenu.propTypes = {
+  tab: PropTypes.string,
+};

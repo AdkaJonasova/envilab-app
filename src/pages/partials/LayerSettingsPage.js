@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Star, StarBorder, Close } from "@mui/icons-material";
 import {
   Divider,
+  Grid,
   IconButton,
   List,
   ListItem,
@@ -23,12 +24,19 @@ const LayerSettingsPage = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [changedLayers, setChangedLayers] = useState([]);
 
+  const [firstHalfLayers, setFirstHalfLayers] = useState([]);
+  const [secondHalfLayers, setSecondHalfLayers] = useState([]);
+
   const { t } = useTranslation();
   const { data: layers, isFetched: areLayersReady } = useLayers(userId);
 
   useEffect(() => {
-    console.log("Something changed");
-  }, [changedLayers]);
+    if (areLayersReady) {
+      const midpoint = Math.ceil(layers.length / 2);
+      setFirstHalfLayers(layers.slice(0, midpoint));
+      setSecondHalfLayers(layers.slice(midpoint));
+    }
+  }, [areLayersReady]);
 
   if (!areLayersReady) {
     return <Loading />;
@@ -98,9 +106,18 @@ const LayerSettingsPage = () => {
         handleSettingsSave={handleSave}
         handleSettingsReset={handleReset}
       />
-      <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-        {layers.map((layer) => getLayerItem(layer))}
-      </List>
+      <Grid container>
+        <Grid item xs={6}>
+          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+            {firstHalfLayers.map((layer) => getLayerItem(layer))}
+          </List>
+        </Grid>
+        <Grid item xs={6}>
+          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+            {secondHalfLayers.map((layer) => getLayerItem(layer))}
+          </List>
+        </Grid>
+      </Grid>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}

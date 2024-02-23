@@ -20,7 +20,7 @@ export default function AreaListItem({
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
   function addEditButton(area) {
-    if (area.isEditable) {
+    if (area.isCustom) {
       return (
         <IconButton
           key={`area-list-edit-btn-${area.areaId}`}
@@ -52,7 +52,7 @@ export default function AreaListItem({
         {isExpandable ? addExpandCollapseItem(area) : ""}
         <ListItemText
           key={`area-list-text-label-${area.areaId}`}
-          primary={area.name}
+          primary={area.geoArea.name}
         />
         {addEditButton(area)}
         <Switch

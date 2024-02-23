@@ -11,7 +11,7 @@ const SettingsPage = ({ tab }) => {
     <div>
       <Grid container>
         <Grid item xs={2}>
-          <SideMenu />
+          <SideMenu tab={tab} />
         </Grid>
         <Divider orientation="vertical" flexItem sx={{ mr: "-1px" }} />
         <Grid item xs={10} paddingLeft={3}>
