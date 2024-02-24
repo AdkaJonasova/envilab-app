@@ -8,6 +8,9 @@ import { useFavoriteLayers } from "../hooks/layerHooks";
 import { useFavoriteAreas } from "../hooks/areaHooks";
 import { userId } from "../data/mockData";
 import LayerViewMap from "../components/mapComponents/LayerViewMap";
+import layoutConfig from "../layoutConfig.json";
+import ReactGridLayout, { Responsive, WidthProvider } from "react-grid-layout";
+import { LayoutWindows } from "../utils/enums";
 
 const LayerViewPage = () => {
   const {
@@ -23,6 +26,8 @@ const LayerViewPage = () => {
     refetch: refetchAreas,
   } = useFavoriteAreas(userId);
 
+  const { layout } = layoutConfig;
+
   if (
     !areAreasReady ||
     !areLayersReady ||
@@ -32,21 +37,35 @@ const LayerViewPage = () => {
     return <Loading />;
   }
 
-  return (
-    <div>
-      <Grid container spacing={2} marginTop={1} marginBottom={1}>
-        <Grid item xs={3}>
+  function getLayoutPart(elementType) {
+    switch (elementType) {
+      case LayoutWindows.ListSidebar:
+        return (
           <Sidebar
             layers={layers}
             areas={areas}
             refetchLayers={refetchLayers}
-          />
-        </Grid>
-        <Grid item xs={9}>
-          <LayerViewMap layers={layers} />
-        </Grid>
-      </Grid>
-    </div>
+          ></Sidebar>
+        );
+      case LayoutWindows.MapView:
+        return <LayerViewMap layers={layers}></LayerViewMap>;
+    }
+  }
+
+  return (
+    <ReactGridLayout
+      className="app-layout"
+      layout={layout}
+      cols={12}
+      width={1500}
+      rowHeight={30}
+      marginBottom={1}
+      marginTop={1}
+    >
+      {layout.map((layoutElement) => (
+        <div key={layoutElement.i}>{getLayoutPart(layoutElement.i)}</div>
+      ))}
+    </ReactGridLayout>
   );
 };
 
