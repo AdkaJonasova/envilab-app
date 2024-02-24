@@ -116,10 +116,17 @@ theme = createTheme(theme, {
           color: theme.palette.mainGreen.contrastText,
           fontWeight: "bold",
           fontSize: "0.9rem",
-          padding: "0 5px",
-          margin: "0 0px",
           textAlign: "left",
-          lineHeight: 2.5,
+          lineHeight: 2,
+          width: "100%",
+        },
+      },
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        root: {
+          lineHeight: 3,
+          fontSize: "0.2rem",
         },
       },
     },
