@@ -46,6 +46,7 @@ export default function LayerList({ layers, refetch }) {
       sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
       dense
     >
+      <ListSubheader>Test subheader</ListSubheader>
       {layers.length === 0
         ? getEmptyListText()
         : layers.map((layer) => getLayerItem(layer))}
