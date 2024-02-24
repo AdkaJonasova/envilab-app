@@ -11,15 +11,15 @@ export default function LayerList({ layers, refetch }) {
 
   //#region Methods
   function handleLayerStateSwitch(layer) {
-    console.log("--- I am in handle switch");
     if (layer.isActive) {
-      console.log("Deactivate");
-      deactivateLayer(userId, layer.layerId);
+      deactivateLayer(userId, layer.layerId).then(() => {
+        refetch();
+      });
     } else {
-      console.log("Activate");
-      activateLayer(userId, layer.layerId);
+      activateLayer(userId, layer.layerId).then(() => {
+        refetch();
+      });
     }
-    refetch();
   }
 
   function getLayerItem(layer) {

@@ -29,7 +29,6 @@ const LayerViewPage = () => {
     areAreasRefetching ||
     areLayersRefetching
   ) {
-    console.log("I am in loading");
     return <Loading />;
   }
 

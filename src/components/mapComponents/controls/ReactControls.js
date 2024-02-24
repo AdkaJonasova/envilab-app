@@ -3,7 +3,7 @@
 import React from "react";
 
 const ReactControls = ({ children }) => {
-  return <div style={{ position: "absolute" }}>{children}</div>;
+  return <div>{children}</div>;
 };
 
 export default ReactControls;
