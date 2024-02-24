@@ -4,10 +4,10 @@ import { Grid } from "@mui/material";
 
 import Sidebar from "../components/Sidebar";
 import Loading from "../components/global/Loading";
-import ReactMap from "../components/mapComponents/Map";
 import { useFavoriteLayers } from "../hooks/layerHooks";
 import { useFavoriteAreas } from "../hooks/areaHooks";
 import { userId } from "../data/mockData";
+import LayerViewMap from "../components/mapComponents/LayerViewMap";
 
 const LayerViewPage = () => {
   const {
@@ -29,7 +29,6 @@ const LayerViewPage = () => {
     areAreasRefetching ||
     areLayersRefetching
   ) {
-    console.log("I am in loading");
     return <Loading />;
   }
 
@@ -44,7 +43,7 @@ const LayerViewPage = () => {
           />
         </Grid>
         <Grid item xs={9}>
-          <ReactMap layers={layers} areas={areas} />
+          <LayerViewMap layers={layers} />
         </Grid>
       </Grid>
     </div>

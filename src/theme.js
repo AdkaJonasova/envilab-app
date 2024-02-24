@@ -109,6 +109,27 @@ theme = createTheme(theme, {
         },
       },
     },
+    MuiListSubheader: {
+      styleOverrides: {
+        root: {
+          backgroundColor: theme.palette.sideGreen.main,
+          color: theme.palette.mainGreen.contrastText,
+          fontWeight: "bold",
+          fontSize: "0.9rem",
+          textAlign: "left",
+          lineHeight: 2,
+          width: "100%",
+        },
+      },
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        root: {
+          lineHeight: 3,
+          fontSize: "0.2rem",
+        },
+      },
+    },
   },
 });
 
