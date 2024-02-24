@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-
-import { Grid } from "@mui/material";
+import React from "react";
 
 import Sidebar from "../components/Sidebar";
 import Loading from "../components/global/Loading";
@@ -9,7 +7,7 @@ import { useFavoriteAreas } from "../hooks/areaHooks";
 import { userId } from "../data/mockData";
 import LayerViewMap from "../components/mapComponents/LayerViewMap";
 import layoutConfig from "../layoutConfig.json";
-import ReactGridLayout, { Responsive, WidthProvider } from "react-grid-layout";
+import RGL, { WidthProvider } from "react-grid-layout";
 import { LayoutWindows } from "../utils/enums";
 
 const LayerViewPage = () => {
@@ -27,6 +25,7 @@ const LayerViewPage = () => {
   } = useFavoriteAreas(userId);
 
   const { layout } = layoutConfig;
+  const ReactGridLayout = WidthProvider(RGL);
 
   if (
     !areAreasReady ||
@@ -57,7 +56,6 @@ const LayerViewPage = () => {
       className="app-layout"
       layout={layout}
       cols={12}
-      width={1500}
       rowHeight={30}
       marginBottom={1}
       marginTop={1}

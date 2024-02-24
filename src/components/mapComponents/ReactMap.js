@@ -33,7 +33,7 @@ const ReactMap = ({ children, center }) => {
         className="ol-map"
         style={{
           width: "100%",
-          height: "650px",
+          height: "calc(100vh - 60px)",
         }}
       >
         {children}
