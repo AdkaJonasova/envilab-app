@@ -4,11 +4,12 @@ import Sidebar from "../components/Sidebar";
 import Loading from "../components/global/Loading";
 import { useFavoriteLayers } from "../hooks/layerHooks";
 import { useFavoriteAreas } from "../hooks/areaHooks";
-import { userId } from "../data/mockData";
+import { states, statesHeaders, userId } from "../data/mockData";
 import LayerViewMap from "../components/mapComponents/LayerViewMap";
 import layoutConfig from "../layoutConfig.json";
 import RGL, { WidthProvider } from "react-grid-layout";
 import { LayoutWindows } from "../utils/enums";
+import TableDataWindow from "../components/dataWindows/TableDataWindow";
 
 const LayerViewPage = () => {
   const {
@@ -48,6 +49,13 @@ const LayerViewPage = () => {
         );
       case LayoutWindows.MapView:
         return <LayerViewMap layers={layers}></LayerViewMap>;
+      case LayoutWindows.TableData:
+        return (
+          <TableDataWindow
+            headers={statesHeaders}
+            data={states}
+          ></TableDataWindow>
+        );
     }
   }
 

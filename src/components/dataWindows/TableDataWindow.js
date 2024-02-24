@@ -16,9 +16,9 @@ export default function TableDataWindow({ headers, data }) {
         <Table sx={{ minWidth: 180 }} size="small">
           <TableHead>
             <TableRow className="dialog-table-head">
-              <TableCell align="center">{headers[0]}</TableCell>
-              <TableCell align="center">{headers[1]}</TableCell>
-              <TableCell align="center">{headers[2]}</TableCell>
+              <TableCell align="left">{headers[0]}</TableCell>
+              <TableCell align="left">{headers[1]}</TableCell>
+              <TableCell align="left">{headers[2]}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

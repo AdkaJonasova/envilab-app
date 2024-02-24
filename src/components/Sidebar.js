@@ -23,7 +23,7 @@ export default function Sidebar({ layers, areas, refetchLayers }) {
   return (
     <Box
       sx={{
-        height: 640,
+        height: "calc(100vh - 60px)",
         overflowY: "auto",
       }}
     >

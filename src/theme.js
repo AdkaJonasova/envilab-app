@@ -4,7 +4,7 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 let theme = createTheme({
   palette: {
     mainGreen: {
-      main: "#8B958A",
+      main: "#A2AD8D",
       contrastText: "#FEEDE0",
     },
 
@@ -14,6 +14,7 @@ let theme = createTheme({
 
     sideGreen: {
       main: "#59745D",
+      contrastText: "#FEEDE0",
     },
 
     informationGrey: {
@@ -71,7 +72,14 @@ theme = createTheme(theme, {
     MuiTableHead: {
       styleOverrides: {
         root: {
-          backgroundColor: theme.palette.sideBrown.main,
+          backgroundColor: theme.palette.mainGreen.main,
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        head: {
+          color: theme.palette.mainGreen.contrastText,
         },
       },
     },

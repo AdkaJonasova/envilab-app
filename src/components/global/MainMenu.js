@@ -36,7 +36,7 @@ export default function MainMenu() {
   };
 
   return (
-    <AppBar sx={{ height: "47px" }} position="static" color="mainGreen">
+    <AppBar sx={{ height: "47px" }} position="static" color="sideGreen">
       <Toolbar variant="dense">
         <YardIcon size="large" edge="start" sx={{ mr: 2 }} />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
