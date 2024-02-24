@@ -1,0 +1,62 @@
+{
+  "menu": {
+    "languages": {
+      "english": "Angličtina",
+      "slovak": "Slovenčina",
+      "czech": "Čeština"
+    },
+    "layerView": "Práca s vrstvami",
+    "areaView": "Práca s oblasťami",
+    "pageName": "Envilab",
+    "views": "Módy",
+    "settings": "Nastavenia"
+  },
+  "layerViewSidebar": {
+    "tabs": {
+      "layerTab": "Vrstvy",
+      "areaTab": "Oblasti"
+    },
+    "layerCustomize": {
+      "header": "Upraviť vrstvu",
+      "opacity": "Priehľadnosť"
+    },
+    "areaList": {
+      "createSet": "Vytvoriť skupinu oblastí",
+      "chooseSet": "Vybrať skupinu oblastí",
+      "noAreas": "Nie sú dostupné žiadne oblasti na zobrazenie. Prosím vyberte obľúbené oblasti v nastaveniach."
+    },
+    "layerList": {
+      "noLayers": "Nie sú dostupné žiadne vrstvy na zobrazenie. Prosím vyberte obľúbené vrstvy v nastaveniach."
+    }
+  },
+  "selectViewSidebar": {
+    "title": "Nová oblasť",
+    "selectedPoints": "Vybrané body",
+    "areaName": "Názov oblasti",
+    "save": "Uložiť",
+    "tooltipCoords": "Súradnice myši",
+    "addPoint": "Nový bod"
+  },
+  "settings": {
+    "tabs": {
+      "layers": "Vrstvy",
+      "areas": "Oblasti"
+    },
+    "layers": {
+      "title": "Nastavenia vrstiev",
+      "annotation": "Vyberte svoje obľúbené vrstvy, ktoré budú zobrazované v bočnom panely pri práci s vrstvami."
+    },
+    "areas": {
+      "title": "Nastavenia oblastí",
+      "annotation": "Vyberte svoje obľúbené oblasti, ktoré budú zobrazované v bočnom panely pri práci s oblasťami."
+    },
+    "save": "Uložiť zmeny",
+    "reset": "Vrátiť zmeny",
+    "snackbarText": "Zmeny boli uložené!"
+  },
+  "selectView": {
+    "title": "Editor oblastí",
+    "subtitle": "Na definovanie novej oblasti prosím vyberte aspoň 3 body na mape nižšie.",
+    "importBtn": "Importovať oblasť"
+  }
+}

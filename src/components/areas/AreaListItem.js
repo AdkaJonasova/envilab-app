@@ -1,0 +1,80 @@
+import { Edit, ExpandLess, ExpandMore } from "@mui/icons-material";
+import {
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemText,
+  Switch,
+} from "@mui/material";
+import PropTypes from "prop-types";
+
+export default function AreaListItem({
+  area,
+  hierarchyLevel,
+  isExpandable,
+  handleUseArea,
+  handleExpandCollapse,
+  isUsed,
+  isExpanded,
+}) {
+  let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
+
+  function addEditButton(area) {
+    if (area.isCustom) {
+      return (
+        <IconButton
+          key={`area-list-edit-btn-${area.areaId}`}
+          size="small"
+          color="sideBrown"
+        >
+          <Edit />
+        </IconButton>
+      );
+    }
+    return null;
+  }
+
+  function addExpandCollapseItem(area) {
+    return (
+      <IconButton
+        key={`area-list-expand-btn-${area.areaId}`}
+        size="small"
+        onClick={handleExpandCollapse(area)}
+      >
+        {isExpanded(area) ? <ExpandLess /> : <ExpandMore />}
+      </IconButton>
+    );
+  }
+
+  return (
+    <div>
+      <ListItem key={`area-list-item-${area.areaId}`} sx={{ pl: paddingSize }}>
+        {isExpandable ? addExpandCollapseItem(area) : ""}
+        <ListItemText
+          key={`area-list-text-label-${area.areaId}`}
+          primary={area.geoArea.name}
+        />
+        {addEditButton(area)}
+        <Switch
+          id={`area-list-switch-btn-${area.areaId}`}
+          edge="end"
+          size="small"
+          color="sideBrown"
+          onChange={handleUseArea(area)}
+          checked={isUsed(area)}
+        />
+      </ListItem>
+      <Divider />
+    </div>
+  );
+}
+
+AreaListItem.propTypes = {
+  area: PropTypes.object,
+  hierarchyLevel: PropTypes.number,
+  isExpandable: PropTypes.bool,
+  handleUseArea: PropTypes.func,
+  handleExpandCollapse: PropTypes.func,
+  isUsed: PropTypes.func,
+  isExpanded: PropTypes.func,
+};

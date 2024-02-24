@@ -1,0 +1,62 @@
+{
+  "menu": {
+    "languages": {
+      "english": "English",
+      "slovak": "Slovak",
+      "czech": "Czech"
+    },
+    "layerView": "Layering tool",
+    "areaView": "Area editor tool",
+    "pageName": "Envilab",
+    "views": "Views",
+    "settings": "Settings"
+  },
+  "layerViewSidebar": {
+    "tabs": {
+      "layerTab": "Layers",
+      "areaTab": "Areas"
+    },
+    "layerCustomize": {
+      "header": "Customize",
+      "opacity": "Opacity"
+    },
+    "areaList": {
+      "createSet": "Create area set",
+      "chooseSet": "Choose area set",
+      "noAreas": "There are no areas to display. Please select your favorite areas in settings."
+    },
+    "layerList": {
+      "noLayers": "There are no layers to display. Please select your favorite layers in settings."
+    }
+  },
+  "selectViewSidebar": {
+    "title": "New area",
+    "selectedPoints": "Selected points",
+    "areaName": "Area name",
+    "save": "Save",
+    "tooltipCoords": "Tooltip coordinates",
+    "addPoint": "New point"
+  },
+  "settings": {
+    "tabs": {
+      "layers": "Layers",
+      "areas": "Areas"
+    },
+    "layers": {
+      "title": "Layers settings",
+      "annotation": "Select your favorite layers, which are going to be displayed in the side bar in the Layers' view"
+    },
+    "areas": {
+      "title": "Areas settings",
+      "annotation": "Select your favorite area, which are going to be displayed in the side bar in the Areas' view"
+    },
+    "save": "Save changes",
+    "reset": "Reset changes",
+    "snackbarText": "Changes were saved!"
+  },
+  "selectView": {
+    "title": "Area editor",
+    "subtitle": "Please select at least 3 points on the map below to define a new area.",
+    "importBtn": "Import area"
+  }
+}
