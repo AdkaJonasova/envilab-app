@@ -11,8 +11,8 @@ import PropTypes from "prop-types";
 
 export default function TableDataWindow({ headers, data }) {
   return (
-    <div>
-      <TableContainer component={Paper}>
+    <div style={{ display: "flex", flexDirection: "column", flex: "1 1 auto" }}>
+      <TableContainer component={Paper} style={{ flex: "1 1 auto" }}>
         <Table sx={{ minWidth: 180 }} size="small">
           <TableHead>
             <TableRow className="dialog-table-head">

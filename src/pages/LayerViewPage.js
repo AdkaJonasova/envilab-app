@@ -4,12 +4,21 @@ import Sidebar from "../components/Sidebar";
 import Loading from "../components/global/Loading";
 import { useFavoriteLayers } from "../hooks/layerHooks";
 import { useFavoriteAreas } from "../hooks/areaHooks";
-import { states, statesHeaders, userId } from "../data/mockData";
+import {
+  header,
+  states,
+  statesHeaders,
+  subheader,
+  text,
+  userId,
+} from "../data/mockData";
 import LayerViewMap from "../components/mapComponents/LayerViewMap";
 import layoutConfig from "../layoutConfig.json";
 import RGL, { WidthProvider } from "react-grid-layout";
 import { LayoutWindows } from "../utils/enums";
 import TableDataWindow from "../components/dataWindows/TableDataWindow";
+import TextDataWindow from "../components/dataWindows/TextDataWindow";
+import LineGraphDataWindow from "../components/dataWindows/LineGraphDataWindow";
 
 const LayerViewPage = () => {
   const {
@@ -56,6 +65,16 @@ const LayerViewPage = () => {
             data={states}
           ></TableDataWindow>
         );
+      case LayoutWindows.TextData:
+        return (
+          <TextDataWindow
+            header={header}
+            subheader={subheader}
+            text={text}
+          ></TextDataWindow>
+        );
+      case LayoutWindows.GraphData:
+        return <LineGraphDataWindow />;
     }
   }
 
@@ -64,7 +83,6 @@ const LayerViewPage = () => {
       className="app-layout"
       layout={layout}
       cols={12}
-      rowHeight={30}
       marginBottom={1}
       marginTop={1}
     >
