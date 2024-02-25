@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import MapContext from "./MapContext";
 import { Map, View } from "ol";
 
-const ReactMap = ({ children, center }) => {
+const ReactMap = ({ children, center, height }) => {
   const mapRef = useRef();
   const [map, setMap] = useState(null);
 
@@ -33,7 +33,7 @@ const ReactMap = ({ children, center }) => {
         className="ol-map"
         style={{
           width: "100%",
-          height: "calc(100vh - 60px)",
+          height: `${height}px`,
         }}
       >
         {children}

@@ -9,10 +9,13 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 
-export default function TableDataWindow({ headers, data }) {
+export default function TableDataWindow({ headers, data, height }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", flex: "1 1 auto" }}>
-      <TableContainer component={Paper} style={{ flex: "1 1 auto" }}>
+    <div>
+      <TableContainer
+        component={Paper}
+        style={{ maxHeight: `${height}px`, overflow: "auto" }}
+      >
         <Table sx={{ minWidth: 180 }} size="small">
           <TableHead>
             <TableRow className="dialog-table-head">
@@ -46,4 +49,5 @@ export default function TableDataWindow({ headers, data }) {
 TableDataWindow.propTypes = {
   headers: PropTypes.array,
   data: PropTypes.array,
+  height: PropTypes.number,
 };

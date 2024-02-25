@@ -1,12 +1,22 @@
 import { LayerTypes, SidebarTypes } from "./enums";
-import VectorLayer from "ol/layer/Vector";
 import { Vector as VectorSource } from "ol/source.js";
 import GeoJSON from "ol/format/GeoJSON.js";
-import TileLayer from "ol/layer/Tile.js";
 import TileWMS from "ol/source/TileWMS.js";
 import { settingsTabs } from "./data";
 import ReactVectorLayer from "../components/mapComponents/layers/ReactVectorLayer";
 import ReactTileLayer from "../components/mapComponents/layers/ReactTileLayer";
+
+export function getRowCount(layoutConfig) {
+  let requiredRowCount = 0;
+  for (let i = 0; i < layoutConfig.length; i++) {
+    const layoutElement = layoutConfig[i];
+    const rowEnd = layoutElement.y + layoutElement.h;
+    if (requiredRowCount < rowEnd) {
+      requiredRowCount = rowEnd;
+    }
+  }
+  return requiredRowCount;
+}
 
 export function getTabIdByType(tab) {
   let foundTab = settingsTabs.find((t) => t.type === tab);

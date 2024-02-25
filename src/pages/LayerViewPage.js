@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Sidebar from "../components/Sidebar";
 import Loading from "../components/global/Loading";
@@ -13,12 +13,14 @@ import {
   userId,
 } from "../data/mockData";
 import LayerViewMap from "../components/mapComponents/LayerViewMap";
-import layoutConfig from "../layoutConfig.json";
+import layoutConfig from "../layoutConfigurations/basicLayoutConfig.json";
 import RGL, { WidthProvider } from "react-grid-layout";
 import { LayoutWindows } from "../utils/enums";
 import TableDataWindow from "../components/dataWindows/TableDataWindow";
 import TextDataWindow from "../components/dataWindows/TextDataWindow";
 import LineGraphDataWindow from "../components/dataWindows/LineGraphDataWindow";
+import { getRowCount } from "../utils/customFunctions";
+import { Resizable } from "react-resizable";
 
 const LayerViewPage = () => {
   const {
@@ -36,6 +38,19 @@ const LayerViewPage = () => {
 
   const { layout } = layoutConfig;
   const ReactGridLayout = WidthProvider(RGL);
+  const [rowHeight, setRowHeight] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const calculatedHeight = (window.innerHeight - 60) / getRowCount(layout);
+      setRowHeight(calculatedHeight);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   if (
     !areAreasReady ||
@@ -46,7 +61,9 @@ const LayerViewPage = () => {
     return <Loading />;
   }
 
-  function getLayoutPart(elementType) {
+  function getLayoutPart(layoutElement) {
+    const elementType = layoutElement.i;
+    const height = layoutElement.h * rowHeight;
     switch (elementType) {
       case LayoutWindows.ListSidebar:
         return (
@@ -54,16 +71,18 @@ const LayerViewPage = () => {
             layers={layers}
             areas={areas}
             refetchLayers={refetchLayers}
-          ></Sidebar>
+            height={height}
+          />
         );
       case LayoutWindows.MapView:
-        return <LayerViewMap layers={layers}></LayerViewMap>;
+        return <LayerViewMap layers={layers} height={height} />;
       case LayoutWindows.TableData:
         return (
           <TableDataWindow
             headers={statesHeaders}
             data={states}
-          ></TableDataWindow>
+            height={height}
+          />
         );
       case LayoutWindows.TextData:
         return (
@@ -71,10 +90,11 @@ const LayerViewPage = () => {
             header={header}
             subheader={subheader}
             text={text}
-          ></TextDataWindow>
+            height={height}
+          />
         );
       case LayoutWindows.GraphData:
-        return <LineGraphDataWindow />;
+        return <LineGraphDataWindow height={height} />;
     }
   }
 
@@ -83,11 +103,10 @@ const LayerViewPage = () => {
       className="app-layout"
       layout={layout}
       cols={12}
-      marginBottom={1}
-      marginTop={1}
+      rowHeight={rowHeight}
     >
       {layout.map((layoutElement) => (
-        <div key={layoutElement.i}>{getLayoutPart(layoutElement.i)}</div>
+        <div key={layoutElement.i}>{getLayoutPart(layoutElement)}</div>
       ))}
     </ReactGridLayout>
   );

@@ -7,8 +7,9 @@ import LayerList from "./layers/LayerList";
 import { getSidebarDataByTypeAndFilter } from "../utils/customFunctions";
 import { SidebarTypes } from "../utils/enums";
 import PropTypes from "prop-types";
+import { auto } from "@popperjs/core";
 
-export default function Sidebar({ layers, areas, refetchLayers }) {
+export default function Sidebar({ layers, areas, refetchLayers, height }) {
   const [barType, setBarType] = useState(SidebarTypes.Layers);
   const [filter, setFilter] = useState("");
 
@@ -21,12 +22,7 @@ export default function Sidebar({ layers, areas, refetchLayers }) {
   }
 
   return (
-    <Box
-      sx={{
-        height: "calc(100vh - 60px)",
-        overflowY: "auto",
-      }}
-    >
+    <Box maxHeight={height} overflow={auto}>
       <SideBarTabs selectedTab={barType} setSelectedTab={setBarType} />
       <SearchBar setFilter={setFilter} />
       {getCardsByType(
@@ -41,4 +37,5 @@ Sidebar.propTypes = {
   layers: PropTypes.array,
   areas: PropTypes.array,
   refetchLayers: PropTypes.func,
+  height: PropTypes.number,
 };

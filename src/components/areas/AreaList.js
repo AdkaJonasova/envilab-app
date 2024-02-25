@@ -90,7 +90,7 @@ export default function AreaList({ areas }) {
 
   return (
     <div>
-      <Grid container marginY={1} spacing={1} paddingX={1}>
+      <Grid container spacing={1} padding={1}>
         <Grid item xs={6}>
           <Button variant="outlined" color="sideGreen" size="small" fullWidth>
             {t("layerViewSidebar.areaList.createSet")}

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 export default function SearchBar({ setFilter }) {
   return (
-    <Box marginY={1} marginX={1}>
+    <Box padding={1}>
       <OutlinedInput
         type="search"
         size="small"

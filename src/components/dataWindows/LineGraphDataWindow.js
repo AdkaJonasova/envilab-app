@@ -28,7 +28,7 @@ ChartJS.register(
   Legend
 );
 
-export default function LineGraphDataWindow() {
+export default function LineGraphDataWindow({ height }) {
   const options = {
     responsive: true,
     plugins: {
@@ -57,8 +57,14 @@ export default function LineGraphDataWindow() {
   };
 
   return (
-    <Box alignContent={"center"} margin={1}>
-      <Line options={options} data={data} />
+    <Box
+      alignContent={"center"}
+      padding={0}
+      maxHeight={height}
+      overflow={"auto"}
+      border={1}
+    >
+      <Line height="50%" options={options} data={data} />
     </Box>
   );
 }

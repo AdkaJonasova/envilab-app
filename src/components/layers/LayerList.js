@@ -3,7 +3,6 @@ import {
   Button,
   Collapse,
   List,
-  ListItemButton,
   ListSubheader,
   Typography,
 } from "@mui/material";
@@ -12,7 +11,6 @@ import PropTypes from "prop-types";
 import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
 import { useTranslation } from "react-i18next";
-import { none } from "ol/centerconstraint";
 
 export default function LayerList({ layers, refetch }) {
   const [open, setOpen] = React.useState(true);

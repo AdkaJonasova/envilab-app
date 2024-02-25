@@ -9,12 +9,12 @@ import ReactZoomControl from "./controls/ReactZoomControl";
 import ReactLayers from "./layers/ReactLayers";
 import { createLayerByType } from "../../utils/customFunctions";
 
-const LayerViewMap = ({ layers }) => {
+const LayerViewMap = ({ layers, height }) => {
   const [center, setCenter] = useState([0, 0]);
 
   return (
     <div>
-      <ReactMap center={fromLonLat(center)}>
+      <ReactMap center={fromLonLat(center)} height={height}>
         <ReactLayers>
           <ReactTileLayer source={new OSM()} zIndex={0} />
           {layers
