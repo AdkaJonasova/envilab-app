@@ -69,16 +69,10 @@ theme = createTheme(theme, {
         },
       },
     },
-    MuiTableHead: {
-      styleOverrides: {
-        root: {
-          backgroundColor: theme.palette.mainGreen.main,
-        },
-      },
-    },
     MuiTableCell: {
       styleOverrides: {
         head: {
+          backgroundColor: theme.palette.mainGreen.main,
           color: theme.palette.mainGreen.contrastText,
         },
       },

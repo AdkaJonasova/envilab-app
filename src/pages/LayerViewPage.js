@@ -13,14 +13,20 @@ import {
   userId,
 } from "../data/mockData";
 import LayerViewMap from "../components/mapComponents/LayerViewMap";
-import layoutConfig from "../layoutConfigurations/basicLayoutConfig.json";
+import layoutConfig from "../layoutConfigurations/allLayoutConfig.json";
 import RGL, { WidthProvider } from "react-grid-layout";
 import { LayoutWindows } from "../utils/enums";
 import TableDataWindow from "../components/dataWindows/TableDataWindow";
 import TextDataWindow from "../components/dataWindows/TextDataWindow";
 import LineGraphDataWindow from "../components/dataWindows/LineGraphDataWindow";
-import { getRowCount } from "../utils/customFunctions";
-import { Resizable } from "react-resizable";
+import { getRowCount, isLastVerticalElement } from "../utils/customFunctions";
+import { Box } from "@mui/material";
+import {
+  betweenElementsMargin,
+  mainMenuHeight,
+  pageBottomMargin,
+  pageTopMargin,
+} from "../utils/data";
 
 const LayerViewPage = () => {
   const {
@@ -38,11 +44,17 @@ const LayerViewPage = () => {
 
   const { layout } = layoutConfig;
   const ReactGridLayout = WidthProvider(RGL);
+
+  const [rowCount, setRowCount] = useState(0);
   const [rowHeight, setRowHeight] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
-      const calculatedHeight = (window.innerHeight - 60) / getRowCount(layout);
+      const windowLayoutPart =
+        window.innerHeight - mainMenuHeight - pageBottomMargin - pageTopMargin;
+      const rowCount = getRowCount(layout);
+      const calculatedHeight = windowLayoutPart / getRowCount(layout);
+      setRowCount(rowCount);
       setRowHeight(calculatedHeight);
     };
     handleResize();
@@ -62,9 +74,13 @@ const LayerViewPage = () => {
   }
 
   function getLayoutPart(layoutElement) {
-    const elementType = layoutElement.i;
-    const height = layoutElement.h * rowHeight;
-    switch (elementType) {
+    const isLast = isLastVerticalElement(layoutElement, rowCount);
+    const height = isLast
+      ? layoutElement.h * rowHeight
+      : layoutElement.h * rowHeight - 6;
+    const bottomMargin = isLast ? 0 : betweenElementsMargin;
+
+    switch (layoutElement.i) {
       case LayoutWindows.ListSidebar:
         return (
           <Sidebar
@@ -72,16 +88,24 @@ const LayerViewPage = () => {
             areas={areas}
             refetchLayers={refetchLayers}
             height={height}
+            marginBottom={bottomMargin}
           />
         );
       case LayoutWindows.MapView:
-        return <LayerViewMap layers={layers} height={height} />;
+        return (
+          <LayerViewMap
+            layers={layers}
+            height={height}
+            marginBottom={bottomMargin}
+          />
+        );
       case LayoutWindows.TableData:
         return (
           <TableDataWindow
             headers={statesHeaders}
             data={states}
             height={height}
+            marginBottom={bottomMargin}
           />
         );
       case LayoutWindows.TextData:
@@ -91,24 +115,35 @@ const LayerViewPage = () => {
             subheader={subheader}
             text={text}
             height={height}
+            marginBottom={bottomMargin}
           />
         );
       case LayoutWindows.GraphData:
-        return <LineGraphDataWindow height={height} />;
+        return (
+          <LineGraphDataWindow height={height} marginBottom={bottomMargin} />
+        );
     }
   }
 
   return (
-    <ReactGridLayout
-      className="app-layout"
-      layout={layout}
-      cols={12}
-      rowHeight={rowHeight}
+    <Box
+      sx={{
+        marginTop: `${pageTopMargin}px`,
+        marginBottom: `${pageBottomMargin}px`,
+      }}
     >
-      {layout.map((layoutElement) => (
-        <div key={layoutElement.i}>{getLayoutPart(layoutElement)}</div>
-      ))}
-    </ReactGridLayout>
+      <ReactGridLayout
+        className="app-grid-layout"
+        layout={layout}
+        cols={12}
+        rowHeight={rowHeight}
+        margin={[10, 0]}
+      >
+        {layout.map((layoutElement) => (
+          <div key={layoutElement.i}>{getLayoutPart(layoutElement)}</div>
+        ))}
+      </ReactGridLayout>
+    </Box>
   );
 };
 

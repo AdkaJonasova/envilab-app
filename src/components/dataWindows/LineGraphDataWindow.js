@@ -17,6 +17,8 @@ import {
   lineGraphTitle,
 } from "../../data/mockData";
 import { Box } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import PropTypes from "prop-types";
 
 ChartJS.register(
   CategoryScale,
@@ -28,12 +30,14 @@ ChartJS.register(
   Legend
 );
 
-export default function LineGraphDataWindow({ height }) {
+export default function LineGraphDataWindow({ height, marginBottom }) {
+  const theme = useTheme();
+
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: "right",
       },
       title: {
         display: true,
@@ -59,12 +63,19 @@ export default function LineGraphDataWindow({ height }) {
   return (
     <Box
       alignContent={"center"}
-      padding={0}
       maxHeight={height}
       overflow={"auto"}
       border={1}
+      borderColor={theme.palette.informationGrey.main}
+      borderRadius={2}
+      sx={{ marginBottom: `${marginBottom}px` }}
     >
-      <Line height="50%" options={options} data={data} />
+      <Line height="55%" options={options} data={data} />
     </Box>
   );
 }
+
+LineGraphDataWindow.propTypes = {
+  height: PropTypes.number,
+  marginBottom: PropTypes.number,
+};

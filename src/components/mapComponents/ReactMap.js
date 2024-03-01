@@ -3,14 +3,20 @@
 import React, { useRef, useState, useEffect } from "react";
 import MapContext from "./MapContext";
 import { Map, View } from "ol";
+import { transform } from "ol/proj";
+import { getCenter } from "ol/extent";
 
-const ReactMap = ({ children, center, height }) => {
+const ReactMap = ({ children, center, height, marginBottom }) => {
   const mapRef = useRef();
   const [map, setMap] = useState(null);
 
   useEffect(() => {
     let options = {
-      view: new View({ center, zoom: 2 }),
+      view: new View({
+        projection: "EPSG:3857",
+        center: center,
+        zoom: 2,
+      }),
       layers: [],
       controls: [],
       overlays: [],
@@ -34,6 +40,7 @@ const ReactMap = ({ children, center, height }) => {
         style={{
           width: "100%",
           height: `${height}px`,
+          marginBottom: `${marginBottom}px`,
         }}
       >
         {children}

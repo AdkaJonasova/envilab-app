@@ -1,6 +1,7 @@
 export const LayerTypes = {
   Vector: "vector",
   Tile: "tile",
+  Image: "image",
 };
 
 export const SidebarTypes = {

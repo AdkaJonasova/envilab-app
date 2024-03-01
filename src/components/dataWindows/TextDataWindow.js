@@ -1,24 +1,32 @@
+import { useTheme } from "@emotion/react";
 import { Box, Typography } from "@mui/material";
 import { height } from "@mui/system";
 import PropTypes from "prop-types";
 
-export default function TextDataWindow({ header, subheader, text, height }) {
+export default function TextDataWindow({
+  header,
+  subheader,
+  text,
+  height,
+  marginBottom,
+}) {
+  const theme = useTheme();
+
   return (
-    <div className="text-data-window">
-      <Box
-        alignContent={"center"}
-        padding={1}
-        border={1}
-        borderRadius={2}
-        borderColor={"mainGreen.main"}
-        maxHeight={height}
-        overflow={"auto"}
-      >
-        <Typography variant="h3">{header}</Typography>
-        <Typography variant="h4">{subheader}</Typography>
-        <Typography variant="body1">{text}</Typography>
-      </Box>
-    </div>
+    <Box
+      alignContent={"center"}
+      border={1}
+      borderRadius={2}
+      borderColor={theme.palette.informationGrey.main}
+      maxHeight={height}
+      overflow={"auto"}
+      paddingX={1}
+      sx={{ marginBottom: `${marginBottom}px` }}
+    >
+      <Typography variant="h3">{header}</Typography>
+      <Typography variant="h4">{subheader}</Typography>
+      <Typography variant="body1">{text}</Typography>
+    </Box>
   );
 }
 
@@ -27,4 +35,5 @@ TextDataWindow.propTypes = {
   subheader: PropTypes.string,
   text: PropTypes.string,
   height: PropTypes.number,
+  marginBottom: PropTypes.number,
 };

@@ -1,3 +1,4 @@
+import { Projection } from "ol/proj";
 import { LayerTypes } from "../utils/enums";
 
 // ----------------------------------------------------------- Mock user data -----------------------------------------------------------
@@ -64,6 +65,23 @@ const testLayer8 = {
   name: "Test layer 8",
 };
 
+const staticImageLayer1 = {
+  layerId: 11,
+  name: "Cartoon image layer",
+  source: "https://imgs.xkcd.com/comics/online_communities.png",
+  extent: [0, 0, 1024, 968],
+  type: LayerTypes.Image,
+};
+
+const staticImageLayer2 = {
+  layerId: 12,
+  name: "Image projection layer",
+  source:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/British_National_Grid.svg/2000px-British_National_Grid.svg.png",
+  extent: [0, 0, 700000, 1300000],
+  type: LayerTypes.Image,
+};
+
 export const mockLayers = [
   pointLayer,
   usaStatesLayer,
@@ -76,7 +94,17 @@ export const mockLayers = [
   testLayer6,
   testLayer7,
   testLayer8,
+  staticImageLayer1,
+  staticImageLayer2,
 ];
+
+export const extent = [0, 0, 1024, 968];
+
+export const projection = new Projection({
+  code: "xkcd-image",
+  units: "pixels",
+  extent: extent,
+});
 
 // ----------------------------------------------------------- Mock area data -----------------------------------------------------------
 const subArea1 = {

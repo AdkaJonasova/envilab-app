@@ -1,15 +1,18 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import YardIcon from "@mui/icons-material/Yard";
 import { Button, Toolbar } from "@mui/material";
-import { pageName, settingsPath, viewPages } from "../../utils/data";
+import {
+  mainMenuHeight,
+  pageName,
+  settingsPath,
+  viewPages,
+} from "../../utils/data";
 import LanguageSelector from "./LanguageSelector";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
 export default function MainMenu() {
@@ -36,7 +39,11 @@ export default function MainMenu() {
   };
 
   return (
-    <AppBar sx={{ height: "47px" }} position="static" color="sideGreen">
+    <AppBar
+      sx={{ height: `${mainMenuHeight}px` }}
+      position="static"
+      color="sideGreen"
+    >
       <Toolbar variant="dense">
         <YardIcon size="large" edge="start" sx={{ mr: 2 }} />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
