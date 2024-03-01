@@ -58,7 +58,7 @@ export default function LayerList({ layers, refetch }) {
   return (
     <List
       key={"layer-list"}
-      sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+      sx={{ width: "100%", bgcolor: "background.paper" }}
       dense
     >
       <Button

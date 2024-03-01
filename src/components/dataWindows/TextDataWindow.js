@@ -1,6 +1,5 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography } from "@mui/material";
-import { height } from "@mui/system";
 import PropTypes from "prop-types";
 
 export default function TextDataWindow({

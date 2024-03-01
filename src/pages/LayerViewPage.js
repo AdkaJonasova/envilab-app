@@ -13,7 +13,7 @@ import {
   userId,
 } from "../data/mockData";
 import LayerViewMap from "../components/mapComponents/LayerViewMap";
-import layoutConfig from "../layoutConfigurations/allLayoutConfig.json";
+import layoutConfig from "../layoutConfigurations/basicLayoutConfig.json";
 import RGL, { WidthProvider } from "react-grid-layout";
 import { LayoutWindows } from "../utils/enums";
 import TableDataWindow from "../components/dataWindows/TableDataWindow";
