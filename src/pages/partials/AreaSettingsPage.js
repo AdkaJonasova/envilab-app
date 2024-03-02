@@ -69,7 +69,7 @@ const AreaSettingsPage = () => {
           <IconButton
             key={`settings-area-item-icon-${area.areaId}`}
             size="small"
-            color="sideBrown"
+            color="beigeBrown"
             onClick={() => handleStarClick(area)}
           >
             {getStarForArea(area)}

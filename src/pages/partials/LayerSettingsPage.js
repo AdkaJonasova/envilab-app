@@ -81,7 +81,7 @@ const LayerSettingsPage = () => {
           <IconButton
             key={`settings-layer-item-icon-${layer.layerId}`}
             size="small"
-            color="sideBrown"
+            color="beigeBrown"
             onClick={() => handleStarClick(layer)}
           >
             {getStarForLayer(layer)}

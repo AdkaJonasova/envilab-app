@@ -23,7 +23,7 @@ export default function LayerListItem({ layer, handleLayerStateSwitch }) {
         <IconButton
           key={`layer-list-item-edit-${layer.layerId}`}
           size="small"
-          color="sideBrown"
+          color="beigeBrown"
         >
           <Edit />
         </IconButton>
@@ -31,7 +31,7 @@ export default function LayerListItem({ layer, handleLayerStateSwitch }) {
           key={`layer-list-item-switch-${layer.layerId}`}
           edge="end"
           size="small"
-          color="sideBrown"
+          color="beigeBrown"
           onChange={() => handleLayerStateSwitch(layer)}
           checked={layer.isActive}
         />

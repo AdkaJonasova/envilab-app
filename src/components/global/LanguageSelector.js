@@ -27,7 +27,7 @@ function LanguageSelector() {
         sx={{
           ".MuiOutlinedInput-notchedOutline": { borderStyle: "none" },
           "& .MuiSelect-icon": {
-            color: "mainGreen.contrastText",
+            color: "darkGreen.contrastText",
           },
         }}
         value={language}

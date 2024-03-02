@@ -20,8 +20,8 @@ export default function SelectViewSidebar({ points, deletePoint }) {
 
   return (
     <Box>
-      <Typography variant="h3">{t("selectViewSidebar.title")}</Typography>
-      <Typography variant="h4">{t("selectViewSidebar.areaName")}</Typography>
+      <Typography variant="h2">{t("selectViewSidebar.title")}</Typography>
+      <Typography variant="h3">{t("selectViewSidebar.areaName")}</Typography>
       <TextField
         id="area-name-input"
         fullWidth
@@ -31,12 +31,12 @@ export default function SelectViewSidebar({ points, deletePoint }) {
       <Divider sx={{ marginBottom: 1, marginTop: 2 }} />
       <Grid container spacing={1} marginRight={1}>
         <Grid item xs={11}>
-          <Typography variant="h4">
+          <Typography variant="h3">
             {t("selectViewSidebar.selectedPoints")}
           </Typography>
         </Grid>
         <Grid item xs={1}>
-          <IconButton color="sideBrown" size="small">
+          <IconButton color="beigeBrown" size="small">
             <AddCircleIcon />
           </IconButton>
         </Grid>
@@ -57,7 +57,7 @@ export default function SelectViewSidebar({ points, deletePoint }) {
           </ListItem>
         ))}
       </List>
-      <Button fullWidth variant="outlined" color="sideGreen">
+      <Button fullWidth variant="outlined" color="darkGreen">
         {t("selectViewSidebar.save")}
       </Button>
     </Box>

@@ -42,11 +42,11 @@ export default function MainMenu() {
     <AppBar
       sx={{ height: `${mainMenuHeight}px` }}
       position="static"
-      color="sideGreen"
+      color="darkGreen"
     >
       <Toolbar variant="dense">
-        <YardIcon size="large" edge="start" sx={{ mr: 2 }} />
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <YardIcon size="large" edge="start" sx={{ mr: 1 }} />
+        <Typography variant="pageTitle" component="div" sx={{ flexGrow: 1 }}>
           {pageName}
         </Typography>
 
@@ -56,7 +56,7 @@ export default function MainMenu() {
             onClick={handleOpenSubMenu}
             sx={{ marginRight: 5 }}
           >
-            {t("menu.views")}
+            <Typography variant="menuItem">{t("menu.views")}</Typography>
           </Button>
 
           <Menu
@@ -83,7 +83,7 @@ export default function MainMenu() {
               >
                 <Typography
                   key={`menu-view-item-name-${page.pageKey}`}
-                  textAlign="center"
+                  variant="menuItem"
                 >
                   {t(page.pageName)}
                 </Typography>
@@ -96,7 +96,7 @@ export default function MainMenu() {
           color="inherit"
           onClick={() => navigateAction(settingsPath)}
         >
-          {t("menu.settings")}
+          <Typography variant="menuItem">{t("menu.settings")}</Typography>
         </Button>
         <LanguageSelector />
       </Toolbar>

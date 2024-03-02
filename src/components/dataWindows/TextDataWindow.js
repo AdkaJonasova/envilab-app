@@ -22,8 +22,8 @@ export default function TextDataWindow({
       paddingX={1}
       sx={{ marginBottom: `${marginBottom}px` }}
     >
-      <Typography variant="h3">{header}</Typography>
-      <Typography variant="h4">{subheader}</Typography>
+      <Typography variant="h2">{header}</Typography>
+      <Typography variant="h3">{subheader}</Typography>
       <Typography variant="body1">{text}</Typography>
     </Box>
   );

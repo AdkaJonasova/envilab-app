@@ -45,7 +45,7 @@ export default function LayerList({ layers, refetch }) {
 
   function getEmptyListText() {
     return (
-      <Typography variant="body3">
+      <Typography variant="information">
         {t("layerViewSidebar.layerList.noLayers")}
       </Typography>
     );

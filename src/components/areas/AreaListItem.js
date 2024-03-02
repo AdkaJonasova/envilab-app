@@ -25,7 +25,7 @@ export default function AreaListItem({
         <IconButton
           key={`area-list-item-edit-${area.areaId}`}
           size="small"
-          color="sideBrown"
+          color="beigeBrown"
         >
           <Edit />
         </IconButton>
@@ -59,7 +59,7 @@ export default function AreaListItem({
           id={`area-list-item-switch-${area.areaId}`}
           edge="end"
           size="small"
-          color="sideBrown"
+          color="beigeBrown"
           onChange={handleUseArea(area)}
           checked={isUsed(area)}
         />

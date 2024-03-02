@@ -14,18 +14,17 @@ export default function SettingsHeader({
 
   return (
     <div>
-      <Typography variant="h3" padding={2} fontWeight={"bold"}>
-        {title}
-      </Typography>
-      <Typography variant="h2">{annotation}</Typography>
+      <Typography variant="h1">{title}</Typography>
+      <Typography variant="annotation">{annotation}</Typography>
       <Grid container>
         <Grid item xs={8}>
           <SearchBar setFilter={setFilter} />
         </Grid>
         <Grid item xs={2} container justifyContent={"flex-end"} padding={1.5}>
           <Button
-            color="mainGreen"
-            variant="contained"
+            fullWidth
+            color="darkGreen"
+            variant="outlined"
             size="small"
             onClick={() => handleSettingsReset()}
           >
@@ -34,8 +33,9 @@ export default function SettingsHeader({
         </Grid>
         <Grid item xs={2} container justifyContent={"flex-start"} padding={1.5}>
           <Button
-            color="mainGreen"
-            variant="contained"
+            fullWidth
+            color="darkGreen"
+            variant="outlined"
             size="small"
             onClick={() => handleSettingsSave()}
           >
