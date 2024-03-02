@@ -157,6 +157,13 @@ theme = createTheme(theme, {
         },
       },
     },
+    MuiCircularProgress: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.lightGreen.main,
+        },
+      },
+    },
   },
 });
 
