@@ -76,12 +76,17 @@ export default function MainMenu() {
           >
             {viewPages.map((page) => (
               <MenuItem
-                key={page.pageKey}
+                key={`menu-view-item-${page.pageKey}`}
                 onClick={() => {
                   navigateViewAction(page.pagePath);
                 }}
               >
-                <Typography textAlign="center">{t(page.pageName)}</Typography>
+                <Typography
+                  key={`menu-view-item-name-${page.pageKey}`}
+                  textAlign="center"
+                >
+                  {t(page.pageName)}
+                </Typography>
               </MenuItem>
             ))}
           </Menu>

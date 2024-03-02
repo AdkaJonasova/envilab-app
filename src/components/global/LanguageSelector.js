@@ -43,9 +43,11 @@ function LanguageSelector() {
         }}
       >
         {languages.map((language) => (
-          <MenuItem value={language.code}>
-            <ListItemIcon>
-              <span>{language.flag}</span>
+          <MenuItem key={`lang-item-${language.code}`} value={language.code}>
+            <ListItemIcon key={`lang-item-icon-container-${language.code}`}>
+              <span key={`'lang-item-icon-span-${language.code}`}>
+                {language.flag}
+              </span>
             </ListItemIcon>
             <ListItemText primary={t(language.label)} />
           </MenuItem>

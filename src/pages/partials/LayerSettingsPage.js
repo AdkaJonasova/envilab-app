@@ -76,9 +76,10 @@ const LayerSettingsPage = () => {
 
   function getLayerItem(layer) {
     return (
-      <div>
-        <ListItem id={`settings-list-item-${layer.layerId}`}>
+      <div key={`settings-layer-item-container-${layer.layerId}`}>
+        <ListItem key={`settings-layer-item-${layer.layerId}`}>
           <IconButton
+            key={`settings-layer-item-icon-${layer.layerId}`}
             size="small"
             color="sideBrown"
             onClick={() => handleStarClick(layer)}
@@ -86,11 +87,11 @@ const LayerSettingsPage = () => {
             {getStarForLayer(layer)}
           </IconButton>
           <ListItemText
-            id={`settings-list-text-label-${layer.layerId}`}
+            key={`settings-layer-item-name-${layer.layerId}`}
             primary={layer.geoLayer.name}
           ></ListItemText>
         </ListItem>
-        <Divider />
+        <Divider key={`settings-layer-item-divider-${layer.layerId}`} />
       </div>
     );
   }

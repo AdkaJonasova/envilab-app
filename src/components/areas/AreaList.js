@@ -42,6 +42,7 @@ export default function AreaList({ areas }) {
     if (area.geoArea.subAreas.length === 0) {
       return (
         <AreaListItem
+          key={`area-list-item-component-${area.areaId}`}
           area={area}
           hierarchyLevel={level}
           isExpandable={false}
@@ -53,8 +54,9 @@ export default function AreaList({ areas }) {
       );
     } else {
       return (
-        <div>
+        <div key={`area-list-item-outer-container-${area.areaId}`}>
           <AreaListItem
+            key={`area-list-item-component-${area.areaId}`}
             area={area}
             hierarchyLevel={level}
             isExpandable={true}
@@ -64,6 +66,7 @@ export default function AreaList({ areas }) {
             isExpanded={isAreaExpanded}
           />
           <Collapse
+            key={`area-list-item-collapsable-${area.areaId}`}
             in={expandedAreas.indexOf(area.areaId) !== -1}
             timeout={"auto"}
             unmountOnExit

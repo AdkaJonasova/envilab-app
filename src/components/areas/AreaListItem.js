@@ -23,7 +23,7 @@ export default function AreaListItem({
     if (area.isCustom) {
       return (
         <IconButton
-          key={`area-list-edit-btn-${area.areaId}`}
+          key={`area-list-item-edit-${area.areaId}`}
           size="small"
           color="sideBrown"
         >
@@ -37,7 +37,7 @@ export default function AreaListItem({
   function addExpandCollapseItem(area) {
     return (
       <IconButton
-        key={`area-list-expand-btn-${area.areaId}`}
+        key={`area-list-item-expand-${area.areaId}`}
         size="small"
         onClick={handleExpandCollapse(area)}
       >
@@ -51,12 +51,12 @@ export default function AreaListItem({
       <ListItem key={`area-list-item-${area.areaId}`} sx={{ pl: paddingSize }}>
         {isExpandable ? addExpandCollapseItem(area) : ""}
         <ListItemText
-          key={`area-list-text-label-${area.areaId}`}
+          key={`area-list-item-name-${area.areaId}`}
           primary={area.geoArea.name}
         />
         {addEditButton(area)}
         <Switch
-          id={`area-list-switch-btn-${area.areaId}`}
+          id={`area-list-item-switch-${area.areaId}`}
           edge="end"
           size="small"
           color="sideBrown"
@@ -64,7 +64,7 @@ export default function AreaListItem({
           checked={isUsed(area)}
         />
       </ListItem>
-      <Divider />
+      <Divider key={`area-list-item-divider-${area.areaId}`} />
     </div>
   );
 }

@@ -64,9 +64,10 @@ const AreaSettingsPage = () => {
 
   function getAreaItem(area) {
     return (
-      <div>
-        <ListItem id={`settings-list-item-${area.areaId}`}>
+      <div key={`settings-area-item-container-${area.areaId}`}>
+        <ListItem key={`settings-area-item-${area.areaId}`}>
           <IconButton
+            key={`settings-area-item-icon-${area.areaId}`}
             size="small"
             color="sideBrown"
             onClick={() => handleStarClick(area)}
@@ -74,11 +75,11 @@ const AreaSettingsPage = () => {
             {getStarForArea(area)}
           </IconButton>
           <ListItemText
-            id={`settings-list-text-label-${area.areaId}`}
+            key={`settings-area-item-name-${area.areaId}`}
             primary={area.geoArea.name}
           ></ListItemText>
         </ListItem>
-        <Divider />
+        <Divider key={`settings-area-item-divider-${area.areaId}`} />
       </div>
     );
   }

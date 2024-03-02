@@ -36,6 +36,7 @@ export default function LayerList({ layers, refetch }) {
   function getLayerItem(layer) {
     return (
       <LayerListItem
+        key={`layer-list-item-component-${layer.layerId}`}
         layer={layer}
         handleLayerStateSwitch={handleLayerStateSwitch}
       />
@@ -57,18 +58,26 @@ export default function LayerList({ layers, refetch }) {
 
   return (
     <List
-      key={"layer-list"}
+      id={"layer-list"}
       sx={{ width: "100%", bgcolor: "background.paper" }}
       dense
     >
       <Button
+        key={`layer-list-section-btn-0`}
         fullWidth
         style={{ textTransform: "none" }}
         onClick={handleExpandCollapse}
       >
-        <ListSubheader>Test subheader</ListSubheader>
+        <ListSubheader key={`layer-list-section-0`}>
+          Test subheader
+        </ListSubheader>
       </Button>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse
+        key={`layer-list-section-collapse-0`}
+        in={open}
+        timeout="auto"
+        unmountOnExit
+      >
         {layers.map((layer) => getLayerItem(layer))}
       </Collapse>
     </List>
