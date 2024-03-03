@@ -108,7 +108,12 @@ const SelectViewPage = () => {
               justifyContent={"flex-end"}
               paddingX={2}
             >
-              <Button color="darkGreen" variant="outlined" size="small">
+              <Button
+                fullWidth
+                color="darkGreen"
+                variant="outlined"
+                size="small"
+              >
                 {t("selectView.importBtn")}
               </Button>
             </Grid>

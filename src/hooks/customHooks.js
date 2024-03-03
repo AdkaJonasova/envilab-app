@@ -27,7 +27,13 @@ export const mergeAreas = (geoAreas, areaInfos, includeAll = false) => {
         isCustom: areaInfo ? areaInfo.isCustom : false,
         geoArea: a,
       };
-
+      if (area.geoArea.subAreas.length !== 0) {
+        area.geoArea.subAreas = mergeAreas(
+          area.geoArea.subAreas,
+          areaInfos,
+          includeAll
+        );
+      }
       result.push(area);
     }
   });
