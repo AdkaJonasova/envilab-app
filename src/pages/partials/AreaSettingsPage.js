@@ -46,6 +46,12 @@ const AreaSettingsPage = () => {
 
     let newChangedAreas = [...changesAreas];
     newChangedAreas.push(changedArea);
+
+    changedArea.geoArea.subAreas.forEach((subArea) => {
+      let changedSubArea = { ...subArea };
+      changedSubArea.isFavorite = !subArea.isFavorite;
+      newChangedAreas.push(changedSubArea);
+    });
     setChangedAreas(newChangedAreas);
   }
 
