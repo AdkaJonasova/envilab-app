@@ -69,6 +69,7 @@ const LayerSettingsPage = () => {
   function getLayerItem(layer) {
     return (
       <LayerSettingsItem
+        key={`layer-settings-item-component-${layer.layerId}`}
         layer={layer}
         isMarkedFavorite={isMarkedFavorite}
         handleStarClick={handleStarClick}

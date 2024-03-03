@@ -83,6 +83,7 @@ const AreaSettingsPage = () => {
     if (area.geoArea.subAreas.length === 0) {
       return (
         <AreaSettingsItem
+          key={`settings-area-item-component-${area.areaId}`}
           area={area}
           hierarchyLevel={level}
           isExpandable={false}
@@ -96,6 +97,7 @@ const AreaSettingsPage = () => {
       return (
         <div key={`settings-area-item-exp-container-${area.areaId}`}>
           <AreaSettingsItem
+            key={`settings-area-item-component-${area.areaId}`}
             area={area}
             hierarchyLevel={level}
             isExpandable={true}
