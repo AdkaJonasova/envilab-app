@@ -11,32 +11,32 @@ import PropTypes from "prop-types";
 export default function LayerListItem({ layer, handleLayerStateSwitch }) {
   let paddingSize = 4;
   return (
-    <div>
+    <div key={`layer-list-item-container-${layer.layerId}`}>
       <ListItem
         key={`layer-list-item-${layer.layerId}`}
         sx={{ pl: paddingSize }}
       >
         <ListItemText
-          key={`layer-list-text-label-${layer.layerId}`}
+          key={`layer-list-item-name-${layer.layerId}`}
           primary={layer.geoLayer.name}
         />
         <IconButton
-          key={`layer-list-icon-btn-${layer.layerId}`}
+          key={`layer-list-item-edit-${layer.layerId}`}
           size="small"
-          color="sideBrown"
+          color="beigeBrown"
         >
           <Edit />
         </IconButton>
         <Switch
-          key={`layer-list-switch-btn-${layer.layerId}`}
+          key={`layer-list-item-switch-${layer.layerId}`}
           edge="end"
           size="small"
-          color="sideBrown"
+          color="beigeBrown"
           onChange={() => handleLayerStateSwitch(layer)}
           checked={layer.isActive}
         />
       </ListItem>
-      <Divider />
+      <Divider key={`layer-list-divider-${layer.layerId}`} />
     </div>
   );
 }

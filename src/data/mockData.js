@@ -1,3 +1,4 @@
+import { Projection } from "ol/proj";
 import { LayerTypes } from "../utils/enums";
 
 // ----------------------------------------------------------- Mock user data -----------------------------------------------------------
@@ -64,6 +65,23 @@ const testLayer8 = {
   name: "Test layer 8",
 };
 
+const staticImageLayer1 = {
+  layerId: 11,
+  name: "Cartoon image layer",
+  source: "https://imgs.xkcd.com/comics/online_communities.png",
+  extent: [0, 0, 1024, 968],
+  type: LayerTypes.Image,
+};
+
+const staticImageLayer2 = {
+  layerId: 12,
+  name: "Image projection layer",
+  source:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/British_National_Grid.svg/2000px-British_National_Grid.svg.png",
+  extent: [0, 0, 700000, 1300000],
+  type: LayerTypes.Image,
+};
+
 export const mockLayers = [
   pointLayer,
   usaStatesLayer,
@@ -76,7 +94,17 @@ export const mockLayers = [
   testLayer6,
   testLayer7,
   testLayer8,
+  staticImageLayer1,
+  staticImageLayer2,
 ];
+
+export const extent = [0, 0, 1024, 968];
+
+export const projection = new Projection({
+  code: "xkcd-image",
+  units: "pixels",
+  extent: extent,
+});
 
 // ----------------------------------------------------------- Mock area data -----------------------------------------------------------
 const subArea1 = {
@@ -146,3 +174,16 @@ const newMexico = {
 
 export const states = [alaska, texas, california, montana, newMexico];
 export const statesHeaders = ["State name", "Population", "Area"];
+
+// ----------------------------------------------------------- Mock text data window data -----------------------------------------------------------
+
+export const header = "Test header";
+export const subheader = "This is a test subheader";
+export const text =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+// ----------------------------------------------------------- Mock line graph data window data -----------------------------------------------------------
+export const lineGraphLabels = ["2000", "2005", "2010", "2015", "2020"];
+export const lineGraphData1 = [5, 10, 8, 6, 15];
+export const lineGraphTitle = "Test graph title";
+export const lineGraphTestDataName1 = "Test data name";

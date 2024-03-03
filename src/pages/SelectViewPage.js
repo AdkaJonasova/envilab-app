@@ -97,7 +97,9 @@ const SelectViewPage = () => {
         <Grid item xs={9} container direction="column" spacing={1}>
           <Grid item container direction="row">
             <Grid item xs={10}>
-              <Typography variant="h2">{t("selectView.subtitle")}</Typography>
+              <Typography variant="annotation">
+                {t("selectView.subtitle")}
+              </Typography>
             </Grid>
             <Grid
               item
@@ -106,7 +108,7 @@ const SelectViewPage = () => {
               justifyContent={"flex-end"}
               paddingX={2}
             >
-              <Button color="mainGreen" variant="contained" size="small">
+              <Button color="darkGreen" variant="outlined" size="small">
                 {t("selectView.importBtn")}
               </Button>
             </Grid>

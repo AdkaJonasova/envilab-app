@@ -42,6 +42,7 @@ export default function AreaList({ areas }) {
     if (area.geoArea.subAreas.length === 0) {
       return (
         <AreaListItem
+          key={`area-list-item-component-${area.areaId}`}
           area={area}
           hierarchyLevel={level}
           isExpandable={false}
@@ -53,8 +54,9 @@ export default function AreaList({ areas }) {
       );
     } else {
       return (
-        <div>
+        <div key={`area-list-item-outer-container-${area.areaId}`}>
           <AreaListItem
+            key={`area-list-item-component-${area.areaId}`}
             area={area}
             hierarchyLevel={level}
             isExpandable={true}
@@ -64,6 +66,7 @@ export default function AreaList({ areas }) {
             isExpanded={isAreaExpanded}
           />
           <Collapse
+            key={`area-list-item-collapsable-${area.areaId}`}
             in={expandedAreas.indexOf(area.areaId) !== -1}
             timeout={"auto"}
             unmountOnExit
@@ -81,7 +84,7 @@ export default function AreaList({ areas }) {
 
   function getEmptyListText() {
     return (
-      <Typography variant="body3">
+      <Typography variant="information">
         {t("layerViewSidebar.areaList.noAreas")}
       </Typography>
     );
@@ -90,22 +93,19 @@ export default function AreaList({ areas }) {
 
   return (
     <div>
-      <Grid container marginY={1} spacing={1} paddingX={1}>
+      <Grid container spacing={1} padding={1}>
         <Grid item xs={6}>
-          <Button variant="outlined" color="sideGreen" size="small" fullWidth>
+          <Button variant="outlined" color="darkGreen" size="small" fullWidth>
             {t("layerViewSidebar.areaList.createSet")}
           </Button>
         </Grid>
         <Grid item xs={6}>
-          <Button variant="outlined" color="sideGreen" size="small" fullWidth>
+          <Button variant="outlined" color="darkGreen" size="small" fullWidth>
             {t("layerViewSidebar.areaList.chooseSet")}
           </Button>
         </Grid>
       </Grid>
-      <List
-        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-        dense
-      >
+      <List sx={{ width: "100%", bgcolor: "background.paper" }} dense>
         {areas.length === 0
           ? getEmptyListText()
           : areas.map((area) => getAreaItem(area, 0))}

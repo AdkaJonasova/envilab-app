@@ -1,0 +1,36 @@
+{
+  "layout": [
+    {
+      "i": "sidebarList",
+      "x": 0,
+      "y": 0,
+      "w": 3,
+      "h": 3,
+      "static": true
+    },
+    {
+      "i": "mapView",
+      "x": 3,
+      "y": 0,
+      "w": 6,
+      "h": 2,
+      "static": true
+    },
+    {
+      "i": "tableData",
+      "x": 9,
+      "y": 0,
+      "w": 3,
+      "h": 2,
+      "static": true
+    },
+    {
+      "i": "graphData",
+      "x": 3,
+      "y": 2,
+      "w": 9,
+      "h": 1,
+      "static": true
+    }
+  ]
+}

@@ -3,17 +3,18 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 let theme = createTheme({
   palette: {
-    mainGreen: {
-      main: "#8B958A",
+    lightGreen: {
+      main: "#A2AD8D",
       contrastText: "#FEEDE0",
     },
 
-    sideBrown: {
+    beigeBrown: {
       main: "#E1BDA5",
     },
 
-    sideGreen: {
+    darkGreen: {
       main: "#59745D",
+      contrastText: "#FEEDE0",
     },
 
     informationGrey: {
@@ -24,40 +25,64 @@ let theme = createTheme({
 
 theme = createTheme(theme, {
   typography: {
+    // titles of the pages
     h1: {
-      fontSize: "1.8rem",
-      color: theme.palette.sideGreen.main,
+      fontSize: "1.3rem",
+      fontWeight: "bold",
+      color: theme.palette.darkGreen.main,
+      textAlign: "center",
+      marginTop: 10,
+      marginBottom: 15,
+    },
+    // titles of the windows
+    h2: {
+      fontSize: "1.3rem",
+      color: theme.palette.darkGreen.main,
+      textAlign: "center",
+      marginTop: 5,
+      marginBottom: 5,
+    },
+    //subtitles of the windows
+    h3: {
+      fontSize: "1rem",
+      color: theme.palette.lightGreen.main,
+      textAlign: "left",
+      marginBottom: 3,
+      marginTop: 3,
+    },
+    annotation: {
+      fontSize: "1rem",
+      color: "black",
+      textAlign: "left",
+      marginBottom: 5,
+      marginTop: 5,
+    },
+    information: {
+      fontSize: "0.9rem",
+      color: theme.palette.informationGrey.main,
       textAlign: "center",
       marginBottom: 5,
       marginTop: 5,
     },
-    h2: {
+    pageTitle: {
+      textTransform: "uppercase",
       fontSize: "1rem",
-      marginTop: 5,
-      marginBottom: 10,
     },
-    h3: {
-      fontSize: "1.3rem",
-      color: theme.palette.sideGreen.main,
+    menuItem: {
+      fontSize: "1rem",
       textAlign: "center",
-      marginTop: 5,
-      marginBottom: 10,
-    },
-    h4: {
-      fontSize: "1rem",
-      textAlign: "left",
-      margin: 5,
     },
     body1: {
       fontSize: "0.9rem",
     },
-    body3: {
+    body2: {
       fontSize: "0.9rem",
-      textAlign: "center",
-      color: theme.palette.informationGrey.main,
+    },
+    button: {
+      textTransform: "none",
+      fontSize: "0.9rem",
     },
   },
-
   components: {
     MuiListItemButton: {
       styleOverrides: {
@@ -68,10 +93,12 @@ theme = createTheme(theme, {
         },
       },
     },
-    MuiTableHead: {
+    MuiTableCell: {
       styleOverrides: {
-        root: {
-          backgroundColor: theme.palette.sideBrown.main,
+        head: {
+          backgroundColor: theme.palette.lightGreen.main,
+          color: theme.palette.lightGreen.contrastText,
+          fontSize: "0.9rem",
         },
       },
     },
@@ -95,7 +122,7 @@ theme = createTheme(theme, {
           width: "100%",
         },
         indicator: {
-          backgroundColor: theme.palette.sideGreen.main,
+          backgroundColor: theme.palette.darkGreen.main,
           height: 3,
         },
       },
@@ -104,7 +131,7 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           "&.Mui-selected": {
-            color: theme.palette.sideGreen.main,
+            color: theme.palette.darkGreen.main,
           },
         },
       },
@@ -112,13 +139,13 @@ theme = createTheme(theme, {
     MuiListSubheader: {
       styleOverrides: {
         root: {
-          backgroundColor: theme.palette.sideGreen.main,
-          color: theme.palette.mainGreen.contrastText,
-          fontWeight: "bold",
+          backgroundColor: theme.palette.darkGreen.main,
+          color: theme.palette.darkGreen.contrastText,
           fontSize: "0.9rem",
           textAlign: "left",
           lineHeight: 2,
           width: "100%",
+          margin: 0,
         },
       },
     },
@@ -127,6 +154,13 @@ theme = createTheme(theme, {
         root: {
           lineHeight: 3,
           fontSize: "0.2rem",
+        },
+      },
+    },
+    MuiCircularProgress: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.lightGreen.main,
         },
       },
     },

@@ -7,14 +7,18 @@ import ReactControls from "./controls/ReactControls";
 import ReactFullScreenControl from "./controls/ReactFullScreenControl";
 import ReactZoomControl from "./controls/ReactZoomControl";
 import ReactLayers from "./layers/ReactLayers";
-import { createLayerByType } from "../../utils/customFunctions";
+import { createLayerByType } from "../../utils/decisionCriteriaHandlers";
 
-const LayerViewMap = ({ layers }) => {
+const LayerViewMap = ({ layers, height, marginBottom }) => {
   const [center, setCenter] = useState([0, 0]);
 
   return (
     <div>
-      <ReactMap center={fromLonLat(center)}>
+      <ReactMap
+        center={fromLonLat(center)}
+        height={height}
+        marginBottom={marginBottom}
+      >
         <ReactLayers>
           <ReactTileLayer source={new OSM()} zIndex={0} />
           {layers

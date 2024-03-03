@@ -48,3 +48,9 @@ export const languages = [
   { code: "cz", label: "menu.languages.czech", flag: "🇨🇿" },
   { code: "sk", label: "menu.languages.slovak", flag: "🇸🇰" },
 ];
+
+// Layouting
+export const mainMenuHeight = 48;
+export const pageTopMargin = 6;
+export const pageBottomMargin = 6;
+export const betweenElementsMargin = 6;
