@@ -8,22 +8,9 @@ import {
 } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
 import Loading from "../../components/global/Loading";
-import {
-  Close,
-  ExpandLess,
-  ExpandMore,
-  Star,
-  StarBorder,
-} from "@mui/icons-material";
-import {
-  Collapse,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Snackbar,
-} from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { Collapse, IconButton, List, Snackbar } from "@mui/material";
+import AreaSettingsItem from "../../components/settings/AreaSettingsItem";
 
 const AreaSettingsPage = () => {
   const [filter, setFilter] = useState("");
@@ -62,12 +49,11 @@ const AreaSettingsPage = () => {
     setChangedAreas(newChangedAreas);
   }
 
-  function getStarForArea(area) {
-    const isFavorite =
+  function isMarkedFavorite(area) {
+    return (
       changesAreas.find((a) => a.areaId === area.areaId)?.isFavorite ??
-      area.isFavorite;
-
-    return isFavorite ? <Star /> : <StarBorder />;
+      area.isFavorite
+    );
   }
 
   function handleExpandCollapse(area) {
@@ -87,52 +73,31 @@ const AreaSettingsPage = () => {
     return expandedAreas.indexOf(area.areaId) !== -1;
   }
 
-  function getAreaItem(area) {
+  function getAreaItem(area, level) {
     if (area.geoArea.subAreas.length === 0) {
       return (
-        <div key={`settings-area-item-container-${area.areaId}`}>
-          <ListItem key={`settings-area-item-${area.areaId}`}>
-            <IconButton
-              key={`settings-area-item-icon-${area.areaId}`}
-              size="small"
-              color="beigeBrown"
-              onClick={() => handleStarClick(area)}
-            >
-              {getStarForArea(area)}
-            </IconButton>
-            <ListItemText
-              key={`settings-area-item-name-${area.areaId}`}
-              primary={area.geoArea.name}
-            ></ListItemText>
-          </ListItem>
-          <Divider key={`settings-area-item-divider-${area.areaId}`} />
-        </div>
+        <AreaSettingsItem
+          area={area}
+          hierarchyLevel={level}
+          isExpandable={false}
+          isExpanded={isExpanded}
+          isMarkedFavorite={isMarkedFavorite}
+          handleExpandCollapse={handleExpandCollapse}
+          handleStarClick={handleStarClick}
+        />
       );
     } else {
       return (
-        <div key={`settings-area-item-container-${area.areaId}`}>
-          <ListItem key={`settings-area-item-${area.areaId}`}>
-            <IconButton
-              key={`settings-area-item-icon-${area.areaId}`}
-              size="small"
-              color="beigeBrown"
-              onClick={() => handleStarClick(area)}
-            >
-              {getStarForArea(area)}
-            </IconButton>
-            <ListItemText
-              key={`settings-area-item-name-${area.areaId}`}
-              primary={area.geoArea.name}
-            ></ListItemText>
-            <IconButton
-              key={`area-list-item-expand-${area.areaId}`}
-              size="small"
-              onClick={() => handleExpandCollapse(area)}
-            >
-              {isExpanded(area) ? <ExpandLess /> : <ExpandMore />}
-            </IconButton>
-          </ListItem>
-          <Divider key={`settings-area-item-divider-${area.areaId}`} />
+        <div key={`settings-area-item-exp-container-${area.areaId}`}>
+          <AreaSettingsItem
+            area={area}
+            hierarchyLevel={level}
+            isExpandable={true}
+            isExpanded={isExpanded}
+            isMarkedFavorite={isMarkedFavorite}
+            handleExpandCollapse={handleExpandCollapse}
+            handleStarClick={handleStarClick}
+          />
           <Collapse
             key={`settings-area-item-collapsable-${area.areaId}`}
             in={expandedAreas.indexOf(area.areaId) !== -1}
@@ -140,7 +105,9 @@ const AreaSettingsPage = () => {
             unmountOnExit
           >
             <List dense disablePadding>
-              {area.geoArea.subAreas.map((subArea) => getAreaItem(subArea))}
+              {area.geoArea.subAreas.map((subArea) =>
+                getAreaItem(subArea, level + 1)
+              )}
             </List>
           </Collapse>
         </div>
@@ -160,7 +127,7 @@ const AreaSettingsPage = () => {
         handleSettingsReset={handleReset}
       />
       <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
-        {areas.map((area) => getAreaItem(area))}
+        {areas.map((area) => getAreaItem(area, 0))}
       </List>
       <Snackbar
         open={snackbarOpen}
