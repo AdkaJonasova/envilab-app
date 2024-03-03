@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
-import { Star, StarBorder, Close } from "@mui/icons-material";
-import {
-  Divider,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Snackbar,
-} from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { Grid, IconButton, List, Snackbar } from "@mui/material";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { userId } from "../../data/mockData";
 import { useTranslation } from "react-i18next";
@@ -18,6 +10,7 @@ import {
   useLayers,
 } from "../../hooks/layerHooks";
 import Loading from "../../components/global/Loading";
+import LayerSettingsItem from "../../components/settings/LayerSettingsItem";
 
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
@@ -66,33 +59,20 @@ const LayerSettingsPage = () => {
     setChangedLayers(newChangedLayers);
   }
 
-  function getStarForLayer(layer) {
-    const isFavorite =
+  function isMarkedFavorite(layer) {
+    return (
       changedLayers.find((l) => l.layerId === layer.layerId)?.isFavorite ??
-      layer.isFavorite;
-
-    return isFavorite ? <Star /> : <StarBorder />;
+      layer.isFavorite
+    );
   }
 
   function getLayerItem(layer) {
     return (
-      <div key={`settings-layer-item-container-${layer.layerId}`}>
-        <ListItem key={`settings-layer-item-${layer.layerId}`}>
-          <IconButton
-            key={`settings-layer-item-icon-${layer.layerId}`}
-            size="small"
-            color="beigeBrown"
-            onClick={() => handleStarClick(layer)}
-          >
-            {getStarForLayer(layer)}
-          </IconButton>
-          <ListItemText
-            key={`settings-layer-item-name-${layer.layerId}`}
-            primary={layer.geoLayer.name}
-          ></ListItemText>
-        </ListItem>
-        <Divider key={`settings-layer-item-divider-${layer.layerId}`} />
-      </div>
+      <LayerSettingsItem
+        layer={layer}
+        isMarkedFavorite={isMarkedFavorite}
+        handleStarClick={handleStarClick}
+      />
     );
   }
 
