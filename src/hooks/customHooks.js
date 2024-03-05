@@ -15,29 +15,34 @@ export const mergeLayers = (geoLayers, layerInfos, includeAll = false) => {
   return result;
 };
 
+const mergeArea = (geoserverArea, areaInfo) => {
+  let mergedArea = {
+    areaId: geoserverArea.areaId,
+    isActive: areaInfo ? areaInfo.isActive : false,
+    isFavorite: areaInfo ? areaInfo.isFavorite : false,
+    isCustom: areaInfo ? areaInfo.isCustom : false,
+    geoArea: { ...geoserverArea },
+  };
+  return mergedArea;
+};
+
+const hasSubAreas = (area) => {
+  return area.subAreas.length !== 0;
+};
+
 export const mergeAreas = (geoAreas, areaInfos, includeAll = false) => {
-  let result = [];
+  let mergedAreas = [];
   geoAreas.forEach((a) => {
     let areaInfo = areaInfos.find((ai) => ai.areaID === a.areaId);
     if (areaInfo || includeAll) {
-      let area = {
-        areaId: a.areaId,
-        isActive: areaInfo ? areaInfo.isActive : false,
-        isFavorite: areaInfo ? areaInfo.isFavorite : false,
-        isCustom: areaInfo ? areaInfo.isCustom : false,
-        geoArea: a,
-      };
-      if (area.geoArea.subAreas.length !== 0) {
-        area.geoArea.subAreas = mergeAreas(
-          area.geoArea.subAreas,
-          areaInfos,
-          includeAll
-        );
+      let area = mergeArea(a, areaInfo);
+      if (hasSubAreas(a)) {
+        area.geoArea.subAreas = mergeAreas(a.subAreas, areaInfos, includeAll);
       }
-      result.push(area);
-    } else if (!areaInfo) {
-      result.push(...mergeAreas(a.geoArea.subAreas, areaInfos, includeAll));
+      mergedAreas.push(area);
+    } else if (!areaInfo && hasSubAreas(a)) {
+      mergeAreas.concat(mergeAreas(a.subAreas, areaInfos, includeAll));
     }
   });
-  return result;
+  return mergedAreas;
 };
