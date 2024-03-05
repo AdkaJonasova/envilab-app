@@ -30,8 +30,8 @@ const AreaSettingsPage = () => {
 
   useEffect(() => {
     if (areaAreasReady) {
-      const filtered = filterAreasByName(ares, filter);
-      setFilteredAreas(areas);
+      const filtered = filterAreasByName(areas, filter);
+      setFilteredAreas(filtered);
     }
   }, [filter, areaAreasReady]);
 
