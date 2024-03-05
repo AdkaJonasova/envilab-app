@@ -13,6 +13,7 @@ export default function Sidebar({
   layers,
   areas,
   refetchLayers,
+  refetchAreas,
   height,
   marginBottom,
 }) {
@@ -23,7 +24,7 @@ export default function Sidebar({
     if (type === SidebarTypes.Layers) {
       return <LayerList layers={data} refetch={refetchLayers} />;
     } else if (type === SidebarTypes.Areas) {
-      return <AreaList areas={data} />;
+      return <AreaList areas={data} refetch={refetchAreas} />;
     }
   }
 
@@ -47,6 +48,7 @@ Sidebar.propTypes = {
   layers: PropTypes.array,
   areas: PropTypes.array,
   refetchLayers: PropTypes.func,
+  refetchAreas: PropTypes.func,
   height: PropTypes.number,
   marginBottom: PropTypes.number,
 };
