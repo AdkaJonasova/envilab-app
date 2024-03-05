@@ -52,22 +52,27 @@ const LayerSettingsPage = () => {
     setChangedLayers([]);
   }
 
+  function addToChanged(layer, newChangedLayers) {
+    let changedLayer = { ...layer };
+    changedLayer.isFavorite = !layer.isFavorite;
+    newChangedLayers.push(changedLayer);
+  }
+
+  function removeFromChanged(index, newChangedLayers) {
+    newChangedLayers.splice(index, newChangedLayers);
+  }
+
   function handleStarClick(layer) {
+    let newChangedLayers = [...changedLayers];
     let layerChangedIndex = changedLayers.findIndex(
       (l) => l.layerId === layer.layerId
     );
     if (layerChangedIndex !== -1) {
-      const newChangedLayers = [...changedLayers];
-      newChangedLayers.splice(layerChangedIndex, 1);
-      setChangedLayers(newChangedLayers);
+      removeFromChanged(layerChangedIndex, newChangedLayers);
     } else {
-      let changedLayer = { ...layer };
-      changedLayer.isFavorite = !layer.isFavorite;
-
-      let newChangedLayers = [...changedLayers];
-      newChangedLayers.push(changedLayer);
-      setChangedLayers(newChangedLayers);
+      addToChanged(layer, newChangedLayers);
     }
+    setChangedLayers(newChangedLayers);
   }
 
   function isMarkedFavorite(layer) {
