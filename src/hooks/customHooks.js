@@ -35,6 +35,8 @@ export const mergeAreas = (geoAreas, areaInfos, includeAll = false) => {
         );
       }
       result.push(area);
+    } else if (!areaInfo) {
+      result.push(...mergeAreas(a.geoArea.subAreas, areaInfos, includeAll));
     }
   });
   return result;

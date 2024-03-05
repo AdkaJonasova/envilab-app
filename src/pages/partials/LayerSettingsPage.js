@@ -51,12 +51,21 @@ const LayerSettingsPage = () => {
   }
 
   function handleStarClick(layer) {
-    let changedLayer = { ...layer };
-    changedLayer.isFavorite = !layer.isFavorite;
+    let layerChangedIndex = changedLayers.findIndex(
+      (l) => l.layerId === layer.layerId
+    );
+    if (layerChangedIndex !== -1) {
+      const newChangedLayers = [...changedLayers];
+      newChangedLayers.splice(layerChangedIndex, 1);
+      setChangedLayers(newChangedLayers);
+    } else {
+      let changedLayer = { ...layer };
+      changedLayer.isFavorite = !layer.isFavorite;
 
-    let newChangedLayers = [...changedLayers];
-    newChangedLayers.push(changedLayer);
-    setChangedLayers(newChangedLayers);
+      let newChangedLayers = [...changedLayers];
+      newChangedLayers.push(changedLayer);
+      setChangedLayers(newChangedLayers);
+    }
   }
 
   function isMarkedFavorite(layer) {
@@ -90,12 +99,12 @@ const LayerSettingsPage = () => {
       />
       <Grid container>
         <Grid item xs={6}>
-          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
             {firstHalfLayers.map((layer) => getLayerItem(layer))}
           </List>
         </Grid>
         <Grid item xs={6}>
-          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
             {secondHalfLayers.map((layer) => getLayerItem(layer))}
           </List>
         </Grid>

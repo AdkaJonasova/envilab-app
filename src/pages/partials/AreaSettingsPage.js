@@ -15,7 +15,7 @@ import AreaSettingsItem from "../../components/settings/AreaSettingsItem";
 const AreaSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [changesAreas, setChangedAreas] = useState([]);
+  const [changedAreas, setChangedAreas] = useState([]);
   const [expandedAreas, setExpandedAreas] = useState([]);
 
   const { t } = useTranslation();
@@ -28,7 +28,7 @@ const AreaSettingsPage = () => {
   //#region Helper methods
 
   function handleSave() {
-    changesAreas.forEach((a) => {
+    changedAreas.forEach((a) => {
       a.isFavorite
         ? addFavoriteArea(userId, a.areaId)
         : removeFavoriteArea(userId, a.areaId);
@@ -40,24 +40,40 @@ const AreaSettingsPage = () => {
     setChangedAreas([]);
   }
 
-  function handleStarClick(area) {
+  function removeFromChanged(index, newChangedAreas) {
+    newChangedAreas.splice(index, 1);
+  }
+
+  function addToChanged(area, newChangedAreas) {
     let changedArea = { ...area };
     changedArea.isFavorite = !area.isFavorite;
 
-    let newChangedAreas = [...changesAreas];
     newChangedAreas.push(changedArea);
+  }
 
-    changedArea.geoArea.subAreas.forEach((subArea) => {
-      let changedSubArea = { ...subArea };
-      changedSubArea.isFavorite = !subArea.isFavorite;
-      newChangedAreas.push(changedSubArea);
-    });
+  function addRemoveChanged(area, newChangedAreas) {
+    let areaChangedIndex = newChangedAreas.findIndex(
+      (a) => a.areaId === area.areaId
+    );
+    if (areaChangedIndex !== -1) {
+      removeFromChanged(areaChangedIndex, newChangedAreas);
+    } else {
+      addToChanged(area, newChangedAreas);
+    }
+    area.geoArea.subAreas.forEach((subArea) =>
+      addRemoveChanged(subArea, newChangedAreas)
+    );
+  }
+
+  function handleStarClick(area) {
+    let newChangedAreas = [...changedAreas];
+    addRemoveChanged(area, newChangedAreas);
     setChangedAreas(newChangedAreas);
   }
 
   function isMarkedFavorite(area) {
     return (
-      changesAreas.find((a) => a.areaId === area.areaId)?.isFavorite ??
+      changedAreas.find((a) => a.areaId === area.areaId)?.isFavorite ??
       area.isFavorite
     );
   }
