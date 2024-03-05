@@ -87,6 +87,7 @@ const LayerViewPage = () => {
             layers={layers}
             areas={areas}
             refetchLayers={refetchLayers}
+            refetchAreas={refetchAreas}
             height={height}
             marginBottom={bottomMargin}
           />
