@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,15 +11,36 @@ import Loading from "../../components/global/Loading";
 import { Close } from "@mui/icons-material";
 import { Collapse, IconButton, List, Snackbar } from "@mui/material";
 import AreaSettingsItem from "../../components/settings/AreaSettingsItem";
+import { filterAreasByName } from "../../utils/customFunctions";
 
 const AreaSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const [filteredAreas, setFilteredAreas] = useState([]);
   const [changedAreas, setChangedAreas] = useState([]);
   const [expandedAreas, setExpandedAreas] = useState([]);
 
   const { t } = useTranslation();
-  const { data: areas, isFetched: areaAreasReady } = useAreas(userId);
+  const {
+    data: areas,
+    isFetched: areaAreasReady,
+    refetch: refetchAreas,
+  } = useAreas(userId);
+
+  useEffect(() => {
+    if (areaAreasReady) {
+      setFilteredAreas(areas);
+    }
+  }, [areaAreasReady]);
+
+  useEffect(() => {
+    if (areaAreasReady) {
+      const filtered = filterAreasByName(areas, filter);
+      console.log(filtered);
+      setFilteredAreas(filtered);
+    }
+  }, [filter]);
 
   if (!areaAreasReady) {
     return <Loading />;
@@ -33,6 +54,8 @@ const AreaSettingsPage = () => {
         ? addFavoriteArea(userId, a.areaId)
         : removeFavoriteArea(userId, a.areaId);
     });
+    refetchAreas();
+    setChangedAreas([]);
     setSnackbarOpen(true);
   }
 
@@ -151,7 +174,7 @@ const AreaSettingsPage = () => {
         handleSettingsReset={handleReset}
       />
       <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
-        {areas.map((area) => getAreaItem(area, 0))}
+        {filteredAreas.map((area) => getAreaItem(area, 0))}
       </List>
       <Snackbar
         open={snackbarOpen}

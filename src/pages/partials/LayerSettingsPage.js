@@ -11,12 +11,13 @@ import {
 } from "../../hooks/layerHooks";
 import Loading from "../../components/global/Loading";
 import LayerSettingsItem from "../../components/settings/LayerSettingsItem";
+import { filterLayersByName } from "../../utils/customFunctions";
 
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [changedLayers, setChangedLayers] = useState([]);
 
+  const [changedLayers, setChangedLayers] = useState([]);
   const [firstHalfLayers, setFirstHalfLayers] = useState([]);
   const [secondHalfLayers, setSecondHalfLayers] = useState([]);
 
@@ -25,11 +26,12 @@ const LayerSettingsPage = () => {
 
   useEffect(() => {
     if (areLayersReady) {
-      const midpoint = Math.ceil(layers.length / 2);
-      setFirstHalfLayers(layers.slice(0, midpoint));
-      setSecondHalfLayers(layers.slice(midpoint));
+      const filtered = filterLayersByName(layers, filter);
+      const midpoint = Math.ceil(filtered.length / 2);
+      setFirstHalfLayers(filtered.slice(0, midpoint));
+      setSecondHalfLayers(filtered.slice(midpoint));
     }
-  }, [areLayersReady]);
+  }, [filter, areLayersReady]);
 
   if (!areLayersReady) {
     return <Loading />;
