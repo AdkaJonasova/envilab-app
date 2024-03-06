@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import SideBarTabs from "./SideBarTabs";
 import SearchBar from "./global/SearchBar";
@@ -17,7 +17,9 @@ export default function Sidebar({
   height,
   marginBottom,
 }) {
-  const [barType, setBarType] = useState(SidebarTypes.Layers);
+  const [barType, setBarType] = useState(
+    localStorage.getItem("activeSidebarTab") ?? SidebarTypes.Layers
+  );
   const [filter, setFilter] = useState("");
 
   function getCardsByType(data, type) {
