@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import SideBarTabs from "./SideBarTabs";
 import SearchBar from "./global/SearchBar";
@@ -7,7 +7,6 @@ import LayerList from "./layers/LayerList";
 import { getSidebarDataByTypeAndFilter } from "../utils/customFunctions";
 import { SidebarTypes } from "../utils/enums";
 import PropTypes from "prop-types";
-import { auto } from "@popperjs/core";
 
 export default function Sidebar({
   layers,
@@ -33,7 +32,7 @@ export default function Sidebar({
   return (
     <Box
       maxHeight={height}
-      overflow={auto}
+      overflow={"auto"}
       sx={{ marginBottom: `${marginBottom}px` }}
     >
       <SideBarTabs selectedTab={barType} setSelectedTab={setBarType} />
