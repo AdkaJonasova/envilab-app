@@ -17,7 +17,7 @@ const AreaSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const [filteredAreas, setFilteredAreas] = useState([]);
+  // const [filteredAreas, setFilteredAreas] = useState([]);
   const [changedAreas, setChangedAreas] = useState([]);
   const [expandedAreas, setExpandedAreas] = useState([]);
 
@@ -25,29 +25,34 @@ const AreaSettingsPage = () => {
   const {
     data: areas,
     isFetched: areaAreasReady,
+    isRefetching: areAreasRefetching,
     refetch: refetchAreas,
   } = useAreas(userId);
 
-  useEffect(() => {
-    if (areaAreasReady) {
-      const filtered = filterAreasByName(areas, filter);
-      setFilteredAreas(filtered);
-    }
-  }, [filter, areaAreasReady]);
-
-  if (!areaAreasReady) {
-    return <Loading />;
-  }
+  // useEffect(() => {
+  //   if (areaAreasReady) {
+  //     const filtered = filterAreasByName(areas, filter);
+  //     setFilteredAreas(filtered);
+  //   }
+  // }, [filter, areas]);
 
   //#region Helper methods
 
-  function handleSave() {
+  if (!areaAreasReady || areAreasRefetching) {
+    return <Loading />;
+  }
+
+  function test() {
     changedAreas.forEach((a) => {
       a.isFavorite
         ? addFavoriteArea(userId, a.areaId)
         : removeFavoriteArea(userId, a.areaId);
     });
-    refetchAreas();
+  }
+
+  function handleSave() {
+    test().then(() => refetchAreas());
+    // refetchAreas();
     setChangedAreas([]);
     setSnackbarOpen(true);
   }
@@ -167,7 +172,7 @@ const AreaSettingsPage = () => {
         handleSettingsReset={handleReset}
       />
       <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
-        {filteredAreas.map((area) => getAreaItem(area, 0))}
+        {filterAreasByName(areas, filter).map((area) => getAreaItem(area, 0))}
       </List>
       <Snackbar
         open={snackbarOpen}

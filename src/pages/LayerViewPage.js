@@ -96,6 +96,7 @@ const LayerViewPage = () => {
         return (
           <LayerViewMap
             layers={layers}
+            areas={areas}
             height={height}
             marginBottom={bottomMargin}
           />

@@ -8,8 +8,12 @@ import ReactFullScreenControl from "./controls/ReactFullScreenControl";
 import ReactZoomControl from "./controls/ReactZoomControl";
 import ReactLayers from "./layers/ReactLayers";
 import { createLayerByType } from "../../utils/decisionCriteriaHandlers";
+import ReactAreas from "./areas/ReactAreas";
+import GeoJsonReactArea from "./areas/ReactArea";
+// import { dataFolder } from "../../utils/data";
 
-const LayerViewMap = ({ layers, height, marginBottom }) => {
+const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
+  // const path = require("path");
   const [center, setCenter] = useState([0, 0]);
 
   return (
@@ -25,6 +29,13 @@ const LayerViewMap = ({ layers, height, marginBottom }) => {
             .filter((layer) => layer.isActive)
             .map((layer) => createLayerByType(layer))}
         </ReactLayers>
+        <ReactAreas>
+          {areas
+            .filter((area) => area.isActive)
+            .map((area) => {
+              return <GeoJsonReactArea areaSource={area.geoArea.source} />;
+            })}
+        </ReactAreas>
         <ReactControls>
           <ReactFullScreenControl />
           <ReactZoomControl />

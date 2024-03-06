@@ -2,6 +2,7 @@ import { Layers, Public } from "@mui/icons-material";
 import LayerSettingsPage from "../pages/partials/LayerSettingsPage";
 import AreaSettingsPage from "../pages/partials/AreaSettingsPage";
 import { SidebarTypes } from "./enums";
+// const path = require("path");
 
 // Menu navigation
 const layerViewPage = {
@@ -54,3 +55,6 @@ export const mainMenuHeight = 48;
 export const pageTopMargin = 6;
 export const pageBottomMargin = 6;
 export const betweenElementsMargin = 6;
+
+// Data folder
+// export const dataFolder = path.join(process.env.PUBLIC_URL, "resources");

@@ -41,7 +41,7 @@ export const mergeAreas = (geoAreas, areaInfos, includeAll = false) => {
       }
       mergedAreas.push(area);
     } else if (!areaInfo && hasSubAreas(a)) {
-      mergeAreas.concat(mergeAreas(a.subAreas, areaInfos, includeAll));
+      mergedAreas.concat(mergeAreas(a.subAreas, areaInfos, includeAll));
     }
   });
   return mergedAreas;

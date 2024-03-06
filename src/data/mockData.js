@@ -118,7 +118,7 @@ const subArea1 = {
 const area1 = {
   areaId: 0,
   name: "Czech republic",
-  source: "",
+  source: "czechRepublic.json",
   isEditable: false,
   subAreas: [subArea1],
 };
@@ -126,7 +126,7 @@ const area1 = {
 const area2 = {
   areaId: 1,
   name: "Slovakia",
-  source: "",
+  source: "slovakia.json",
   isEditable: false,
   subAreas: [],
 };

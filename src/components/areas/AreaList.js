@@ -15,9 +15,9 @@ export default function AreaList({ areas, refetch }) {
   //#region Methods
   const handleUseArea = (area) => {
     if (area.isActive) {
-      activateArea(userId, area.areaId).then(() => refetch());
-    } else {
       deactivateArea(userId, area.areaId).then(() => refetch());
+    } else {
+      activateArea(userId, area.areaId).then(() => refetch());
     }
   };
 

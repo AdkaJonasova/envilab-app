@@ -39,7 +39,7 @@ export default function AreaListItem({
       <IconButton
         key={`area-list-item-expand-${area.areaId}`}
         size="small"
-        onClick={handleExpandCollapse(area)}
+        onClick={() => handleExpandCollapse(area)}
       >
         {isExpanded(area) ? <ExpandLess /> : <ExpandMore />}
       </IconButton>
@@ -60,7 +60,7 @@ export default function AreaListItem({
           edge="end"
           size="small"
           color="beigeBrown"
-          onChange={handleUseArea(area)}
+          onChange={() => handleUseArea(area)}
           checked={isUsed(area)}
         />
       </ListItem>
