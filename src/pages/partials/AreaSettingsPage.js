@@ -42,7 +42,7 @@ const AreaSettingsPage = () => {
     return <Loading />;
   }
 
-  function test() {
+  async function test() {
     changedAreas.forEach((a) => {
       a.isFavorite
         ? addFavoriteArea(userId, a.areaId)

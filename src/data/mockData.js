@@ -110,7 +110,17 @@ export const projection = new Projection({
 const subArea1 = {
   areaId: 10,
   name: "Jihomoravsky kraj",
-  source: "",
+  source: "czechRepublicRegions.json",
+  sourceId: 1,
+  isEditable: false,
+  subAreas: [],
+};
+
+const subArea2 = {
+  areaId: 11,
+  name: "Jihocesky kraj",
+  source: "czechRepublicRegions.json",
+  sourceId: 0,
   isEditable: false,
   subAreas: [],
 };
@@ -119,14 +129,16 @@ const area1 = {
   areaId: 0,
   name: "Czech republic",
   source: "czechRepublic.json",
+  sourceId: 0,
   isEditable: false,
-  subAreas: [subArea1],
+  subAreas: [subArea1, subArea2],
 };
 
 const area2 = {
   areaId: 1,
   name: "Slovakia",
   source: "slovakia.json",
+  sourceId: 0,
   isEditable: false,
   subAreas: [],
 };

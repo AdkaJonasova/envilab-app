@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fromLonLat, get } from "ol/proj";
+import { fromLonLat } from "ol/proj";
 import ReactMap from "./ReactMap";
 import { OSM } from "ol/source";
 import ReactTileLayer from "./layers/ReactTileLayer";
@@ -9,7 +9,7 @@ import ReactZoomControl from "./controls/ReactZoomControl";
 import ReactLayers from "./layers/ReactLayers";
 import { createLayerByType } from "../../utils/decisionCriteriaHandlers";
 import ReactAreas from "./areas/ReactAreas";
-import GeoJsonReactArea from "./areas/ReactArea";
+import GeoJsonReactArea from "./areas/GeoJsonReactArea";
 // import { dataFolder } from "../../utils/data";
 
 const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
@@ -33,7 +33,13 @@ const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
           {areas
             .filter((area) => area.isActive)
             .map((area) => {
-              return <GeoJsonReactArea areaSource={area.geoArea.source} />;
+              return (
+                <GeoJsonReactArea
+                  key={`map-area-${area.areaId}`}
+                  areaSource={area.geoArea.source}
+                  areaSourceId={area.geoArea.sourceId}
+                />
+              );
             })}
         </ReactAreas>
         <ReactControls>
