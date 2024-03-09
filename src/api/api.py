@@ -13,15 +13,10 @@ area_set_repo = AreaSetRepository()
 
 # fast API
 app = FastAPI()
-origins = [
-    "http://localhost:3000",
-    "localhost:3000",
-    "http://localhost:3000/layerView",
-    "localhost:3000/layerView"
-]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
@@ -44,7 +39,7 @@ def get_active_layers_for_user(user_id: int):
     return layer_repo.get_all_active_for_user(user_id)
 
 
-@app.get('layers/{user_id}/{}')
+@app.get('/layers/{user_id}/{layer_id}')
 def get_layer(user_id: int, layer_id: int):
     return layer_repo.get_layer_by_id_and_user(layer_id, user_id)
 
