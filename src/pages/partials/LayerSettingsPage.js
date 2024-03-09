@@ -22,7 +22,12 @@ const LayerSettingsPage = () => {
   const [secondHalfLayers, setSecondHalfLayers] = useState([]);
 
   const { t } = useTranslation();
-  const { data: layers, isFetched: areLayersReady } = useLayers(userId);
+  const {
+    data: layers,
+    isFetched: areLayersReady,
+    isRefetching: areLayersRefetching,
+    refetch: refetchLayers,
+  } = useLayers(userId);
 
   useEffect(() => {
     if (areLayersReady) {
@@ -31,20 +36,24 @@ const LayerSettingsPage = () => {
       setFirstHalfLayers(filtered.slice(0, midpoint));
       setSecondHalfLayers(filtered.slice(midpoint));
     }
-  }, [filter, areLayersReady]);
+  }, [filter, layers]);
 
-  if (!areLayersReady) {
+  if (!areLayersReady || areLayersRefetching) {
     return <Loading />;
   }
 
   //#region Helper methods
 
-  function handleSave() {
+  async function SaveAll() {
     changedLayers.forEach((l) => {
       l.isFavorite
         ? addFavoriteLayer(userId, l.layerId)
         : removeFavoriteLayer(userId, l.layerId);
     });
+  }
+  function handleSave() {
+    SaveAll().then(() => refetchLayers());
+    setChangedLayers([]);
     setSnackbarOpen(true);
   }
 
