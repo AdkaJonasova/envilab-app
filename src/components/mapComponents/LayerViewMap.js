@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fromLonLat } from "ol/proj";
 import ReactMap from "./ReactMap";
 import { OSM } from "ol/source";
@@ -13,8 +13,25 @@ import GeoJsonReactArea from "./areas/GeoJsonReactArea";
 // import { dataFolder } from "../../utils/data";
 
 const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
-  // const path = require("path");
   const [center, setCenter] = useState([0, 0]);
+  const [flattenedAreas, setFlattenedAreas] = useState([]);
+
+  useEffect(() => {
+    const flattened = flattenAreas(areas);
+    setFlattenedAreas(flattened);
+  }, []);
+
+  const flattenAreas = (areas) => {
+    let flattened = [];
+
+    areas.forEach((area) => {
+      flattened.push(area);
+      if (area.geoArea.subAreas.length > 0) {
+        flattened = flattened.concat(flattenAreas(area.geoArea.subAreas));
+      }
+    });
+    return flattened;
+  };
 
   return (
     <div>
@@ -30,7 +47,7 @@ const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
             .map((layer) => createLayerByType(layer))}
         </ReactLayers>
         <ReactAreas>
-          {areas
+          {flattenedAreas
             .filter((area) => area.isActive)
             .map((area) => {
               return (
