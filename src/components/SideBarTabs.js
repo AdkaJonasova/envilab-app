@@ -10,7 +10,6 @@ export default function SideBarTabs({ selectedTab, setSelectedTab }) {
   const { t } = useTranslation();
 
   const handleChangeTab = (newSelectedTab) => {
-    console.log("New selected: " + newSelectedTab);
     localStorage.setItem("activeSidebarTab", newSelectedTab);
     setSelectedTab(newSelectedTab);
   };

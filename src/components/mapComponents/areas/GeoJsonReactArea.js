@@ -7,8 +7,6 @@ const GeoJsonReactArea = ({ areaSource, areaSourceId }) => {
   const { map } = useContext(MapContext);
 
   useEffect(() => {
-    console.log("Area source: " + areaSource);
-    console.log("Id: " + areaSourceId);
     if (!map) return;
     import(`../../../data/areas/${areaSource}`).then((data) => {
       const source = new VectorSource({
