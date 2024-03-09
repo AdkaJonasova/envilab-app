@@ -29,20 +29,13 @@ const AreaSettingsPage = () => {
     refetch: refetchAreas,
   } = useAreas(userId);
 
-  // useEffect(() => {
-  //   if (areaAreasReady) {
-  //     const filtered = filterAreasByName(areas, filter);
-  //     setFilteredAreas(filtered);
-  //   }
-  // }, [filter, areas]);
-
   //#region Helper methods
 
   if (!areaAreasReady || areAreasRefetching) {
     return <Loading />;
   }
 
-  async function test() {
+  async function SaveAll() {
     changedAreas.forEach((a) => {
       a.isFavorite
         ? addFavoriteArea(userId, a.areaId)
@@ -51,8 +44,7 @@ const AreaSettingsPage = () => {
   }
 
   function handleSave() {
-    test().then(() => refetchAreas());
-    // refetchAreas();
+    SaveAll().then(() => refetchAreas());
     setChangedAreas([]);
     setSnackbarOpen(true);
   }
@@ -72,23 +64,64 @@ const AreaSettingsPage = () => {
     newChangedAreas.push(changedArea);
   }
 
-  function addRemoveChanged(area, newChangedAreas) {
-    let areaChangedIndex = newChangedAreas.findIndex(
-      (a) => a.areaId === area.areaId
-    );
-    if (areaChangedIndex !== -1) {
-      removeFromChanged(areaChangedIndex, newChangedAreas);
+  function handleStarClickHierarchically(
+    area,
+    newChangedAreas,
+    parentIsFavorite,
+    useParent
+  ) {
+    // child area should have the same value as parent
+    if (useParent) {
+      let areaChangedIndex = newChangedAreas.findIndex(
+        (a) => a.areaId === area.areaId
+      );
+
+      // child area is changed and the changed value is not equal to parent value -> remove from changed
+      if (areaChangedIndex !== -1 && !area.isFavorite !== parentIsFavorite) {
+        removeFromChanged(areaChangedIndex, newChangedAreas);
+
+        // child area is not changes and the original value is not equal to parent value -> add to changed
+      } else if (area.isFavorite !== parentIsFavorite) {
+        addToChanged(area, newChangedAreas);
+      }
+
+      // change the value only based on the area itself
     } else {
-      addToChanged(area, newChangedAreas);
+      let areaChangedIndex = newChangedAreas.findIndex(
+        (a) => a.areaId === area.areaId
+      );
+      if (areaChangedIndex !== -1) {
+        removeFromChanged(areaChangedIndex, newChangedAreas);
+        area.geoArea.subAreas.forEach((subArea) =>
+          handleStarClickHierarchically(
+            subArea,
+            newChangedAreas,
+            area.isFavorite,
+            true
+          )
+        );
+      } else {
+        addToChanged(area, newChangedAreas);
+        area.geoArea.subAreas.forEach((subArea) =>
+          handleStarClickHierarchically(
+            subArea,
+            newChangedAreas,
+            !area.isFavorite,
+            true
+          )
+        );
+      }
     }
-    area.geoArea.subAreas.forEach((subArea) =>
-      addRemoveChanged(subArea, newChangedAreas)
-    );
   }
 
   function handleStarClick(area) {
     let newChangedAreas = [...changedAreas];
-    addRemoveChanged(area, newChangedAreas);
+    handleStarClickHierarchically(
+      area,
+      newChangedAreas,
+      area.isFavorite,
+      false
+    );
     setChangedAreas(newChangedAreas);
   }
 
