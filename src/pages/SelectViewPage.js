@@ -1,20 +1,8 @@
 import React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
-import Map from "ol/Map.js";
-import FullScreenControl from "ol/control/FullScreen";
-import { Zoom, MousePosition } from "ol/control";
-import { OSM } from "ol/source.js";
-import TileLayer from "ol/layer/Tile.js";
-import View from "ol/View.js";
-import { Box, Button, Grid, MenuItem, Select, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import SelectViewSidebar from "../components/SelectViewSidebar";
-import { createStringXY } from "ol/coordinate";
-import VectorSource from "ol/source/Vector";
-import VectorLayer from "ol/layer/Vector";
-import Draw from "ol/interaction/Draw.js";
-import { toLonLat } from "ol/proj";
-import { getMaxIdInList } from "../utils/customFunctions";
 import { useTranslation } from "react-i18next";
 import SelectViewMap from "../components/mapComponents/SelectViewMap";
 import { betweenElementsMargin, drawOptions } from "../utils/data";
