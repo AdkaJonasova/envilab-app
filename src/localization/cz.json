@@ -56,7 +56,14 @@
   },
   "selectView": {
     "title": "Editor oblastí",
-    "subtitle": "K definici nové oblasti prosím vyberte alespoň 3 body na mapě níže.",
-    "importBtn": "Importovat oblast"
+    "subtitle": "Vyberte typ interakce níže a nakreslete oblast přímo na mapě nebo použijte tlačítko na import.",
+    "importBtn": "Importovat oblast",
+    "drawOptionsLabel": "Typ interakce",
+    "drawOptions": {
+      "point": "Bod",
+      "lineString": "Úsečka",
+      "polygon": "Mnohoúhelník",
+      "circle": "Kruh"
+    }
   }
 }

@@ -56,5 +56,10 @@ export const pageTopMargin = 6;
 export const pageBottomMargin = 6;
 export const betweenElementsMargin = 6;
 
-// Data folder
-// export const dataFolder = path.join(process.env.PUBLIC_URL, "resources");
+// Draw selector
+export const drawOptions = [
+  { code: "Point", label: "selectView.drawOptions.point" },
+  { code: "LineString", label: "selectView.drawOptions.lineString" },
+  { code: "Polygon", label: "selectView.drawOptions.polygon" },
+  { code: "Circle", label: "selectView.drawOptions.circle" },
+];

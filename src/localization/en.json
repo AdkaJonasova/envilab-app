@@ -56,7 +56,14 @@
   },
   "selectView": {
     "title": "Area editor",
-    "subtitle": "Please select at least 3 points on the map below to define a new area.",
-    "importBtn": "Import area"
+    "subtitle": "Please choose the interaction type below and draw the area directly on the map or use the import button.",
+    "importBtn": "Import area",
+    "drawOptionsLabel": "Interaction type",
+    "drawOptions": {
+      "point": "Point",
+      "lineString": "Line string",
+      "polygon": "Polygon",
+      "circle": "Circle"
+    }
   }
 }

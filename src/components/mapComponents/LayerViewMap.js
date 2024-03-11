@@ -10,7 +10,6 @@ import ReactLayers from "./layers/ReactLayers";
 import { createLayerByType } from "../../utils/decisionCriteriaHandlers";
 import ReactAreas from "./areas/ReactAreas";
 import GeoJsonReactArea from "./areas/GeoJsonReactArea";
-// import { dataFolder } from "../../utils/data";
 
 const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
   const [center, setCenter] = useState([0, 0]);
