@@ -55,6 +55,8 @@ export const mainMenuHeight = 48;
 export const pageTopMargin = 6;
 export const pageBottomMargin = 6;
 export const betweenElementsMargin = 6;
+export const selectViewHeaderHeight = 70;
+export const selectViewHeaderPadding = 5;
 
 // Draw selector
 export const drawOptions = [
@@ -63,3 +65,20 @@ export const drawOptions = [
   { code: "Polygon", label: "selectView.drawOptions.polygon" },
   { code: "Circle", label: "selectView.drawOptions.circle" },
 ];
+
+// Draw styles
+export const drawnFeatureStyle = {
+  "stroke-color": "rgba(213, 91, 91, 1)",
+  "stroke-width": 2,
+  "fill-color": "rgba(213, 91, 91, 0.3)",
+  "circle-radius": 6,
+  "circle-fill-color": "rgba(213, 91, 91, 1)",
+};
+
+export const drawInteractionStyle = {
+  "stroke-color": "rgba(255, 107, 107, 1)",
+  "stroke-width": 2,
+  "fill-color": "rgba(255, 107, 107, 0.3)",
+  "circle-radius": 4,
+  "circle-fill-color": "rgba(255, 107, 107, 1)",
+};

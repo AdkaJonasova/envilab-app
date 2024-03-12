@@ -43,7 +43,7 @@ export default function SelectViewSidebar({ points, deletePoint }) {
       </Grid>
       <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
         {points.map((point) => (
-          <ListItem id={`point-list-item-${point.pointId}`}>
+          <ListItem id={`point-list-item-${point.x}-${point.y}`}>
             <ListItemText variant="body1">{point.x}</ListItemText>
             <ListItemText variant="body1">{point.y}</ListItemText>
             <IconButton

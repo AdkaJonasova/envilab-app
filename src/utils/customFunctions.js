@@ -1,5 +1,12 @@
 import { SidebarTypes } from "./enums";
-import { settingsTabs } from "./data";
+import {
+  mainMenuHeight,
+  pageBottomMargin,
+  pageTopMargin,
+  selectViewHeaderHeight,
+  selectViewHeaderPadding,
+  settingsTabs,
+} from "./data";
 
 export function getRowCount(layoutConfig) {
   let requiredRowCount = 0;
@@ -11,6 +18,16 @@ export function getRowCount(layoutConfig) {
     }
   }
   return requiredRowCount;
+}
+
+export function getSelectViewMapHeight(windowHeight) {
+  let windowWithoutMenuAndMargins =
+    windowHeight - mainMenuHeight - pageBottomMargin - pageTopMargin;
+  let windowWithoutBox =
+    windowWithoutMenuAndMargins -
+    selectViewHeaderHeight -
+    2 * selectViewHeaderPadding;
+  return windowWithoutBox;
 }
 
 export function isLastVerticalElement(layoutElement, rowCount) {

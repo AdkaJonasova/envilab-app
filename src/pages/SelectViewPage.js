@@ -1,42 +1,34 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import { Button, Grid, Typography } from "@mui/material";
-import SelectViewSidebar from "../components/SelectViewSidebar";
-import { useTranslation } from "react-i18next";
+import { Box, Grid } from "@mui/material";
 import SelectViewMap from "../components/mapComponents/SelectViewMap";
-import { betweenElementsMargin, drawOptions } from "../utils/data";
-import DrawInteractionSelect from "../components/selectView/DrawIteractionSelect";
+import {
+  betweenElementsMargin,
+  drawOptions,
+  pageTopMargin,
+} from "../utils/data";
+import SelectViewHeader from "../components/selectView/SelectViewHeader";
+import { getSelectViewMapHeight } from "../utils/customFunctions";
+import { getCoordsObjectForDrawType } from "../utils/decisionCriteriaHandlers";
 
 const SelectViewPage = () => {
   const [points, setPoints] = useState([]);
   const [drawType, setDrawType] = useState(drawOptions[0].code);
-  const { t } = useTranslation();
+  const [mapHeight, setMapHeight] = useState(
+    getSelectViewMapHeight(window.innerHeight)
+  );
 
-  // function onPointSelect(event) {
-  //   const cords = toLonLat(event.coordinate);
+  useEffect(() => {
+    const handleResize = () => {
+      setMapHeight(getSelectViewMapHeight(window.innerHeight));
+    };
 
-  //   const strigifyFunc = createStringXY(4);
-  //   const formatedCords = strigifyFunc(cords);
-  //   const splitFormatedCords = formatedCords.split(",");
+    window.addEventListener("resize", handleResize);
 
-  //   const pointIds = points.map((p) => p.pointId);
-  //   const point = {
-  //     pointId: getMaxIdInList(pointIds),
-  //     x: splitFormatedCords[0],
-  //     y: splitFormatedCords[1],
-  //   };
-  //   setPoints((current) => [...current, point]);
-  // }
-
-  // function onPointDelete(event, point) {
-  //   let currentIndex = points.indexOf(point);
-  //   if (currentIndex !== -1) {
-  //     let newPoints = [...points];
-  //     newPoints.splice(currentIndex, 1);
-  //     setPoints(newPoints);
-  //   }
-  // }
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleDrawTypeChange = (event) => {
     const newValue = event.target.value;
@@ -44,62 +36,24 @@ const SelectViewPage = () => {
   };
 
   const handleDrawEnd = (feature) => {
-    console.log(feature);
+    const geometry = feature.getGeometry();
+    const coordsObject = getCoordsObjectForDrawType(geometry);
   };
 
   return (
     <div>
-      <Grid container spacing={2} marginTop={1} marginBottom={1}>
-        <Grid item xs={3}>
-          <SelectViewSidebar points={points} />
-        </Grid>
-        <Grid item xs={9} container direction="column" spacing={1}>
-          <Grid item>
-            <Typography variant="annotation">
-              {t("selectView.subtitle")}
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            container
-            direction="row"
-            alignItems={"center"}
-            spacing={1}
-          >
-            <Grid item xs={4}>
-              <DrawInteractionSelect
-                drawInteractionType={drawType}
-                onDrawTypeChange={handleDrawTypeChange}
-              />
-            </Grid>
-            <Grid item xs={6} />
-            <Grid
-              item
-              xs={2}
-              container
-              justifyContent={"flex-end"}
-              paddingX={2}
-            >
-              <Button
-                fullWidth
-                color="darkGreen"
-                variant="outlined"
-                size="small"
-              >
-                {t("selectView.importBtn")}
-              </Button>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <SelectViewMap
-              height={800}
-              marginBottom={betweenElementsMargin}
-              drawType={drawType}
-              handleDrawEnd={handleDrawEnd}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
+      <Box sx={{ marginTop: `${pageTopMargin}px`, marginX: 2, padding: 0 }}>
+        <SelectViewHeader
+          drawType={drawType}
+          handleDrawTypeChange={handleDrawTypeChange}
+        />
+        <SelectViewMap
+          height={mapHeight}
+          marginBottom={betweenElementsMargin}
+          drawType={drawType}
+          handleDrawEnd={handleDrawEnd}
+        />
+      </Box>
     </div>
   );
 };
