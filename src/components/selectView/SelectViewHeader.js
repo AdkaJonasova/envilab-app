@@ -7,7 +7,11 @@ import {
   selectViewHeaderPadding,
 } from "../../utils/data";
 
-const SelectViewHeader = ({ drawType, handleDrawTypeChange }) => {
+const SelectViewHeader = ({
+  drawType,
+  handleDrawTypeChange,
+  openSaveAreaPopup,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -26,8 +30,14 @@ const SelectViewHeader = ({ drawType, handleDrawTypeChange }) => {
           </Grid>
           <Grid item xs={6} />
           <Grid item xs={1} container justifyContent={"flex-end"} paddingX={1}>
-            <Button fullWidth color="darkGreen" variant="outlined" size="small">
-              {t("selectView.importBtn")}
+            <Button
+              fullWidth
+              color="darkGreen"
+              variant="outlined"
+              size="small"
+              onClick={() => openSaveAreaPopup(true)}
+            >
+              {t("selectView.saveBtn")}
             </Button>
           </Grid>
           <Grid item xs={1} container justifyContent={"flex-end"} paddingX={1}>
@@ -44,6 +54,7 @@ const SelectViewHeader = ({ drawType, handleDrawTypeChange }) => {
 SelectViewHeader.propTypes = {
   drawType: PropTypes.string,
   handleDrawTypeChange: PropTypes.func,
+  openSaveAreaPopup: PropTypes.func,
 };
 
 export default SelectViewHeader;

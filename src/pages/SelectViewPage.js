@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import SelectViewMap from "../components/mapComponents/SelectViewMap";
 import {
   betweenElementsMargin,
@@ -10,9 +10,10 @@ import {
 import SelectViewHeader from "../components/selectView/SelectViewHeader";
 import { getSelectViewMapHeight } from "../utils/customFunctions";
 import { getCoordsObjectForDrawType } from "../utils/decisionCriteriaHandlers";
+import NewAreaSavePopup from "../components/selectView/NewAreaSavePopup";
 
 const SelectViewPage = () => {
-  const [points, setPoints] = useState([]);
+  const [savePopupOpened, setSavePopupOpened] = useState(false);
   const [drawType, setDrawType] = useState(drawOptions[0].code);
   const [mapHeight, setMapHeight] = useState(
     getSelectViewMapHeight(window.innerHeight)
@@ -40,18 +41,37 @@ const SelectViewPage = () => {
     const coordsObject = getCoordsObjectForDrawType(geometry);
   };
 
+  const handleSavePopupOpen = () => {
+    setSavePopupOpened(true);
+  };
+
+  const handleSavePopupCancel = () => {
+    setSavePopupOpened(false);
+  };
+
+  const handleAreaSave = (name) => {
+    console.log("Name:", name);
+    setSavePopupOpened(false);
+  };
+
   return (
     <div>
       <Box sx={{ marginTop: `${pageTopMargin}px`, marginX: 2, padding: 0 }}>
         <SelectViewHeader
           drawType={drawType}
           handleDrawTypeChange={handleDrawTypeChange}
+          openSaveAreaPopup={handleSavePopupOpen}
         />
         <SelectViewMap
           height={mapHeight}
           marginBottom={betweenElementsMargin}
           drawType={drawType}
           handleDrawEnd={handleDrawEnd}
+        />
+        <NewAreaSavePopup
+          opened={savePopupOpened}
+          handleSaveArea={handleAreaSave}
+          handleClose={handleSavePopupCancel}
         />
       </Box>
     </div>

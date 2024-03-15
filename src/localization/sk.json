@@ -58,12 +58,20 @@
     "title": "Editor oblastí",
     "subtitle": "Vyberte typ interakcie nižšie a nakreslite oblasť priamo na mape alebo použite tlačidlo na import.",
     "importBtn": "Importovať oblasť",
+    "saveBtn": "Uložiť oblasť",
     "drawOptionsLabel": "Typ interakcie",
     "drawOptions": {
       "point": "Bod",
       "lineString": "Úsečka",
       "polygon": "Mnohouholník",
       "circle": "Kruh"
+    },
+    "saveNewAreaPopup": {
+      "title": "Uložiť novú oblasť",
+      "content": "Pre vytvorenie novej oblasti zadajte názov oblasti a kliknite na tlačidlo Uložiť.",
+      "fieldLabel": "Názov oblasti",
+      "cancelBtnLabel": "Zrušiť",
+      "saveBtnLabel": "Uložiť"
     }
   }
 }
