@@ -27,6 +27,9 @@
     },
     "layerList": {
       "noLayers": "There are no layers to display. Please select your favorite layers in settings."
+    },
+    "layerEdit": {
+      "opacity": "Opacity"
     }
   },
   "selectViewSidebar": {
