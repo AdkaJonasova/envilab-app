@@ -1,14 +1,10 @@
 import { useQuery } from "react-query";
 import apiClient from "../http-common";
-import { mockAreas } from "../data/mockData";
-import { mergeAreas } from "./customHooks";
 
 export const useAreas = (userId) =>
-  useQuery("areas", async () => {
-    let areaInfos = (await apiClient.get(`/areas/${userId}`)).data;
-    let geoAreas = mockAreas;
-    return mergeAreas(geoAreas, areaInfos, true);
-  });
+  useQuery("areas", () =>
+    apiClient.get(`/areas/${userId}`).then((r) => r.data)
+  );
 
 export const useActiveAreas = (userId) =>
   useQuery("activeAreas", () =>
@@ -16,11 +12,9 @@ export const useActiveAreas = (userId) =>
   );
 
 export const useFavoriteAreas = (userId) =>
-  useQuery("favoriteAreas", async () => {
-    let areaInfos = (await apiClient.get(`/areas/favorite/${userId}`)).data;
-    let geoAreas = mockAreas;
-    return mergeAreas(geoAreas, areaInfos);
-  });
+  useQuery("favoriteAreas", () =>
+    apiClient.get(`/areas/favorite/${userId}`).then((r) => r.data)
+  );
 
 export const useCustomAreas = (userId) =>
   useQuery("customAreas", () =>

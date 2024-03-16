@@ -56,7 +56,22 @@
   },
   "selectView": {
     "title": "Area editor",
-    "subtitle": "Please select at least 3 points on the map below to define a new area.",
-    "importBtn": "Import area"
+    "subtitle": "Please choose the interaction type below and draw the area directly on the map or use the import button.",
+    "importBtn": "Import area",
+    "saveBtn": "Save area",
+    "drawOptionsLabel": "Interaction type",
+    "drawOptions": {
+      "point": "Point",
+      "lineString": "Line string",
+      "polygon": "Polygon",
+      "circle": "Circle"
+    },
+    "saveNewAreaPopup": {
+      "title": "Save New Area",
+      "content": "To create a new area, please enter the area name and click Save",
+      "fieldLabel": "Area name",
+      "cancelBtnLabel": "Cancel",
+      "saveBtnLabel": "Save"
+    }
   }
 }

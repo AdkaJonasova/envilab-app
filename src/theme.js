@@ -164,6 +164,20 @@ theme = createTheme(theme, {
         },
       },
     },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            backgroundColor: theme.palette.lightGreen.main,
+            color: theme.palette.lightGreen.contrastText,
+            "&:hover": {
+              backgroundColor: theme.palette.lightGreen.main,
+              color: theme.palette.lightGreen.contrastText,
+            },
+          },
+        },
+      },
+    },
   },
 });
 
