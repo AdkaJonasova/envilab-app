@@ -7,30 +7,32 @@ import LayerList from "./layers/LayerList";
 import { getSidebarDataByTypeAndFilter } from "../utils/customFunctions";
 import { SidebarTypes } from "../utils/enums";
 import PropTypes from "prop-types";
-import { auto } from "@popperjs/core";
 
 export default function Sidebar({
   layers,
   areas,
   refetchLayers,
+  refetchAreas,
   height,
   marginBottom,
 }) {
-  const [barType, setBarType] = useState(SidebarTypes.Layers);
+  const [barType, setBarType] = useState(
+    localStorage.getItem("activeSidebarTab") ?? SidebarTypes.Layers
+  );
   const [filter, setFilter] = useState("");
 
   function getCardsByType(data, type) {
     if (type === SidebarTypes.Layers) {
       return <LayerList layers={data} refetch={refetchLayers} />;
     } else if (type === SidebarTypes.Areas) {
-      return <AreaList areas={data} />;
+      return <AreaList areas={data} refetch={refetchAreas} />;
     }
   }
 
   return (
     <Box
       maxHeight={height}
-      overflow={auto}
+      overflow={"auto"}
       sx={{ marginBottom: `${marginBottom}px` }}
     >
       <SideBarTabs selectedTab={barType} setSelectedTab={setBarType} />
@@ -47,6 +49,7 @@ Sidebar.propTypes = {
   layers: PropTypes.array,
   areas: PropTypes.array,
   refetchLayers: PropTypes.func,
+  refetchAreas: PropTypes.func,
   height: PropTypes.number,
   marginBottom: PropTypes.number,
 };

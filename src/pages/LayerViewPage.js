@@ -13,7 +13,7 @@ import {
   userId,
 } from "../data/mockData";
 import LayerViewMap from "../components/mapComponents/LayerViewMap";
-import layoutConfig from "../layoutConfigurations/tableGraphLayoutConfig.json";
+import layoutConfig from "../layoutConfigurations/basicLayoutConfig.json";
 import RGL, { WidthProvider } from "react-grid-layout";
 import { LayoutWindows } from "../utils/enums";
 import TableDataWindow from "../components/dataWindows/TableDataWindow";
@@ -87,6 +87,7 @@ const LayerViewPage = () => {
             layers={layers}
             areas={areas}
             refetchLayers={refetchLayers}
+            refetchAreas={refetchAreas}
             height={height}
             marginBottom={bottomMargin}
           />
@@ -95,6 +96,7 @@ const LayerViewPage = () => {
         return (
           <LayerViewMap
             layers={layers}
+            areas={areas}
             height={height}
             marginBottom={bottomMargin}
           />

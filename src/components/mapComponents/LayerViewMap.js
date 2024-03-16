@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { fromLonLat, get } from "ol/proj";
+import { useEffect, useState } from "react";
+import { fromLonLat } from "ol/proj";
 import ReactMap from "./ReactMap";
 import { OSM } from "ol/source";
 import ReactTileLayer from "./layers/ReactTileLayer";
@@ -8,9 +8,30 @@ import ReactFullScreenControl from "./controls/ReactFullScreenControl";
 import ReactZoomControl from "./controls/ReactZoomControl";
 import ReactLayers from "./layers/ReactLayers";
 import { createLayerByType } from "../../utils/decisionCriteriaHandlers";
+import ReactAreas from "./areas/ReactAreas";
+import GeoJsonReactArea from "./areas/GeoJsonReactArea";
+// import { dataFolder } from "../../utils/data";
 
-const LayerViewMap = ({ layers, height, marginBottom }) => {
+const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
   const [center, setCenter] = useState([0, 0]);
+  const [flattenedAreas, setFlattenedAreas] = useState([]);
+
+  useEffect(() => {
+    const flattened = flattenAreas(areas);
+    setFlattenedAreas(flattened);
+  }, []);
+
+  const flattenAreas = (areas) => {
+    let flattened = [];
+
+    areas.forEach((area) => {
+      flattened.push(area);
+      if (area.geoArea.subAreas.length > 0) {
+        flattened = flattened.concat(flattenAreas(area.geoArea.subAreas));
+      }
+    });
+    return flattened;
+  };
 
   return (
     <div>
@@ -25,6 +46,19 @@ const LayerViewMap = ({ layers, height, marginBottom }) => {
             .filter((layer) => layer.isActive)
             .map((layer) => createLayerByType(layer))}
         </ReactLayers>
+        <ReactAreas>
+          {flattenedAreas
+            .filter((area) => area.isActive)
+            .map((area) => {
+              return (
+                <GeoJsonReactArea
+                  key={`map-area-${area.areaId}`}
+                  areaSource={area.geoArea.source}
+                  areaSourceId={area.geoArea.sourceId}
+                />
+              );
+            })}
+        </ReactAreas>
         <ReactControls>
           <ReactFullScreenControl />
           <ReactZoomControl />

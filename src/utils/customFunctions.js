@@ -43,9 +43,16 @@ export function filterAreasByName(areas, filter) {
   if (!filter) {
     return areas;
   }
-  return areas.filter((a) =>
-    a.geoArea.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  let filteredAreas = [];
+  areas.forEach((area) => {
+    if (area.geoArea.name.toLowerCase().includes(filter.toLowerCase())) {
+      filteredAreas.push(area);
+    } else if (area.geoArea.subAreas.length > 0) {
+      const filteredSubAreas = filterAreasByName(area.geoArea.subAreas, filter);
+      filteredAreas = filteredAreas.concat(filteredSubAreas);
+    }
+  });
+  return filteredAreas;
 }
 
 export function getMaxIdInList(list) {

@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
-import { Star, StarBorder, Close } from "@mui/icons-material";
-import {
-  Divider,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Snackbar,
-} from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { Grid, IconButton, List, Snackbar } from "@mui/material";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { userId } from "../../data/mockData";
 import { useTranslation } from "react-i18next";
@@ -18,38 +10,50 @@ import {
   useLayers,
 } from "../../hooks/layerHooks";
 import Loading from "../../components/global/Loading";
+import LayerSettingsItem from "../../components/settings/LayerSettingsItem";
+import { filterLayersByName } from "../../utils/customFunctions";
 
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [changedLayers, setChangedLayers] = useState([]);
 
+  const [changedLayers, setChangedLayers] = useState([]);
   const [firstHalfLayers, setFirstHalfLayers] = useState([]);
   const [secondHalfLayers, setSecondHalfLayers] = useState([]);
 
   const { t } = useTranslation();
-  const { data: layers, isFetched: areLayersReady } = useLayers(userId);
+  const {
+    data: layers,
+    isFetched: areLayersReady,
+    isRefetching: areLayersRefetching,
+    refetch: refetchLayers,
+  } = useLayers(userId);
 
   useEffect(() => {
     if (areLayersReady) {
-      const midpoint = Math.ceil(layers.length / 2);
-      setFirstHalfLayers(layers.slice(0, midpoint));
-      setSecondHalfLayers(layers.slice(midpoint));
+      const filtered = filterLayersByName(layers, filter);
+      const midpoint = Math.ceil(filtered.length / 2);
+      setFirstHalfLayers(filtered.slice(0, midpoint));
+      setSecondHalfLayers(filtered.slice(midpoint));
     }
-  }, [areLayersReady]);
+  }, [filter, layers]);
 
-  if (!areLayersReady) {
+  if (!areLayersReady || areLayersRefetching) {
     return <Loading />;
   }
 
   //#region Helper methods
 
-  function handleSave() {
+  async function SaveAll() {
     changedLayers.forEach((l) => {
       l.isFavorite
         ? addFavoriteLayer(userId, l.layerId)
         : removeFavoriteLayer(userId, l.layerId);
     });
+  }
+  function handleSave() {
+    SaveAll().then(() => refetchLayers());
+    setChangedLayers([]);
     setSnackbarOpen(true);
   }
 
@@ -57,42 +61,44 @@ const LayerSettingsPage = () => {
     setChangedLayers([]);
   }
 
-  function handleStarClick(layer) {
+  function addToChanged(layer, newChangedLayers) {
     let changedLayer = { ...layer };
     changedLayer.isFavorite = !layer.isFavorite;
-
-    let newChangedLayers = [...changedLayers];
     newChangedLayers.push(changedLayer);
+  }
+
+  function removeFromChanged(index, newChangedLayers) {
+    newChangedLayers.splice(index, newChangedLayers);
+  }
+
+  function handleStarClick(layer) {
+    let newChangedLayers = [...changedLayers];
+    let layerChangedIndex = changedLayers.findIndex(
+      (l) => l.layerId === layer.layerId
+    );
+    if (layerChangedIndex !== -1) {
+      removeFromChanged(layerChangedIndex, newChangedLayers);
+    } else {
+      addToChanged(layer, newChangedLayers);
+    }
     setChangedLayers(newChangedLayers);
   }
 
-  function getStarForLayer(layer) {
-    const isFavorite =
+  function isMarkedFavorite(layer) {
+    return (
       changedLayers.find((l) => l.layerId === layer.layerId)?.isFavorite ??
-      layer.isFavorite;
-
-    return isFavorite ? <Star /> : <StarBorder />;
+      layer.isFavorite
+    );
   }
 
   function getLayerItem(layer) {
     return (
-      <div key={`settings-layer-item-container-${layer.layerId}`}>
-        <ListItem key={`settings-layer-item-${layer.layerId}`}>
-          <IconButton
-            key={`settings-layer-item-icon-${layer.layerId}`}
-            size="small"
-            color="beigeBrown"
-            onClick={() => handleStarClick(layer)}
-          >
-            {getStarForLayer(layer)}
-          </IconButton>
-          <ListItemText
-            key={`settings-layer-item-name-${layer.layerId}`}
-            primary={layer.geoLayer.name}
-          ></ListItemText>
-        </ListItem>
-        <Divider key={`settings-layer-item-divider-${layer.layerId}`} />
-      </div>
+      <LayerSettingsItem
+        key={`layer-settings-item-component-${layer.layerId}`}
+        layer={layer}
+        isMarkedFavorite={isMarkedFavorite}
+        handleStarClick={handleStarClick}
+      />
     );
   }
 
@@ -109,12 +115,12 @@ const LayerSettingsPage = () => {
       />
       <Grid container>
         <Grid item xs={6}>
-          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
             {firstHalfLayers.map((layer) => getLayerItem(layer))}
           </List>
         </Grid>
         <Grid item xs={6}>
-          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
             {secondHalfLayers.map((layer) => getLayerItem(layer))}
           </List>
         </Grid>

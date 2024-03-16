@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,36 +8,44 @@ import {
 } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
 import Loading from "../../components/global/Loading";
-import { Close, Star, StarBorder } from "@mui/icons-material";
-import {
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Snackbar,
-} from "@mui/material";
+import { Close } from "@mui/icons-material";
+import { Collapse, IconButton, List, Snackbar } from "@mui/material";
+import AreaSettingsItem from "../../components/settings/AreaSettingsItem";
+import { filterAreasByName } from "../../utils/customFunctions";
 
 const AreaSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [changesAreas, setChangedAreas] = useState([]);
+
+  // const [filteredAreas, setFilteredAreas] = useState([]);
+  const [changedAreas, setChangedAreas] = useState([]);
+  const [expandedAreas, setExpandedAreas] = useState([]);
 
   const { t } = useTranslation();
-  const { data: areas, isFetched: areaAreasReady } = useAreas(userId);
-
-  if (!areaAreasReady) {
-    return <Loading />;
-  }
+  const {
+    data: areas,
+    isFetched: areaAreasReady,
+    isRefetching: areAreasRefetching,
+    refetch: refetchAreas,
+  } = useAreas(userId);
 
   //#region Helper methods
 
-  function handleSave() {
-    changesAreas.forEach((a) => {
+  if (!areaAreasReady || areAreasRefetching) {
+    return <Loading />;
+  }
+
+  async function SaveAll() {
+    changedAreas.forEach((a) => {
       a.isFavorite
         ? addFavoriteArea(userId, a.areaId)
         : removeFavoriteArea(userId, a.areaId);
     });
+  }
+
+  function handleSave() {
+    SaveAll().then(() => refetchAreas());
+    setChangedAreas([]);
     setSnackbarOpen(true);
   }
 
@@ -45,43 +53,144 @@ const AreaSettingsPage = () => {
     setChangedAreas([]);
   }
 
-  function handleStarClick(area) {
+  function removeFromChanged(index, newChangedAreas) {
+    newChangedAreas.splice(index, 1);
+  }
+
+  function addToChanged(area, newChangedAreas) {
     let changedArea = { ...area };
     changedArea.isFavorite = !area.isFavorite;
 
-    let newChangedAreas = [...changesAreas];
     newChangedAreas.push(changedArea);
+  }
+
+  function handleStarClickHierarchically(
+    area,
+    newChangedAreas,
+    parentIsFavorite,
+    useParent
+  ) {
+    // child area should have the same value as parent
+    if (useParent) {
+      let areaChangedIndex = newChangedAreas.findIndex(
+        (a) => a.areaId === area.areaId
+      );
+
+      // child area is changed and the changed value is not equal to parent value -> remove from changed
+      if (areaChangedIndex !== -1 && !area.isFavorite !== parentIsFavorite) {
+        removeFromChanged(areaChangedIndex, newChangedAreas);
+
+        // child area is not changes and the original value is not equal to parent value -> add to changed
+      } else if (area.isFavorite !== parentIsFavorite) {
+        addToChanged(area, newChangedAreas);
+      }
+
+      // change the value only based on the area itself
+    } else {
+      let areaChangedIndex = newChangedAreas.findIndex(
+        (a) => a.areaId === area.areaId
+      );
+      if (areaChangedIndex !== -1) {
+        removeFromChanged(areaChangedIndex, newChangedAreas);
+        area.geoArea.subAreas.forEach((subArea) =>
+          handleStarClickHierarchically(
+            subArea,
+            newChangedAreas,
+            area.isFavorite,
+            true
+          )
+        );
+      } else {
+        addToChanged(area, newChangedAreas);
+        area.geoArea.subAreas.forEach((subArea) =>
+          handleStarClickHierarchically(
+            subArea,
+            newChangedAreas,
+            !area.isFavorite,
+            true
+          )
+        );
+      }
+    }
+  }
+
+  function handleStarClick(area) {
+    let newChangedAreas = [...changedAreas];
+    handleStarClickHierarchically(
+      area,
+      newChangedAreas,
+      area.isFavorite,
+      false
+    );
     setChangedAreas(newChangedAreas);
   }
 
-  function getStarForArea(area) {
-    const isFavorite =
-      changesAreas.find((a) => a.areaId === area.areaId)?.isFavorite ??
-      area.isFavorite;
-
-    return isFavorite ? <Star /> : <StarBorder />;
+  function isMarkedFavorite(area) {
+    return (
+      changedAreas.find((a) => a.areaId === area.areaId)?.isFavorite ??
+      area.isFavorite
+    );
   }
 
-  function getAreaItem(area) {
-    return (
-      <div key={`settings-area-item-container-${area.areaId}`}>
-        <ListItem key={`settings-area-item-${area.areaId}`}>
-          <IconButton
-            key={`settings-area-item-icon-${area.areaId}`}
-            size="small"
-            color="beigeBrown"
-            onClick={() => handleStarClick(area)}
+  function handleExpandCollapse(area) {
+    const currentIndex = expandedAreas.indexOf(area.areaId);
+    const newExpanded = [...expandedAreas];
+
+    if (currentIndex === -1) {
+      newExpanded.push(area.areaId);
+    } else {
+      newExpanded.splice(currentIndex, 1);
+    }
+
+    setExpandedAreas(newExpanded);
+  }
+
+  function isExpanded(area) {
+    return expandedAreas.indexOf(area.areaId) !== -1;
+  }
+
+  function getAreaItem(area, level) {
+    if (area.geoArea.subAreas.length === 0) {
+      return (
+        <AreaSettingsItem
+          key={`settings-area-item-component-${area.areaId}`}
+          area={area}
+          hierarchyLevel={level}
+          isExpandable={false}
+          isExpanded={isExpanded}
+          isMarkedFavorite={isMarkedFavorite}
+          handleExpandCollapse={handleExpandCollapse}
+          handleStarClick={handleStarClick}
+        />
+      );
+    } else {
+      return (
+        <div key={`settings-area-item-exp-container-${area.areaId}`}>
+          <AreaSettingsItem
+            key={`settings-area-item-component-${area.areaId}`}
+            area={area}
+            hierarchyLevel={level}
+            isExpandable={true}
+            isExpanded={isExpanded}
+            isMarkedFavorite={isMarkedFavorite}
+            handleExpandCollapse={handleExpandCollapse}
+            handleStarClick={handleStarClick}
+          />
+          <Collapse
+            key={`settings-area-item-collapsable-${area.areaId}`}
+            in={expandedAreas.indexOf(area.areaId) !== -1}
+            timeout={"auto"}
+            unmountOnExit
           >
-            {getStarForArea(area)}
-          </IconButton>
-          <ListItemText
-            key={`settings-area-item-name-${area.areaId}`}
-            primary={area.geoArea.name}
-          ></ListItemText>
-        </ListItem>
-        <Divider key={`settings-area-item-divider-${area.areaId}`} />
-      </div>
-    );
+            <List dense disablePadding>
+              {area.geoArea.subAreas.map((subArea) =>
+                getAreaItem(subArea, level + 1)
+              )}
+            </List>
+          </Collapse>
+        </div>
+      );
+    }
   }
 
   //#endregion
@@ -95,8 +204,8 @@ const AreaSettingsPage = () => {
         handleSettingsSave={handleSave}
         handleSettingsReset={handleReset}
       />
-      <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-        {areas.map((area) => getAreaItem(area))}
+      <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
+        {filterAreasByName(areas, filter).map((area) => getAreaItem(area, 0))}
       </List>
       <Snackbar
         open={snackbarOpen}

@@ -4,20 +4,24 @@ import { Button, Collapse, Grid, Typography } from "@mui/material";
 import AreaListItem from "./AreaListItem";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { activateArea, deactivateArea } from "../../hooks/areaHooks";
+import { userId } from "../../data/mockData";
 
-export default function AreaList({ areas }) {
+export default function AreaList({ areas, refetch }) {
   const [expandedAreas, setExpandedAreas] = React.useState([]);
 
   const { t } = useTranslation();
 
   //#region Methods
-  const handleUseArea = (area) => () => {};
+  const handleUseArea = (area) => {
+    if (area.isActive) {
+      deactivateArea(userId, area.areaId).then(() => refetch());
+    } else {
+      activateArea(userId, area.areaId).then(() => refetch());
+    }
+  };
 
-  function activateSubAreas(area, newUsedAreas) {}
-
-  function deactivateSubAreas(area, newUsedAreas) {}
-
-  const handleExpandCollapse = (area) => () => {
+  const handleExpandCollapse = (area) => {
     const currentIndex = expandedAreas.indexOf(area.areaId);
     const newExpanded = [...expandedAreas];
 
@@ -30,15 +34,15 @@ export default function AreaList({ areas }) {
     setExpandedAreas(newExpanded);
   };
 
-  function isAreaUsed(area) {
-    return false;
-  }
+  const isAreaUsed = (area) => {
+    return area.isActive;
+  };
 
-  function isAreaExpanded(area) {
+  const isAreaExpanded = (area) => {
     return expandedAreas.indexOf(area.areaId) !== -1;
-  }
+  };
 
-  function getAreaItem(area, level) {
+  const getAreaItem = (area, level) => {
     if (area.geoArea.subAreas.length === 0) {
       return (
         <AreaListItem
@@ -80,15 +84,15 @@ export default function AreaList({ areas }) {
         </div>
       );
     }
-  }
+  };
 
-  function getEmptyListText() {
+  const getEmptyListText = () => {
     return (
       <Typography variant="information">
         {t("layerViewSidebar.areaList.noAreas")}
       </Typography>
     );
-  }
+  };
   //#endregion
 
   return (
@@ -116,4 +120,5 @@ export default function AreaList({ areas }) {
 
 AreaList.propTypes = {
   areas: PropTypes.array,
+  refetch: PropTypes.func,
 };

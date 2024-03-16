@@ -9,7 +9,8 @@ import { useTranslation } from "react-i18next";
 export default function SideBarTabs({ selectedTab, setSelectedTab }) {
   const { t } = useTranslation();
 
-  const handleChangeTab = (_event, newSelectedTab) => {
+  const handleChangeTab = (newSelectedTab) => {
+    localStorage.setItem("activeSidebarTab", newSelectedTab);
     setSelectedTab(newSelectedTab);
   };
 
@@ -17,7 +18,7 @@ export default function SideBarTabs({ selectedTab, setSelectedTab }) {
     <Box sx={{ width: "100%", borderRadius: "28" }}>
       <Tabs
         value={selectedTab}
-        onChange={handleChangeTab}
+        onChange={(event, newValue) => handleChangeTab(newValue)}
         centered
         variant="fullWidth"
       >
