@@ -8,7 +8,11 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 
-export default function LayerListItem({ layer, handleLayerStateSwitch }) {
+export default function LayerListItem({
+  layer,
+  handleLayerStateSwitch,
+  handleEditLayer,
+}) {
   let paddingSize = 4;
   return (
     <div key={`layer-list-item-container-${layer.layerId}`}>
@@ -24,6 +28,7 @@ export default function LayerListItem({ layer, handleLayerStateSwitch }) {
           key={`layer-list-item-edit-${layer.layerId}`}
           size="small"
           color="beigeBrown"
+          onClick={() => handleEditLayer(layer)}
         >
           <Edit />
         </IconButton>
@@ -44,4 +49,5 @@ export default function LayerListItem({ layer, handleLayerStateSwitch }) {
 LayerListItem.propTypes = {
   layer: PropTypes.object,
   handleLayerStateSwitch: PropTypes.func,
+  handleEditLayer: PropTypes.func,
 };

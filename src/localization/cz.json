@@ -29,7 +29,8 @@
       "noLayers": "Nejsou k dispozici žádné vrstvy k zobrazení. Prosím, vyberte oblíbené vrstvy v nastaveních."
     },
     "layerEdit": {
-      "opacity": "Průhlednost"
+      "opacity": "Průhlednost",
+      "saveBtn": "Uložit"
     }
   },
   "selectViewSidebar": {

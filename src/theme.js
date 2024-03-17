@@ -178,6 +178,29 @@ theme = createTheme(theme, {
         },
       },
     },
+    MuiSlider: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.beigeBrown.main,
+          "& .MuiSlider-thumb": {
+            backgroundColor: theme.palette.beigeBrown.main,
+            boxShadow: `0 0 0 0px`,
+            "&:hover": {
+              boxShadow: `0 0 0 0px`,
+            },
+          },
+          "& .MuiSlider-rail": {
+            backgroundColor: theme.palette.darkGreen.contrastText,
+          },
+          "& .MuiSlider-track": {
+            backgroundColor: theme.palette.beigeBrown.main,
+          },
+          "& .MuiSlider-valueLabel": {
+            backgroundColor: theme.palette.beigeBrown.main,
+          },
+        },
+      },
+    },
   },
 });
 

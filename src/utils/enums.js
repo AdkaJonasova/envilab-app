@@ -1,12 +1,13 @@
 export const LayerTypes = {
-  Vector: "vector",
-  Tile: "tile",
-  Image: "image",
+  Vector: "Vector",
+  Tile: "Tile",
+  Image: "Image",
 };
 
 export const SidebarTypes = {
   Layers: "layers",
   Areas: "areas",
+  LayersEdit: "layersEdit",
 };
 
 export const LayoutWindows = {
