@@ -27,6 +27,10 @@
     },
     "layerList": {
       "noLayers": "Nie sú dostupné žiadne vrstvy na zobrazenie. Prosím vyberte obľúbené vrstvy v nastaveniach."
+    },
+    "layerEdit": {
+      "opacity": "Priehľadnosť",
+      "saveBtn": "Uložiť"
     }
   },
   "selectViewSidebar": {

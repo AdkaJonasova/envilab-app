@@ -12,7 +12,7 @@ import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
 import { useTranslation } from "react-i18next";
 
-export default function LayerList({ layers, refetch }) {
+export default function LayerList({ layers, refetch, handleEditLayer }) {
   const [open, setOpen] = React.useState(true);
   const { t } = useTranslation();
 
@@ -39,6 +39,7 @@ export default function LayerList({ layers, refetch }) {
         key={`layer-list-item-component-${layer.layerId}`}
         layer={layer}
         handleLayerStateSwitch={handleLayerStateSwitch}
+        handleEditLayer={handleEditLayer}
       />
     );
   }
@@ -87,4 +88,5 @@ export default function LayerList({ layers, refetch }) {
 LayerList.propTypes = {
   layers: PropTypes.array,
   refetch: PropTypes.func,
+  handleEditLayer: PropTypes.func,
 };

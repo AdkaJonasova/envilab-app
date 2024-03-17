@@ -14,8 +14,9 @@ const ReactVectorLayer = ({ source, name, id, zIndex = 0 }) => {
       name: name,
       id: id,
     });
-    map.addLayer(vectorLayer);
     vectorLayer.setZIndex(zIndex);
+    vectorLayer.setOpacity(0.5);
+    map.addLayer(vectorLayer);
     return () => {
       if (map) {
         map.removeLayer(vectorLayer);
