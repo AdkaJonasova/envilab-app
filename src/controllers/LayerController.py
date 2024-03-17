@@ -20,20 +20,16 @@ def get_layers_for_user(user_id: int):
 def get_active_layers_for_user(user_id: int):
     return layer_service.get_active_layers(user_id)
 
-# @router.get('/layers/{user_id}/{layer_id}')
-# def get_layer(user_id: int, layer_id: int):
-#     return layer_service.(layer_id, user_id)
-#
-#
-# @router.post('/layers/activate/{user_id}/{layer_id}')
-# def activate_layer_for_user(user_id: int, layer_id: int):
-#     layer_repo.activate_layer_for_user(layer_id, user_id)
-#
-#
-# @router.post('/layers/deactivate/{user_id}/{layer_id}')
-# def activate_layer_for_user(user_id: int, layer_id: int):
-#     layer_repo.deactivate_layer_for_user(layer_id, user_id)
-#
+
+@layer_router.post('/layers/activate/{user_id}/{layer_id}')
+def activate_layer_for_user(user_id: int, layer_id: int):
+    layer_service.activate_layer(layer_id, user_id)
+
+
+@layer_router.post('/layers/deactivate/{user_id}/{layer_id}')
+def activate_layer_for_user(user_id: int, layer_id: int):
+    layer_service.deactivate_layer(layer_id, user_id)
+
 #
 # @router.post('/layers/addFavorite/{user_id}/{layer_id}')
 # def add_layer_to_favorites_for_user(user_id: int, layer_id: int):

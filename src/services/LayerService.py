@@ -43,3 +43,9 @@ class LayerService:
         geo_layers = get_layers()
         merged_layers = __merge_layers__(layer_infos, geo_layers)
         return merged_layers
+
+    def activate_layer(self, layer_id: int, user_id: int):
+        self.layer_repository.activate_layer_for_user(layer_id, user_id)
+
+    def deactivate_layer(self, layer_id: int, user_id: int):
+        self.layer_repository.deactivate_layer_for_user(layer_id, user_id)
