@@ -1,6 +1,6 @@
 from typing import List
 
-from src.geoserver.GeoserverService import get_layers
+from src.geoserver.GeoserverService import GeoserverService, get_layers
 from src.mockdata.MockLayers import Layer
 from src.repositories.LayerRepository import LayerRepository
 
@@ -25,22 +25,24 @@ class LayerService:
 
     def __init__(self):
         self.layer_repository = LayerRepository()
+        self.geoserver_service = GeoserverService()
 
     def get_layers(self, user_id: int):
         layer_infos = self.layer_repository.get_all_for_user(user_id)
-        geo_layers = get_layers()
+        geo_layers = self.geoserver_service.get_layers()
         merged_layers = __merge_layers__(layer_infos, geo_layers, True)
         return merged_layers
 
     def get_favorite_layers(self, user_id: int):
         layer_infos = self.layer_repository.get_all_favorite_for_user(user_id)
-        geo_layers = get_layers()
+        geo_layers = self.geoserver_service.get_layers()
+        # geo_layers = get_layers()
         merged_layers = __merge_layers__(layer_infos, geo_layers)
         return merged_layers
 
     def get_active_layers(self, user_id: int):
         layer_infos = self.layer_repository.get_all_active_for_user(user_id)
-        geo_layers = get_layers()
+        geo_layers = self.geoserver_service.get_layers()
         merged_layers = __merge_layers__(layer_infos, geo_layers)
         return merged_layers
 

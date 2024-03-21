@@ -38,9 +38,12 @@ vegetation_layer = Layer(
     type=LayerTypes.Vector
 )
 
-test_layer1 = Layer(
+usa_states_layer_my = Layer(
     layer_id=3,
-    name="Test layer 1"
+    name="USA States My",
+    source="http://localhost:9000/geoserver/wms",
+    description="",
+    type=LayerTypes.Tile
 )
 
 test_layer2 = Layer(
@@ -98,7 +101,7 @@ mock_layers = [
     point_layer,
     usa_states_layer,
     vegetation_layer,
-    test_layer1,
+    usa_states_layer_my,
     test_layer2,
     test_layer3,
     test_layer4,
