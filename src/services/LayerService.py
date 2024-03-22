@@ -1,21 +1,23 @@
 from typing import List
 
-from src.geoserver.GeoserverService import GeoserverService, get_layers
-from src.mockdata.MockLayers import Layer
+from src.geoserver.GeoserverService import GeoserverService
 from src.repositories.LayerRepository import LayerRepository
 
 
-def __merge_layers__(layer_infos: List, geo_layers: List[Layer], include_all: bool = False):
+def __merge_layers__(layer_infos: List[dict], geo_layers: List[dict], include_all: bool = False):
     result = []
 
     for geo_layer in geo_layers:
-        layer_info = next((layer_info for layer_info in layer_infos if layer_info['layerID'] == geo_layer.layer_id), None)
+        layer_info = next((layer_info for layer_info in layer_infos if layer_info['layerName'] == geo_layer['name']), None)
         if layer_info or include_all:
             layer = {
-                'layerId': geo_layer.layer_id,
+                'name': geo_layer["name"],
+                'title': geo_layer["title"],
+                'type': geo_layer["type"],
+                'description': geo_layer["description"],
+                'projection': geo_layer["projection"],
                 'isActive': layer_info['isActive'] if layer_info else False,
                 'isFavorite': layer_info['isFavorite'] if layer_info else False,
-                'geoLayer': geo_layer
             }
             result.append(layer)
     return result
@@ -36,7 +38,6 @@ class LayerService:
     def get_favorite_layers(self, user_id: int):
         layer_infos = self.layer_repository.get_all_favorite_for_user(user_id)
         geo_layers = self.geoserver_service.get_layers()
-        # geo_layers = get_layers()
         merged_layers = __merge_layers__(layer_infos, geo_layers)
         return merged_layers
 

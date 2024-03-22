@@ -13,10 +13,10 @@ def get_json_attribute(json_data: dict, attribute_path: str):
     return value
 
 
-def create_layer_json(name: str, type: str, title: str, description: str, projection: str):
+def create_geoserver_layer_json(name: str, layer_type: str, title: str, description: str, projection: str):
     layer_json = {
         "name": name,
-        "type": type,
+        "type": layer_type,
         "title": title,
         "description": description,
         "projection": projection

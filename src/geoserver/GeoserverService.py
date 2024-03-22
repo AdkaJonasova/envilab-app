@@ -4,7 +4,7 @@ from requests.auth import HTTPBasicAuth
 from src.mockdata.MockAreas import mock_areas
 from src.mockdata.MockLayers import mock_layers
 from src.utils.ConfigReader import load_config
-from src.utils.JsonHelper import create_layer_json, get_json_attribute
+from src.utils.JsonHelper import create_geoserver_layer_json, get_json_attribute
 
 
 class GeoserverService:
@@ -25,13 +25,13 @@ class GeoserverService:
 
             layers = response_content["layers"]["layer"]
             transformed_layers = self.__transform__layers__(layers)
-            return response
+            return transformed_layers
         except Exception as e:
             print(type(e))
             return ""
 
     def __transform__layers__(self, layers):
-        layers_json = []
+        transformed_layers = []
         for layer in layers:
             try:
                 layer_name = get_json_attribute(layer, "name")  # layer name
@@ -49,16 +49,13 @@ class GeoserverService:
                 layer_desc = get_json_attribute(src_response_content, f"{src_class}.abstract")  # layer description
                 layer_proj = get_json_attribute(src_response_content, f"{src_class}.srs")  # layer projection
 
-                (layers_json
-                 .append(create_layer_json(layer_name, layer_type, layer_title, layer_desc, layer_proj)))
+                (transformed_layers
+                 .append(create_geoserver_layer_json(layer_name, layer_type, layer_title, layer_desc, layer_proj)))
 
             except Exception as e:
                 print(f"Unable to transform layer: {layer}. Failed with error: {type(e)}")
 
-        result = {
-            "layers": layers_json
-        }
-        return result
+        return transformed_layers
 
     def __get_geoserver_auth__(self):
         return HTTPBasicAuth(self.username, self.password)
