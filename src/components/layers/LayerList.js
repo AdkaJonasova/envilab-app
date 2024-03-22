@@ -19,11 +19,11 @@ export default function LayerList({ layers, refetch, handleEditLayer }) {
   //#region Methods
   function handleLayerStateSwitch(layer) {
     if (layer.isActive) {
-      deactivateLayer(userId, layer.layerId).then(() => {
+      deactivateLayer(userId, layer.name).then(() => {
         refetch();
       });
     } else {
-      activateLayer(userId, layer.layerId).then(() => {
+      activateLayer(userId, layer.name).then(() => {
         refetch();
       });
     }
@@ -36,7 +36,7 @@ export default function LayerList({ layers, refetch, handleEditLayer }) {
   function getLayerItem(layer) {
     return (
       <LayerListItem
-        key={`layer-list-item-component-${layer.layerId}`}
+        key={`layer-list-item-component-${layer.name}`}
         layer={layer}
         handleLayerStateSwitch={handleLayerStateSwitch}
         handleEditLayer={handleEditLayer}

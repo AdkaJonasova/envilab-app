@@ -15,17 +15,14 @@ export default function LayerListItem({
 }) {
   let paddingSize = 4;
   return (
-    <div key={`layer-list-item-container-${layer.layerId}`}>
-      <ListItem
-        key={`layer-list-item-${layer.layerId}`}
-        sx={{ pl: paddingSize }}
-      >
+    <div key={`layer-list-item-container-${layer.name}`}>
+      <ListItem key={`layer-list-item-${layer.name}`} sx={{ pl: paddingSize }}>
         <ListItemText
-          key={`layer-list-item-name-${layer.layerId}`}
-          primary={layer.geoLayer.name}
+          key={`layer-list-item-name-${layer.name}`}
+          primary={layer.title}
         />
         <IconButton
-          key={`layer-list-item-edit-${layer.layerId}`}
+          key={`layer-list-item-edit-${layer.name}`}
           size="small"
           color="beigeBrown"
           onClick={() => handleEditLayer(layer)}
@@ -33,7 +30,7 @@ export default function LayerListItem({
           <Edit />
         </IconButton>
         <Switch
-          key={`layer-list-item-switch-${layer.layerId}`}
+          key={`layer-list-item-switch-${layer.name}`}
           edge="end"
           size="small"
           color="beigeBrown"
@@ -41,7 +38,7 @@ export default function LayerListItem({
           checked={layer.isActive}
         />
       </ListItem>
-      <Divider key={`layer-list-divider-${layer.layerId}`} />
+      <Divider key={`layer-list-divider-${layer.name}`} />
     </div>
   );
 }

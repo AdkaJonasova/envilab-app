@@ -16,19 +16,19 @@ export const useLayers = (userId) =>
     apiClient.get(`/layers/${userId}`).then((r) => r.data)
   );
 
-export const useLayerById = (userId, layerId) =>
+export const useLayerById = (userId, layerName) =>
   useQuery("layerById", () =>
-    apiClient.get(`/layers/${userId}/${layerId}`).then((r) => r.data)
+    apiClient.get(`/layers/${userId}/${layerName}`).then((r) => r.data)
   );
 
-export const activateLayer = (userId, layerId) =>
-  apiClient.post(`/layers/activate/${userId}/${layerId}`);
+export const activateLayer = (userId, layerName) =>
+  apiClient.post(`/layers/activate/${userId}/${layerName}`);
 
-export const deactivateLayer = (userId, layerId) =>
-  apiClient.post(`/layers/deactivate/${userId}/${layerId}`);
+export const deactivateLayer = (userId, layerName) =>
+  apiClient.post(`/layers/deactivate/${userId}/${layerName}`);
 
-export const addFavoriteLayer = (userId, layerId) =>
-  apiClient.post(`/layers/addFavorite/${userId}/${layerId}`);
+export const addFavoriteLayer = (userId, layerName) =>
+  apiClient.post(`/layers/addFavorite/${userId}/${layerName}`);
 
-export const removeFavoriteLayer = (userId, layerId) =>
-  apiClient.post(`/layers/removeFavorite/${userId}/${layerId}`);
+export const removeFavoriteLayer = (userId, layerName) =>
+  apiClient.post(`/layers/removeFavorite/${userId}/${layerName}`);

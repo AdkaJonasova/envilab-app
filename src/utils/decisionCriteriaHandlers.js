@@ -10,8 +10,7 @@ import Static from "ol/source/ImageStatic";
 import { transformProjections } from "./mapFunctions";
 
 export function createLayerByType(layer) {
-  console.log("Create layer by type: ", layer);
-  const layerType = layer.geoLayer.type;
+  const layerType = layer.type;
   switch (layerType) {
     case LayerTypes.Vector:
       return (
