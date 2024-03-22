@@ -47,8 +47,14 @@ class LayerService:
         merged_layers = __merge_layers__(layer_infos, geo_layers)
         return merged_layers
 
-    def activate_layer(self, layer_id: int, user_id: int):
-        self.layer_repository.activate_layer_for_user(layer_id, user_id)
+    def activate_layer(self, layer_name: str, user_id: int):
+        self.layer_repository.activate_layer_for_user(layer_name, user_id)
 
-    def deactivate_layer(self, layer_id: int, user_id: int):
-        self.layer_repository.deactivate_layer_for_user(layer_id, user_id)
+    def deactivate_layer(self, layer_name: str, user_id: int):
+        self.layer_repository.deactivate_layer_for_user(layer_name, user_id)
+
+    def add_favorite_layer(self, layer_name: str, user_id: int):
+        self.layer_repository.add_layer_to_favorites_for_user(layer_name, user_id)
+
+    def remove_favorite_layer(self, layer_name: str, user_id: int):
+        self.layer_repository.remove_layer_from_favorites_for_user(layer_name, user_id)

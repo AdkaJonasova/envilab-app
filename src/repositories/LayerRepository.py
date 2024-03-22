@@ -10,31 +10,31 @@ class LayerRepository:
     def __init__(self):
         self.connection = connect()
 
-    def get_all_favorite_for_user(self, user_id):
+    def get_all_favorite_for_user(self, user_id: int):
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
         query = (Query().from_(user_layers)
                  .select(user_layers.layerName, user_layers.isActive, user_layers.isFavorite, user_layers.userID)
                  .where(user_layers.userID == user_id)
-                 .where(user_layers.isFavorite == 'true'))
+                 .where(user_layers.isFavorite is True))
 
         cursor.execute(str(query))
         return cursor.fetchall()
 
-    def get_all_active_for_user(self, user_id):
+    def get_all_active_for_user(self, user_id: int):
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
         query = (Query().from_(user_layers)
                  .select(user_layers.layerName, user_layers.isActive, user_layers.isFavorite, user_layers.userID)
                  .where(user_layers.userID == user_id)
-                 .where(user_layers.isActive == 'true'))
+                 .where(user_layers.isActive is True))
 
         cursor.execute(str(query))
         return cursor.fetchall()
 
-    def get_all_for_user(self, user_id):
+    def get_all_for_user(self, user_id: int):
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
@@ -45,7 +45,7 @@ class LayerRepository:
         cursor.execute(str(query))
         return cursor.fetchall()
 
-    def get_layer_by_name_and_user(self, layer_name, user_id):
+    def get_layer_by_name_and_user(self, layer_name: str, user_id: int):
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
@@ -57,48 +57,48 @@ class LayerRepository:
         cursor.execute(str(query))
         return cursor.fetchall()
 
-    def activate_layer_for_user(self, layer_name, user_id):
+    def activate_layer_for_user(self, layer_name: str, user_id: int):
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_name, 'true', found_layer.get("isFavorite"), user_id)
+            self.__update_layer(layer_name, True, found_layer.get("isFavorite"), user_id)
         else:
-            self.__insert_layer(layer_name, 'true', 'true', user_id)
+            self.__insert_layer(layer_name, True, True, user_id)
 
         self.connection.commit()
 
-    def deactivate_layer_for_user(self, layer_name, user_id):
+    def deactivate_layer_for_user(self, layer_name: str, user_id: int):
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_name, 'false', found_layer.get("isFavorite"), user_id)
+            self.__update_layer(layer_name, False, found_layer.get("isFavorite"), user_id)
         else:
-            self.__insert_layer(layer_name, 'false', 'true', user_id)
+            self.__insert_layer(layer_name, False, True, user_id)
 
         self.connection.commit()
 
-    def add_layer_to_favorites_for_user(self, layer_name, user_id):
+    def add_layer_to_favorites_for_user(self, layer_name: str, user_id: int):
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_name, found_layer.get("isActive"), 'true', user_id)
+            self.__update_layer(layer_name, found_layer.get("isActive"), True, user_id)
         else:
-            self.__insert_layer(layer_name, 'false', 'true', user_id)
+            self.__insert_layer(layer_name, False, False, user_id)
 
         self.connection.commit()
 
-    def remove_layer_from_favorites_for_user(self, layer_name, user_id):
+    def remove_layer_from_favorites_for_user(self, layer_name: str, user_id: int):
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_name, found_layer.get("isActive"), 'false', user_id)
+            self.__update_layer(layer_name, found_layer.get("isActive"), False, user_id)
         else:
-            self.__insert_layer(layer_name, 'false', 'false', user_id)
+            self.__insert_layer(layer_name, False, False, user_id)
 
         self.connection.commit()
 
     # Private methods
-    def __insert_layer(self, layer_name, is_active, is_favorite, user_id):
+    def __insert_layer(self, layer_name: str, is_active: bool, is_favorite: bool, user_id: int):
         cursor = self.connection.cursor()
 
         user_layers = Table(self.TABLE_NAME)
@@ -106,7 +106,7 @@ class LayerRepository:
 
         cursor.execute(str(query))
 
-    def __update_layer(self, layer_name, is_active, is_favorite, user_id):
+    def __update_layer(self, layer_name: str, is_active: bool, is_favorite: bool, user_id: int):
         cursor = self.connection.cursor()
 
         user_layers = Table(self.TABLE_NAME)
