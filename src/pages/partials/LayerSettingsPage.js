@@ -51,6 +51,7 @@ const LayerSettingsPage = () => {
         : removeFavoriteLayer(userId, l.name);
     });
   }
+
   function handleSave() {
     SaveAll().then(() => refetchLayers());
     setChangedLayers([]);
@@ -68,7 +69,7 @@ const LayerSettingsPage = () => {
   }
 
   function removeFromChanged(index, newChangedLayers) {
-    newChangedLayers.splice(index, newChangedLayers);
+    newChangedLayers.splice(index, 1);
   }
 
   function handleStarClick(layer) {
