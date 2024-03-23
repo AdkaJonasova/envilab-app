@@ -1,5 +1,5 @@
 from psycopg2.extras import RealDictCursor
-from pypika import Query, Table
+from pypika import Table, PostgreSQLQuery
 
 from src.utils.DatabaseUtil import connect
 
@@ -14,10 +14,10 @@ class LayerRepository:
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
-        query = (Query().from_(user_layers)
+        query = (PostgreSQLQuery.from_(user_layers)
                  .select(user_layers.layerName, user_layers.isActive, user_layers.isFavorite, user_layers.userID)
                  .where(user_layers.userID == user_id)
-                 .where(user_layers.isFavorite is True))
+                 .where(user_layers.isFavorite == True))
 
         cursor.execute(str(query))
         return cursor.fetchall()
@@ -26,10 +26,10 @@ class LayerRepository:
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
-        query = (Query().from_(user_layers)
+        query = (PostgreSQLQuery.from_(user_layers)
                  .select(user_layers.layerName, user_layers.isActive, user_layers.isFavorite, user_layers.userID)
                  .where(user_layers.userID == user_id)
-                 .where(user_layers.isActive is True))
+                 .where(user_layers.isActive == True))
 
         cursor.execute(str(query))
         return cursor.fetchall()
@@ -38,7 +38,7 @@ class LayerRepository:
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
-        query = (Query().from_(user_layers)
+        query = (PostgreSQLQuery.from_(user_layers)
                  .select(user_layers.layerName, user_layers.isActive, user_layers.isFavorite, user_layers.userID)
                  .where(user_layers.userID == user_id))
 
@@ -49,7 +49,7 @@ class LayerRepository:
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layers = Table(self.TABLE_NAME)
-        query = (Query().from_(user_layers)
+        query = (PostgreSQLQuery.from_(user_layers)
                  .select(user_layers.layerName, user_layers.isActive, user_layers.isFavorite, user_layers.userID)
                  .where(user_layers.layerName == layer_name)
                  .where(user_layers.userID == user_id))
@@ -61,9 +61,14 @@ class LayerRepository:
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_name, True, found_layer.get("isFavorite"), user_id)
+            self.__update_layer(
+                layer_name,
+                True,
+                found_layer.get("isFavorite"),
+                found_layer.get("opacity"),
+                user_id)
         else:
-            self.__insert_layer(layer_name, True, True, user_id)
+            self.__insert_layer(layer_name, True, True, 100, user_id)
 
         self.connection.commit()
 
@@ -71,9 +76,14 @@ class LayerRepository:
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_name, False, found_layer.get("isFavorite"), user_id)
+            self.__update_layer(
+                found_layer.get("layerName"),
+                False,
+                found_layer.get("isFavorite"),
+                found_layer.get("opacity"),
+                user_id)
         else:
-            self.__insert_layer(layer_name, False, True, user_id)
+            self.__insert_layer(layer_name, False, True, 100, user_id)
 
         self.connection.commit()
 
@@ -81,9 +91,14 @@ class LayerRepository:
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_name, found_layer.get("isActive"), True, user_id)
+            self.__update_layer(
+                found_layer.get("layerName"),
+                found_layer.get("isActive"),
+                True,
+                found_layer.get("opacity"),
+                user_id)
         else:
-            self.__insert_layer(layer_name, False, False, user_id)
+            self.__insert_layer(layer_name, False, True, 100, user_id)
 
         self.connection.commit()
 
@@ -91,28 +106,39 @@ class LayerRepository:
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(layer_name, found_layer.get("isActive"), False, user_id)
+            self.__update_layer(
+                found_layer.get("layerName"),
+                found_layer.get("isActive"),
+                False,
+                found_layer.get("opacity"),
+                user_id
+            )
         else:
-            self.__insert_layer(layer_name, False, False, user_id)
+            self.__insert_layer(layer_name, False, False, 100, user_id)
 
         self.connection.commit()
 
     # Private methods
-    def __insert_layer(self, layer_name: str, is_active: bool, is_favorite: bool, user_id: int):
+    def __insert_layer(self, layer_name: str, is_active: bool, is_favorite: bool, opacity: int, user_id: int):
         cursor = self.connection.cursor()
 
         user_layers = Table(self.TABLE_NAME)
-        query = Query().into(user_layers).insert(layer_name, is_active, is_favorite, user_id)
+        query = (PostgreSQLQuery
+                 .into(user_layers)
+                 .columns("layerName", "isActive", "isFavorite", "opacity", "userID")
+                 .insert(layer_name, is_active, is_favorite, opacity, user_id))
 
         cursor.execute(str(query))
 
-    def __update_layer(self, layer_name: str, is_active: bool, is_favorite: bool, user_id: int):
+    def __update_layer(self, layer_name: str, is_active: bool, is_favorite: bool, opacity: int, user_id: int):
         cursor = self.connection.cursor()
 
         user_layers = Table(self.TABLE_NAME)
-        query = (Query().update(user_layers)
+        query = (PostgreSQLQuery.update(user_layers)
+                 .set(user_layers.layerName, layer_name)
                  .set(user_layers.isFavorite, is_favorite)
                  .set(user_layers.isActive, is_active)
+                 .set(user_layers.opacity, opacity)
                  .where(user_layers.layerName == layer_name)
                  .where(user_layers.userID == user_id))
 

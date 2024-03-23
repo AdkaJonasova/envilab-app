@@ -27,7 +27,7 @@ def activate_layer_for_user(user_id: int, layer_name: str):
 
 
 @layer_router.post('/layers/deactivate/{user_id}/{layer_name}')
-def activate_layer_for_user(user_id: int, layer_name: str):
+def deactivate_layer_for_user(user_id: int, layer_name: str):
     layer_service.deactivate_layer(layer_name, user_id)
 
 
