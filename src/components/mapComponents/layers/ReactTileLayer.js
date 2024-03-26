@@ -4,19 +4,23 @@ import { useContext, useEffect } from "react";
 import MapContext from "../MapContext";
 import TileLayer from "ol/layer/Tile";
 
-const ReactTileLayer = ({ source, name = "", id = -1, zIndex = 0 }) => {
+const ReactTileLayer = ({ source, name, id, zIndex = 0, opacity }) => {
   const { map } = useContext(MapContext);
 
   useEffect(() => {
     if (!map) return;
+
+    let transformedOpacity = opacity / 100;
+    console.log("Transformed opacity for layer " + name + ": ", opacity);
     let tileLayer = new TileLayer({
       source: source,
       zIndex: zIndex,
+      opacity: transformedOpacity,
       name: name,
       id: id,
     });
     map.addLayer(tileLayer);
-    tileLayer.setZIndex(zIndex);
+
     return () => {
       if (map) {
         map.removeLayer(tileLayer);
@@ -26,4 +30,5 @@ const ReactTileLayer = ({ source, name = "", id = -1, zIndex = 0 }) => {
 
   return null;
 };
+
 export default ReactTileLayer;

@@ -10,54 +10,59 @@ import Static from "ol/source/ImageStatic";
 import { transformProjections } from "./mapFunctions";
 
 export function createLayerByType(layer) {
-  const layerType = layer.type;
-  switch (layerType) {
+  switch (layer.type) {
     case LayerTypes.Vector:
-      return (
-        <ReactVectorLayer
-          source={
-            new VectorSource({
-              url: layer.geoLayer.source,
-              format: new GeoJSON(),
-            })
-          }
-          name={layer.geoLayer.name}
-          id={layer.layerId}
-        />
-      );
-    case LayerTypes.Tile:
+    // return (
+    //   <ReactVectorLayer
+    //     source={
+    //       new VectorSource({
+    //         url:
+    //           "http://localhost:9000/geoserver/wfs" +
+    //           "?service=WFS" +
+    //           "&version=1.1.0" +
+    //           "&request=GetFeature" +
+    //           `&typename=${layer.name}` +
+    //           "&outputFormat=application/json",
+    //         format: new GeoJSON({
+    //           featureProjection: layer.projection,
+    //           extractGeometryName: true,
+    //         }),
+    //       })
+    //     }
+    //     name={layer.title}
+    //     id={layer.name}
+    //     opacity={layer.opacity}
+    //   />
+    // );
+    case LayerTypes.Raster:
       return (
         <ReactTileLayer
           source={
             new TileWMS({
-              url: layer.geoLayer.source,
-              params: { LAYERS: "topp:states", TILED: true },
+              url: "http://localhost:9000/geoserver/wms",
+              params: {
+                LAYERS: layer.name,
+                TILED: true,
+              },
               serverType: "geoserver",
-              transition: 0,
+              crossOrigin: "anonymous",
+              projection: layer.projection,
+              tileLoadFunction: function (tile, src) {
+                tile.getImage().src = src;
+                tile.getImage().crossOrigin = "anonymous";
+                tile.getImage().headers = {
+                  Authorization: "Basic " + btoa("admin:geoserver"),
+                };
+              },
             })
           }
-          name={layer.geoLayer.name}
-          id={layer.layerId}
+          name={layer.title}
+          id={layer.name}
+          opacity={layer.opacity}
         />
       );
     case LayerTypes.Image:
-      return (
-        <ReactImageLayer
-          source={
-            new Static({
-              projection: new Projection({
-                code: "xkcd-image",
-                units: "pixels",
-                extent: layer.geoLayer.extent,
-              }),
-              url: layer.geoLayer.source,
-              imageExtent: layer.geoLayer.extent,
-            })
-          }
-          name={layer.geoLayer.name}
-          id={layer.layerId}
-        />
-      );
+      console.log("--Image layer");
   }
 }
 

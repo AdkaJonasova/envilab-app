@@ -32,3 +32,8 @@ export const addFavoriteLayer = (userId, layerName) =>
 
 export const removeFavoriteLayer = (userId, layerName) =>
   apiClient.post(`/layers/removeFavorite/${userId}/${layerName}`);
+
+export const setOpacityForLayer = (userId, layerName, opacity) =>
+  apiClient.post(`/layers/setOpacity/${userId}/${layerName}`, {
+    opacity: opacity,
+  });
