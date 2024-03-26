@@ -18,6 +18,8 @@ def __merge_layers__(layer_infos: List[dict], geo_layers: List[dict], include_al
                 'projection': geo_layer["projection"],
                 'isActive': layer_info['isActive'] if layer_info else False,
                 'isFavorite': layer_info['isFavorite'] if layer_info else False,
+                'opacity': layer_info['opacity'] if layer_info else 100,
+                'data': geo_layer["data"],
             }
             result.append(layer)
     return result
