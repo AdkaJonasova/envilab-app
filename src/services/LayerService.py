@@ -60,3 +60,6 @@ class LayerService:
 
     def remove_favorite_layer(self, layer_name: str, user_id: int):
         self.layer_repository.remove_layer_from_favorites_for_user(layer_name, user_id)
+
+    def set_opacity_of_layer(self, layer_name: str, user_id: int, opacity: int):
+        self.layer_repository.set_opacity_of_layer_for_user(layer_name, user_id, opacity)

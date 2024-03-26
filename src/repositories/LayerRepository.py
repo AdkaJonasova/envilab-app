@@ -118,6 +118,20 @@ class LayerRepository:
 
         self.connection.commit()
 
+    def set_opacity_of_layer_for_user(self, layer_name: str, user_id: int, opacity: int):
+        layers = self.get_layer_by_name_and_user(layer_name, user_id)
+        if layers:
+            found_layer = layers[0]
+            self.__update_layer(
+                found_layer.get("layerName"),
+                found_layer.get("isActive"),
+                found_layer.get("isFavorite"),
+                opacity,
+                found_layer.get("userID")
+            )
+        else:
+            self.__insert_layer(layer_name, False, True, opacity, user_id)
+
     # Private methods
     def __insert_layer(self, layer_name: str, is_active: bool, is_favorite: bool, opacity: int, user_id: int):
         cursor = self.connection.cursor()

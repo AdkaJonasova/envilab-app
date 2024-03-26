@@ -1,3 +1,8 @@
+import logging
+
+logger = logging.getLogger()
+
+
 def get_json_attribute(json_data: dict, attribute_path: str):
     value = ""
     keys = attribute_path.split('.')
@@ -8,7 +13,7 @@ def get_json_attribute(json_data: dict, attribute_path: str):
             attribute_value = attribute_value[key]
         value = attribute_value
     except (KeyError, TypeError):
-        print(f"Attribute '{attribute_path}' not found in JSON data.")
+        logger.error(f"Attribute '{attribute_path}' not found in JSON data. Leaving empty value")
 
     return value
 

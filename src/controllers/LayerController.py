@@ -1,9 +1,14 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
 
 from src.services.LayerService import LayerService
 
 layer_router = APIRouter()
 layer_service = LayerService()
+
+
+class LayerUpdateModel(BaseModel):
+    opacity: int
 
 
 @layer_router.get('/layers/favorite/{user_id}')
@@ -39,3 +44,8 @@ def add_layer_to_favorites_for_user(user_id: int, layer_name: str):
 @layer_router.post('/layers/removeFavorite/{user_id}/{layer_name}')
 def remove_layer_from_favorites_for_user(user_id: int, layer_name: str):
     layer_service.remove_favorite_layer(layer_name, user_id)
+
+
+@layer_router.post('/layers/setOpacity/{user_id}/{layer_name}')
+def set_opacity_of_layer_for_user(user_id: int, layer_name: str, layer_update: LayerUpdateModel):
+    layer_service.set_opacity_of_layer(layer_name, user_id, layer_update.opacity)

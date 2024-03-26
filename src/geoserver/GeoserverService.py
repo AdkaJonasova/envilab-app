@@ -71,8 +71,8 @@ class GeoserverService:
 
                 # Fetch layer data for vector layer
                 layer_data = {}
-                if layer_type == "VECTOR":  # TODO constant/enum
-                    layer_data = self.__get_features_for_vector_layer(layer_name, layer_proj)
+                # if layer_type == "VECTOR":  # TODO constant/enum
+                #     layer_data = self.__get_features_for_vector_layer(layer_name, layer_proj)
 
                 # Create json with layer information and data
                 transformed_layer = create_geoserver_layer_json(layer_name, layer_type, layer_title, layer_desc,
