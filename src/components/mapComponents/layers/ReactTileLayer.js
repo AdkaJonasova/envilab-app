@@ -11,7 +11,6 @@ const ReactTileLayer = ({ source, name, id, zIndex = 0, opacity }) => {
     if (!map) return;
 
     let transformedOpacity = opacity / 100;
-    console.log("Transformed opacity for layer " + name + ": ", opacity);
     let tileLayer = new TileLayer({
       source: source,
       zIndex: zIndex,
