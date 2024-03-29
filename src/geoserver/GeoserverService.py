@@ -5,7 +5,8 @@ from requests.auth import HTTPBasicAuth
 from src.mockdata.MockAreas import mock_areas
 from src.mockdata.MockLayers import mock_layers
 from src.utils.ConfigReader import load_config
-from src.utils.JsonHelper import create_geoserver_layer_json, get_json_attribute
+from src.utils.JsonHelper import create_geo_layer_json, get_json_string_attribute, create_geo_layer_group_json, \
+    get_json_list_attribute
 from src.utils.LoggingUtil import logging
 
 
@@ -19,6 +20,25 @@ class GeoserverService:
         self.username = config["user"]
         self.password = config["password"]
 
+    def get_layers_in_groups(self):
+        transformed_groups = []
+        try:
+            headers = {"Content-type": "application/json"}
+            request_url = f"{self.geoserver_rest}/layergroups"
+
+            response = requests.get(request_url, auth=self.__get_geoserver_auth__(), headers=headers)
+            if response.status_code == 200:
+                response_content = response.json()
+                layer_groups = get_json_list_attribute(response_content, "layerGroups.layerGroup")
+                transformed_groups = self.__transform_layer_groups__(layer_groups)
+            else:
+                self.logger.error(f"Unable to fetch layer groups from geoserver, "
+                                  f"request failed with status code {response.status_code}")
+        except Exception as e:
+            self.logger.error(f"Unable to fetch layer groups from geoserver, request failed with error: {str(e)}")
+
+        return transformed_groups
+
     def get_layers(self):
         transformed_layers = []
         try:
@@ -28,7 +48,7 @@ class GeoserverService:
             response = requests.get(request_url, auth=self.__get_geoserver_auth__(), headers=headers)
             if response.status_code == 200:
                 response_content = response.json()
-                layers = response_content["layers"]["layer"]
+                layers = get_json_list_attribute(response_content, "layers.layer")
                 transformed_layers = self.__transform__layers__(layers)
             else:
                 self.logger.error(f"Unable to get layers from geoserver, "
@@ -38,12 +58,44 @@ class GeoserverService:
 
         return transformed_layers
 
-    def __transform__layers__(self, layers):
+    def __transform_layer_groups__(self, layer_groups: list):
+        transformed_groups = []
+        for group in layer_groups:
+            try:
+                group_name = get_json_string_attribute(group, "name")  # group name
+                group_link = get_json_string_attribute(group, "href")
+
+                # Fetch layer group from geoserver
+                group_response = requests.get(group_link, auth=self.__get_geoserver_auth__())
+                if group_response.status_code != 200:
+                    self.logger.error(f"Unable to fetch layer group information for layer group {group_name} "
+                                      f"from geoserver, request failed with status code {group_response.status_code}")
+                    continue
+
+                group_response_content = group_response.json()
+                group_title = get_json_string_attribute(group_response_content, "layerGroup.title")  # group title
+                group_desc = get_json_string_attribute(group_response_content,
+                                                       "layerGroup.abstractTxt")  # group description
+                group_layers = get_json_list_attribute(group_response_content, "layerGroup.publishables.published")
+
+                # Transform layers of the group
+                transformed_layers = self.__transform__layers__(group_layers)
+
+                # Create json with layer group information and layers
+                transformed_group = create_geo_layer_group_json(group_name, group_title, group_desc, transformed_layers)
+                transformed_groups.append(transformed_group)
+
+            except Exception as e:
+                self.logger.error(f"Unable to transform layer group {group}, failed with error: {str(e)}")
+
+        return transformed_groups
+
+    def __transform__layers__(self, layers: list):
         transformed_layers = []
         for layer in layers:
             try:
-                layer_name = get_json_attribute(layer, "name")  # layer name
-                layer_link = get_json_attribute(layer, "href")
+                layer_name = get_json_string_attribute(layer, "name")  # layer name
+                layer_link = get_json_string_attribute(layer, "href")
 
                 # Fetch layer information from geoserver
                 layer_response = requests.get(layer_link, auth=self.__get_geoserver_auth__())
@@ -53,9 +105,9 @@ class GeoserverService:
                     continue
 
                 layer_response_content = layer_response.json()
-                layer_type = get_json_attribute(layer_response_content, "layer.type")  # layer type
-                src_link = get_json_attribute(layer_response_content, "layer.resource.href")
-                src_class = get_json_attribute(layer_response_content, "layer.resource.@class")
+                layer_type = get_json_string_attribute(layer_response_content, "layer.type")  # layer type
+                src_link = get_json_string_attribute(layer_response_content, "layer.resource.href")
+                src_class = get_json_string_attribute(layer_response_content, "layer.resource.@class")
 
                 # Fetch source information from geoserver
                 src_response = requests.get(src_link, auth=self.__get_geoserver_auth__())
@@ -65,9 +117,10 @@ class GeoserverService:
                     continue
 
                 src_response_content = src_response.json()
-                layer_title = get_json_attribute(src_response_content, f"{src_class}.title")  # layer title
-                layer_desc = get_json_attribute(src_response_content, f"{src_class}.abstract")  # layer description
-                layer_proj = get_json_attribute(src_response_content, f"{src_class}.srs")  # layer projection
+                layer_title = get_json_string_attribute(src_response_content, f"{src_class}.title")  # layer title
+                layer_desc = get_json_string_attribute(src_response_content,
+                                                       f"{src_class}.abstract")  # layer description
+                layer_proj = get_json_string_attribute(src_response_content, f"{src_class}.srs")  # layer projection
 
                 # Fetch layer data for vector layer
                 layer_data = {}
@@ -75,8 +128,8 @@ class GeoserverService:
                 #     layer_data = self.__get_features_for_vector_layer(layer_name, layer_proj)
 
                 # Create json with layer information and data
-                transformed_layer = create_geoserver_layer_json(layer_name, layer_type, layer_title, layer_desc,
-                                                                layer_proj, layer_data)
+                transformed_layer = create_geo_layer_json(layer_name, layer_type, layer_title, layer_desc, layer_proj,
+                                                          layer_data)
                 transformed_layers.append(transformed_layer)
 
             except Exception as e:

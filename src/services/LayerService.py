@@ -2,13 +2,30 @@ from typing import List
 
 from src.geoserver.GeoserverService import GeoserverService
 from src.repositories.LayerRepository import LayerRepository
+from src.utils.JsonHelper import get_json_string_attribute, get_json_list_attribute
+
+
+def __merge_layers_in_groups__(layer_infos: list[dict], layer_groups: list[dict], include_all: bool = False):
+    result = []
+    for layer_group in layer_groups:
+        layers = get_json_list_attribute(layer_group, "layers")
+        merged_layers = __merge_layers__(layer_infos, layers, include_all)
+        merged_layer_group = {
+            "name": get_json_string_attribute(layer_group, "name"),
+            "title": get_json_string_attribute(layer_group, "title"),
+            "description": get_json_string_attribute(layer_group, "description"),
+            "layers": merged_layers
+        }
+        result.append(merged_layer_group)
+    return result
 
 
 def __merge_layers__(layer_infos: List[dict], geo_layers: List[dict], include_all: bool = False):
     result = []
 
     for geo_layer in geo_layers:
-        layer_info = next((layer_info for layer_info in layer_infos if layer_info['layerName'] == geo_layer['name']), None)
+        layer_info = next((layer_info for layer_info in layer_infos if layer_info['layerName'] == geo_layer['name']),
+                          None)
         if layer_info or include_all:
             layer = {
                 'name': geo_layer["name"],
@@ -39,9 +56,9 @@ class LayerService:
 
     def get_favorite_layers(self, user_id: int):
         layer_infos = self.layer_repository.get_all_favorite_for_user(user_id)
-        geo_layers = self.geoserver_service.get_layers()
-        merged_layers = __merge_layers__(layer_infos, geo_layers)
-        return merged_layers
+        geo_layer_groups = self.geoserver_service.get_layers_in_groups()
+        merged_layer_groups = __merge_layers_in_groups__(layer_infos, geo_layer_groups)
+        return merged_layer_groups
 
     def get_active_layers(self, user_id: int):
         layer_infos = self.layer_repository.get_all_active_for_user(user_id)
