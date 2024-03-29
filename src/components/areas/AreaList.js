@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import { Button, Collapse, Grid, Typography } from "@mui/material";
 import AreaListItem from "./AreaListItem";
@@ -6,19 +6,28 @@ import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { activateArea, deactivateArea } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
+import { getZoomedToAreas } from "../../utils/customFunctions";
 
 export default function AreaList({ areas, refetch }) {
-  const [expandedAreas, setExpandedAreas] = React.useState([]);
-
+  const [expandedAreas, setExpandedAreas] = useState([]);
   const { t } = useTranslation();
 
   //#region Methods
-  const handleUseArea = (area) => {
-    if (area.isActive) {
-      deactivateArea(userId, area.areaId).then(() => refetch());
-    } else {
-      activateArea(userId, area.areaId).then(() => refetch());
+  const zoomToArea = async (area) => {
+    let zoomedToAreas = getZoomedToAreas(areas);
+    for (let i = 0; i < zoomedToAreas.length; i++) {
+      const zoomedAreaId = zoomedToAreas[i];
+      deactivateArea(userId, zoomedAreaId);
     }
+    await activateArea(userId, area.areaId);
+  };
+
+  const handleZoomToArea = (area) => {
+    zoomToArea(area).then(() => refetch());
+  };
+
+  const handleUnzoomArea = (area) => {
+    deactivateArea(userId, area.areaId).then(() => refetch());
   };
 
   const handleExpandCollapse = (area) => {
@@ -34,10 +43,6 @@ export default function AreaList({ areas, refetch }) {
     setExpandedAreas(newExpanded);
   };
 
-  const isAreaUsed = (area) => {
-    return area.isActive;
-  };
-
   const isAreaExpanded = (area) => {
     return expandedAreas.indexOf(area.areaId) !== -1;
   };
@@ -50,9 +55,9 @@ export default function AreaList({ areas, refetch }) {
           area={area}
           hierarchyLevel={level}
           isExpandable={false}
-          handleUseArea={handleUseArea}
+          handleZoomToArea={handleZoomToArea}
+          handleUnzoomArea={handleUnzoomArea}
           handleExpandCollapse={handleExpandCollapse}
-          isUsed={isAreaUsed}
           isExpanded={isAreaExpanded}
         />
       );
@@ -64,9 +69,9 @@ export default function AreaList({ areas, refetch }) {
             area={area}
             hierarchyLevel={level}
             isExpandable={true}
-            handleUseArea={handleUseArea}
+            handleZoomToArea={handleZoomToArea}
+            handleUnzoomArea={handleUnzoomArea}
             handleExpandCollapse={handleExpandCollapse}
-            isUsed={isAreaUsed}
             isExpanded={isAreaExpanded}
           />
           <Collapse

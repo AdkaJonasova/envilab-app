@@ -1,38 +1,40 @@
-import { Edit, ExpandLess, ExpandMore } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, ZoomIn, ZoomOut } from "@mui/icons-material";
 import {
   Divider,
   IconButton,
   ListItem,
   ListItemText,
-  Switch,
+  Typography,
 } from "@mui/material";
+
 import PropTypes from "prop-types";
 
 export default function AreaListItem({
   area,
   hierarchyLevel,
   isExpandable,
-  handleUseArea,
+  handleZoomToArea,
+  handleUnzoomArea,
   handleExpandCollapse,
-  isUsed,
   isExpanded,
 }) {
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
-  function addEditButton(area) {
-    if (area.isCustom) {
+  const addUnzoomArea = (area) => {
+    if (area.isActive) {
       return (
         <IconButton
-          key={`area-list-item-edit-${area.areaId}`}
+          key={`area-list-item-unzoom-${area.areaId}`}
           size="small"
           color="beigeBrown"
+          onClick={() => handleUnzoomArea(area)}
         >
-          <Edit />
+          <ZoomOut />
         </IconButton>
       );
     }
     return null;
-  }
+  };
 
   function addExpandCollapseItem(area) {
     return (
@@ -50,19 +52,23 @@ export default function AreaListItem({
     <div>
       <ListItem key={`area-list-item-${area.areaId}`} sx={{ pl: paddingSize }}>
         {isExpandable ? addExpandCollapseItem(area) : ""}
-        <ListItemText
-          key={`area-list-item-name-${area.areaId}`}
-          primary={area.geoArea.name}
-        />
-        {addEditButton(area)}
-        <Switch
-          id={`area-list-item-switch-${area.areaId}`}
-          edge="end"
+        <ListItemText key={`area-list-item-name-${area.areaId}`}>
+          <Typography
+            variant="body1"
+            fontWeight={area.isActive ? "bold" : "normal"}
+          >
+            {area.geoArea.name}
+          </Typography>
+        </ListItemText>
+        {addUnzoomArea(area)}
+        <IconButton
+          key={`area-list-item-zoom-into-${area.areaId}`}
           size="small"
           color="beigeBrown"
-          onChange={() => handleUseArea(area)}
-          checked={isUsed(area)}
-        />
+          onClick={() => handleZoomToArea(area)}
+        >
+          <ZoomIn />
+        </IconButton>
       </ListItem>
       <Divider key={`area-list-item-divider-${area.areaId}`} />
     </div>
@@ -73,8 +79,8 @@ AreaListItem.propTypes = {
   area: PropTypes.object,
   hierarchyLevel: PropTypes.number,
   isExpandable: PropTypes.bool,
-  handleUseArea: PropTypes.func,
+  handleZoomToArea: PropTypes.func,
+  handleUnzoomArea: PropTypes.func,
   handleExpandCollapse: PropTypes.func,
-  isUsed: PropTypes.func,
   isExpanded: PropTypes.func,
 };

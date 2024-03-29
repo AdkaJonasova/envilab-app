@@ -81,6 +81,20 @@ export function filterAreasByName(areas, filter) {
   return filteredAreas;
 }
 
+export function getZoomedToAreas(areas) {
+  let zoomedAreas = [];
+  areas.forEach((area) => {
+    if (area.isActive) {
+      zoomedAreas.push(area.areaId);
+    }
+    if (area.geoArea.subAreas.length > 0) {
+      const zoomedToSubAreas = getZoomedToAreas(area.geoArea.subAreas);
+      zoomedAreas = zoomedAreas.concat(zoomedToSubAreas);
+    }
+  });
+  return zoomedAreas;
+}
+
 export function getMaxIdInList(list) {
   return list.length > 0 ? Math.max([...list]) : 0;
 }
