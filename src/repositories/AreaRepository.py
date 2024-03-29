@@ -96,7 +96,8 @@ class AreaRepository:
         if areas:
             found_area = areas[0]
             self.__update_area_for_user(
-                area_id, False,
+                area_id,
+                False,
                 found_area.get("isFavorite"),
                 found_area.get("isCustom"),
                 user_id

@@ -25,16 +25,16 @@ def get_favorite_areas_for_user(user_id: int):
 def get_custom_areas_for_user(user_id: int):
     return area_service.get_custom_areas(user_id)
 
-# @router.post('/areas/activate/{user_id}/{area_id}')
-# def activate_area_for_user(user_id: int, area_id: int):
-#     area_repo.activate_area_for_user(user_id, area_id)
-#
-#
-# @router.post('/areas/deactivate/{user_id}/{area_id}')
-# def deactivate_area_for_user(user_id: int, area_id):
-#     area_repo.deactivate_area_for_user(user_id, area_id)
-#
-#
+
+@area_router.post('/areas/activate/{user_id}/{area_id}')
+def activate_area_for_user(user_id: int, area_id: int):
+    area_service.activate_area(user_id, area_id)
+
+
+@area_router.post('/areas/deactivate/{user_id}/{area_id}')
+def deactivate_area_for_user(user_id: int, area_id):
+    area_service.deactivate_area(user_id, area_id)
+
 # @app.post('/areas/addFavorite/{user_id}/{area_id}')
 # def add_area_to_favorites_for_user(user_id: int, area_id: int):
 #     area_repo.add_favorite_for_user(user_id, area_id)

@@ -63,3 +63,9 @@ class AreaService:
         geo_areas = get_areas()
         merged_areas = __merge_areas__(area_infos, geo_areas)
         return merged_areas
+
+    def activate_area(self, user_id: int, area_id: int):
+        self.area_repository.activate_area_for_user(user_id, area_id)
+
+    def deactivate_area(self, user_id: int, area_id: int):
+        self.area_repository.deactivate_area_for_user(user_id, area_id)
