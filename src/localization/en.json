@@ -16,10 +16,6 @@
       "layerTab": "Layers",
       "areaTab": "Areas"
     },
-    "layerCustomize": {
-      "header": "Customize",
-      "opacity": "Opacity"
-    },
     "areaList": {
       "createSet": "Create area set",
       "chooseSet": "Choose area set",
@@ -31,6 +27,12 @@
     "layerEdit": {
       "opacity": "Opacity",
       "saveBtn": "Save"
+    },
+    "layerInfo": {
+      "name": "Layer name",
+      "type": "Layer type",
+      "projection": "Layer projection",
+      "description": "Layer description"
     }
   },
   "selectViewSidebar": {

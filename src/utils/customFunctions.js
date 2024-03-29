@@ -51,6 +51,7 @@ export function filterLayersByName(layers, filter) {
   if (!filter) {
     return layers;
   }
+  return layers;
   return layers.filter((l) =>
     l.title.toLowerCase().includes(filter.toLowerCase())
   );

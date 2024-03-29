@@ -12,6 +12,7 @@ export default function LayerListItem({
   layer,
   handleLayerStateSwitch,
   handleEditLayer,
+  handleDisplayLayerInfo,
 }) {
   let paddingSize = 4;
   return (
@@ -20,6 +21,8 @@ export default function LayerListItem({
         <ListItemText
           key={`layer-list-item-name-${layer.name}`}
           primary={layer.title}
+          onClick={() => handleDisplayLayerInfo(layer)}
+          sx={{ cursor: "pointer" }}
         />
         <IconButton
           key={`layer-list-item-edit-${layer.name}`}
@@ -47,4 +50,5 @@ LayerListItem.propTypes = {
   layer: PropTypes.object,
   handleLayerStateSwitch: PropTypes.func,
   handleEditLayer: PropTypes.func,
+  handleDisplayLayerInfo: PropTypes.func,
 };

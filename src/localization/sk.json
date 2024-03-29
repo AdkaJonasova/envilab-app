@@ -16,10 +16,6 @@
       "layerTab": "Vrstvy",
       "areaTab": "Oblasti"
     },
-    "layerCustomize": {
-      "header": "Upraviť vrstvu",
-      "opacity": "Priehľadnosť"
-    },
     "areaList": {
       "createSet": "Vytvoriť skupinu oblastí",
       "chooseSet": "Vybrať skupinu oblastí",
@@ -31,6 +27,12 @@
     "layerEdit": {
       "opacity": "Priehľadnosť",
       "saveBtn": "Uložiť"
+    },
+    "layerInfo": {
+      "name": "Názov vrstvy",
+      "type": "Typ vrstvy",
+      "projection": "Projekcia",
+      "description": "Popis vrstvy"
     }
   },
   "selectViewSidebar": {

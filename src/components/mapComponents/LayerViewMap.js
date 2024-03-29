@@ -14,10 +14,13 @@ import GeoJsonReactArea from "./areas/GeoJsonReactArea";
 const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
   const [center, setCenter] = useState([0, 0]);
   const [flattenedAreas, setFlattenedAreas] = useState([]);
+  const [flattenedLayers, setFlattenedLayers] = useState([]);
 
   useEffect(() => {
-    const flattened = flattenAreas(areas);
-    setFlattenedAreas(flattened);
+    if (layers && areas) {
+      setFlattenedAreas(flattenAreas(areas));
+      setFlattenedLayers(flattenLayers(layers));
+    }
   }, []);
 
   const flattenAreas = (areas) => {
@@ -32,6 +35,18 @@ const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
     return flattened;
   };
 
+  const flattenLayers = (layers) => {
+    let flattened = [];
+
+    layers.forEach((layerGroup) => {
+      layerGroup.layers.forEach((layer) => {
+        flattened.push(layer);
+      });
+    });
+
+    return flattened;
+  };
+
   return (
     <div>
       <ReactMap
@@ -41,7 +56,7 @@ const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
       >
         <ReactLayers>
           <ReactTileLayer source={new OSM()} zIndex={0} />
-          {layers
+          {flattenedLayers
             .filter((layer) => layer.isActive)
             .map((layer) => createLayerByType(layer))}
         </ReactLayers>

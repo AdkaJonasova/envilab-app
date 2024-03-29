@@ -11,7 +11,6 @@ const ReactVectorLayer = ({ source, name, id, zIndex = 0, opacity }) => {
     if (!map) return;
 
     let transformedOpacity = opacity / 100;
-    console.log("Opacity for layer " + name + ": ", transformedOpacity);
     let vectorLayer = new VectorLayer({
       source: source,
       zIndex: zIndex,
