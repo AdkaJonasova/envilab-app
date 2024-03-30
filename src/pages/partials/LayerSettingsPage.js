@@ -4,11 +4,7 @@ import { Grid, IconButton, List, Snackbar } from "@mui/material";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { userId } from "../../data/mockData";
 import { useTranslation } from "react-i18next";
-import {
-  addFavoriteLayer,
-  removeFavoriteLayer,
-  useLayers,
-} from "../../hooks/layerHooks";
+import { changeFavoriteLayers, useLayers } from "../../hooks/layerHooks";
 import Loading from "../../components/global/Loading";
 import LayerSettingsItem from "../../components/settings/LayerSettingsItem";
 import { filterLayersByName } from "../../utils/customFunctions";
@@ -44,16 +40,8 @@ const LayerSettingsPage = () => {
 
   //#region Helper methods
 
-  async function SaveAll() {
-    changedLayers.forEach((l) => {
-      l.isFavorite
-        ? addFavoriteLayer(userId, l.name)
-        : removeFavoriteLayer(userId, l.name);
-    });
-  }
-
   function handleSave() {
-    SaveAll().then(() => refetchLayers());
+    changeFavoriteLayers(userId, changedLayers).then(() => refetchLayers());
     setChangedLayers([]);
     setSnackbarOpen(true);
   }
@@ -63,8 +51,10 @@ const LayerSettingsPage = () => {
   }
 
   function addToChanged(layer, newChangedLayers) {
-    let changedLayer = { ...layer };
-    changedLayer.isFavorite = !layer.isFavorite;
+    let changedLayer = {
+      name: layer.name,
+      value: !layer.isFavorite,
+    };
     newChangedLayers.push(changedLayer);
   }
 
@@ -87,7 +77,7 @@ const LayerSettingsPage = () => {
 
   function isMarkedFavorite(layer) {
     return (
-      changedLayers.find((l) => l.name === layer.name)?.isFavorite ??
+      changedLayers.find((l) => l.name === layer.name)?.value ??
       layer.isFavorite
     );
   }
