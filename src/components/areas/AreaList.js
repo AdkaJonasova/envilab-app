@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import List from "@mui/material/List";
 import { Button, Collapse, Grid, Typography } from "@mui/material";
 import AreaListItem from "./AreaListItem";
