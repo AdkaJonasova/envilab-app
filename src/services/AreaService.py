@@ -3,6 +3,7 @@ from typing import List
 
 from src.geoserver.GeoserverService import get_areas
 from src.mockdata.MockAreas import Area
+from src.models.AreaModels import FavoritePairModel
 from src.repositories.AreaRepository import AreaRepository
 
 
@@ -69,3 +70,11 @@ class AreaService:
 
     def deactivate_area(self, user_id: int, area_id: int):
         self.area_repository.deactivate_area_for_user(user_id, area_id)
+
+    def change_favorite_areas(self, user_id: int, areas: list[FavoritePairModel]):
+        for area in areas:
+            if area.value:
+                self.area_repository.add_favorite_for_user(user_id, area.identificator)
+            else:
+                self.area_repository.remove_favorite_for_user(user_id, area.identificator)
+

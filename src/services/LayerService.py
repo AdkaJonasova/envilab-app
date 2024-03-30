@@ -1,6 +1,7 @@
 from typing import List
 
 from src.geoserver.GeoserverService import GeoserverService
+from src.models.LayerModels import FavoritePairModel
 from src.repositories.LayerRepository import LayerRepository
 from src.utils.JsonHelper import get_json_string_attribute, get_json_list_attribute
 
@@ -72,11 +73,12 @@ class LayerService:
     def deactivate_layer(self, layer_name: str, user_id: int):
         self.layer_repository.deactivate_layer_for_user(layer_name, user_id)
 
-    def add_favorite_layer(self, layer_name: str, user_id: int):
-        self.layer_repository.add_layer_to_favorites_for_user(layer_name, user_id)
-
-    def remove_favorite_layer(self, layer_name: str, user_id: int):
-        self.layer_repository.remove_layer_from_favorites_for_user(layer_name, user_id)
+    def change_favorite_layers(self, user_id: int, layers: list[FavoritePairModel]):
+        for layer in layers:
+            if layer.value:
+                self.layer_repository.add_layer_to_favorites_for_user(layer.name, user_id)
+            else:
+                self.layer_repository.remove_layer_from_favorites_for_user(layer.name, user_id)
 
     def set_opacity_of_layer(self, layer_name: str, user_id: int, opacity: int):
         self.layer_repository.set_opacity_of_layer_for_user(layer_name, user_id, opacity)
