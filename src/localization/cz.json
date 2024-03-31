@@ -26,7 +26,8 @@
     },
     "layerEdit": {
       "opacity": "Průhlednost",
-      "saveBtn": "Uložit"
+      "saveBtn": "Uložit",
+      "snackbarTextSuccess": "Změny byly úspěšně uloženy!"
     },
     "layerInfo": {
       "name": "Název vrstvy",
