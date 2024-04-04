@@ -40,7 +40,7 @@ const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
       map.removeLayer(drawLayerRef.current);
       map.removeInteraction(drawInteractionRef.current);
     };
-  }, [variant, onDrawEnd]);
+  }, [variant, onDrawEnd, map]);
   return null;
 };
 

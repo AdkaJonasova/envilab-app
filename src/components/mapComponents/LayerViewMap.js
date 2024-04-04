@@ -10,6 +10,8 @@ import ReactLayers from "./layers/ReactLayers";
 import { createLayerByType } from "../../utils/decisionCriteriaHandlers";
 import ReactAreas from "./areas/ReactAreas";
 import GeoJsonReactArea from "./areas/GeoJsonReactArea";
+import ReactClickInteraction from "./interactions/ReactClickInteraction";
+import ReactInteractions from "./interactions/ReactInteractions";
 
 const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
   const [center, setCenter] = useState([0, 0]);
@@ -77,6 +79,9 @@ const LayerViewMap = ({ layers, areas, height, marginBottom }) => {
           <ReactFullScreenControl />
           <ReactZoomControl />
         </ReactControls>
+        <ReactInteractions>
+          <ReactClickInteraction />
+        </ReactInteractions>
       </ReactMap>
     </div>
   );
