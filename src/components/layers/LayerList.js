@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Collapse,
@@ -11,6 +11,8 @@ import PropTypes from "prop-types";
 import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { collapseLayerSection } from "../../redux/slices/LayerSectionsSlice";
 
 export default function LayerList({
   layers,
@@ -18,10 +20,12 @@ export default function LayerList({
   handleEditLayer,
   handleDisplayLayerInfo,
 }) {
-  const [opened, setOpened] = useState(
-    layers.map((layerGroup) => layerGroup.name)
+  const collapsedSections = useSelector(
+    (state) => state.collapsedLayerSections
   );
+
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   //#region Methods
   const handleLayerStateSwitch = (layer) => {
@@ -37,18 +41,11 @@ export default function LayerList({
   };
 
   const handleExpandCollapse = (layerGroup) => {
-    let newOpened = [...opened];
-    const layerGroupIndex = newOpened.indexOf(layerGroup.name);
-    if (layerGroupIndex !== -1) {
-      newOpened.splice(layerGroupIndex, 1);
-    } else {
-      newOpened.push(layerGroup.name);
-    }
-    setOpened(newOpened);
+    dispatch(collapseLayerSection(layerGroup.name));
   };
 
   const isSectionExpanded = (layerGroup) => {
-    return opened.indexOf(layerGroup.name) !== -1;
+    return !collapsedSections.includes(layerGroup.name);
   };
 
   const getLayerItem = (layer) => {

@@ -8,6 +8,10 @@ import LayerViewPage from "./pages/LayerViewPage";
 import SelectViewPage from "./pages/SelectViewPage";
 import SettingsPage from "./pages/SettingsPage";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import mainReducer from "./redux/reducers";
+import store from "./redux/store";
 
 function App() {
   // const lessZoom = (map) => {
@@ -56,36 +60,41 @@ function App() {
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <ThemeProvider theme={theme}>
-            <MainMenu />
-            <main>
-              <Routes>
-                <Route
-                  index
-                  path="/"
-                  element={<Navigate replace to={"/layerView"} />}
-                ></Route>
-                <Route path="/layerView" element={<LayerViewPage />}></Route>
-                <Route path="/selectView" element={<SelectViewPage />}></Route>
-                <Route
-                  path="/settings"
-                  element={<Navigate replace to={"/settings/layers"} />}
-                ></Route>
-                <Route
-                  path="/settings/layers"
-                  element={<SettingsPage tab={"layers"} />}
-                ></Route>
-                <Route
-                  path="/settings/areas"
-                  element={<SettingsPage tab={"areas"} />}
-                ></Route>
-              </Routes>
-            </main>
-          </ThemeProvider>
-        </BrowserRouter>
-      </QueryClientProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <ThemeProvider theme={theme}>
+              <MainMenu />
+              <main>
+                <Routes>
+                  <Route
+                    index
+                    path="/"
+                    element={<Navigate replace to={"/layerView"} />}
+                  ></Route>
+                  <Route path="/layerView" element={<LayerViewPage />}></Route>
+                  <Route
+                    path="/selectView"
+                    element={<SelectViewPage />}
+                  ></Route>
+                  <Route
+                    path="/settings"
+                    element={<Navigate replace to={"/settings/layers"} />}
+                  ></Route>
+                  <Route
+                    path="/settings/layers"
+                    element={<SettingsPage tab={"layers"} />}
+                  ></Route>
+                  <Route
+                    path="/settings/areas"
+                    element={<SettingsPage tab={"areas"} />}
+                  ></Route>
+                </Routes>
+              </main>
+            </ThemeProvider>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </Provider>
     </>
   );
 }
