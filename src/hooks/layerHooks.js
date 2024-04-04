@@ -27,11 +27,10 @@ export const activateLayer = (userId, layerName) =>
 export const deactivateLayer = (userId, layerName) =>
   apiClient.post(`/layers/deactivate/${userId}/${layerName}`);
 
-export const addFavoriteLayer = (userId, layerName) =>
-  apiClient.post(`/layers/addFavorite/${userId}/${layerName}`);
-
-export const removeFavoriteLayer = (userId, layerName) =>
-  apiClient.post(`/layers/removeFavorite/${userId}/${layerName}`);
+export const changeFavoriteLayers = (userId, layersToChange) =>
+  apiClient.post(`/layers/favorites/${userId}`, {
+    layers: layersToChange,
+  });
 
 export const setOpacityForLayer = (userId, layerName, opacity) =>
   apiClient.post(`/layers/setOpacity/${userId}/${layerName}`, {

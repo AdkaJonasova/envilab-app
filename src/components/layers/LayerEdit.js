@@ -4,6 +4,7 @@ import {
   Grid,
   IconButton,
   Slider,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -12,13 +13,18 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PropTypes from "prop-types";
 import { setOpacityForLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
+import { Close } from "@mui/icons-material";
 
 const LayerEdit = ({ layer, handleGoBack }) => {
   const [opacity, setOpacity] = useState(layer.opacity);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
   const { t } = useTranslation();
 
   const handleSaveEditedLayer = () => {
-    setOpacityForLayer(userId, layer.name, opacity);
+    setOpacityForLayer(userId, layer.name, opacity).then(() =>
+      setSnackbarOpen(true)
+    );
   };
 
   const handleOpacityChange = (newValue) => {
@@ -70,6 +76,21 @@ const LayerEdit = ({ layer, handleGoBack }) => {
           {t("layerViewSidebar.layerEdit.saveBtn")}
         </Button>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message={t("layerViewSidebar.layerEdit.snackbarTextSuccess")}
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}
+          >
+            <Close fontSize="small" />
+          </IconButton>
+        }
+      />
     </div>
   );
 };

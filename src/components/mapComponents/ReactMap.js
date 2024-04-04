@@ -3,8 +3,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import MapContext from "./MapContext";
 import { Map, View } from "ol";
-import { transform } from "ol/proj";
-import { getCenter } from "ol/extent";
 
 const ReactMap = ({ children, center, height, marginBottom }) => {
   const mapRef = useRef();
@@ -23,6 +21,7 @@ const ReactMap = ({ children, center, height, marginBottom }) => {
     };
     let mapObject = new Map(options);
     mapObject.setTarget(mapRef.current);
+
     setMap(mapObject);
     return () => mapObject.setTarget(undefined);
   }, []);

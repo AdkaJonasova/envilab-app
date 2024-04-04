@@ -1,11 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { useTranslation } from "react-i18next";
-import {
-  addFavoriteArea,
-  removeFavoriteArea,
-  useAreas,
-} from "../../hooks/areaHooks";
+import { changeFavoriteAreas, useAreas } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
 import Loading from "../../components/global/Loading";
 import { Close } from "@mui/icons-material";
@@ -35,16 +31,8 @@ const AreaSettingsPage = () => {
     return <Loading />;
   }
 
-  async function SaveAll() {
-    changedAreas.forEach((a) => {
-      a.isFavorite
-        ? addFavoriteArea(userId, a.areaId)
-        : removeFavoriteArea(userId, a.areaId);
-    });
-  }
-
   function handleSave() {
-    SaveAll().then(() => refetchAreas());
+    changeFavoriteAreas(userId, changedAreas).then(() => refetchAreas());
     setChangedAreas([]);
     setSnackbarOpen(true);
   }
@@ -58,9 +46,10 @@ const AreaSettingsPage = () => {
   }
 
   function addToChanged(area, newChangedAreas) {
-    let changedArea = { ...area };
-    changedArea.isFavorite = !area.isFavorite;
-
+    let changedArea = {
+      identificator: area.areaId,
+      value: !area.isFavorite,
+    };
     newChangedAreas.push(changedArea);
   }
 
@@ -73,7 +62,7 @@ const AreaSettingsPage = () => {
     // child area should have the same value as parent
     if (useParent) {
       let areaChangedIndex = newChangedAreas.findIndex(
-        (a) => a.areaId === area.areaId
+        (a) => a.identificator === area.areaId
       );
 
       // child area is changed and the changed value is not equal to parent value -> remove from changed
@@ -88,7 +77,7 @@ const AreaSettingsPage = () => {
       // change the value only based on the area itself
     } else {
       let areaChangedIndex = newChangedAreas.findIndex(
-        (a) => a.areaId === area.areaId
+        (a) => a.identificator === area.areaId
       );
       if (areaChangedIndex !== -1) {
         removeFromChanged(areaChangedIndex, newChangedAreas);
@@ -127,7 +116,7 @@ const AreaSettingsPage = () => {
 
   function isMarkedFavorite(area) {
     return (
-      changedAreas.find((a) => a.areaId === area.areaId)?.isFavorite ??
+      changedAreas.find((a) => a.identificator === area.areaId)?.value ??
       area.isFavorite
     );
   }

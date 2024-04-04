@@ -50,7 +50,6 @@ const SelectViewPage = () => {
   };
 
   const handleAreaSave = (name) => {
-    console.log("Name:", name);
     setSavePopupOpened(false);
   };
 

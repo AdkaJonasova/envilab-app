@@ -8,6 +8,7 @@ import { getSidebarDataByTypeAndFilter } from "../utils/customFunctions";
 import { SidebarTypes } from "../utils/enums";
 import PropTypes from "prop-types";
 import LayerEdit from "./layers/LayerEdit";
+import LayerInfo from "./layers/LayerInfo";
 
 export default function Sidebar({
   layers,
@@ -28,31 +29,41 @@ export default function Sidebar({
     setSelectedLayer(layer);
   };
 
+  const handleDisplayLayerInfo = (layer) => {
+    setBarType(SidebarTypes.LayersInfo);
+    setSelectedLayer(layer);
+  };
+
   const handleGoBack = () => {
-    const newBarType =
-      localStorage.getItem("activeSidebarTab") ?? SidebarTypes.Layers;
+    const newBarType = SidebarTypes.Layers;
+
+    localStorage.setItem("activeSidebarTab", newBarType);
     setBarType(newBarType);
     setSelectedLayer(null);
   };
 
   const getSidebarContentByType = (data, type) => {
-    if (type === SidebarTypes.Layers) {
-      return (
-        <LayerList
-          layers={data}
-          refetch={refetchLayers}
-          handleEditLayer={handleEditLayer}
-        />
-      );
-    } else if (type === SidebarTypes.Areas) {
-      return <AreaList areas={data} refetch={refetchAreas} />;
-    } else if (type === SidebarTypes.LayersEdit) {
-      return <LayerEdit layer={selectedLayer} handleGoBack={handleGoBack} />;
+    switch (type) {
+      case SidebarTypes.Layers:
+        return (
+          <LayerList
+            layers={data}
+            refetch={refetchLayers}
+            handleEditLayer={handleEditLayer}
+            handleDisplayLayerInfo={handleDisplayLayerInfo}
+          />
+        );
+      case SidebarTypes.Areas:
+        return <AreaList areas={data} refetch={refetchAreas} />;
+      case SidebarTypes.LayersEdit:
+        return <LayerEdit layer={selectedLayer} handleGoBack={handleGoBack} />;
+      case SidebarTypes.LayersInfo:
+        return <LayerInfo layer={selectedLayer} handleGoBack={handleGoBack} />;
     }
   };
 
   const getSidebarHead = (type) => {
-    if (type !== SidebarTypes.LayersEdit) {
+    if (type !== SidebarTypes.LayersEdit && type !== SidebarTypes.LayersInfo) {
       return (
         <div>
           <SideBarTabs selectedTab={barType} setSelectedTab={setBarType} />

@@ -51,9 +51,18 @@ export function filterLayersByName(layers, filter) {
   if (!filter) {
     return layers;
   }
-  return layers.filter((l) =>
-    l.title.toLowerCase().includes(filter.toLowerCase())
-  );
+  let result = [];
+  for (let i = 0; i < layers.length; i++) {
+    const layerGroup = { ...layers[i] };
+    const filteredLayers = layerGroup.layers.filter((layer) =>
+      layer.title.toLowerCase().includes(filter.toLowerCase())
+    );
+    if (filteredLayers.length > 0) {
+      layerGroup.layers = filteredLayers;
+      result.push(layerGroup);
+    }
+  }
+  return result;
 }
 
 export function filterAreasByName(areas, filter) {
@@ -70,6 +79,20 @@ export function filterAreasByName(areas, filter) {
     }
   });
   return filteredAreas;
+}
+
+export function getZoomedToAreas(areas) {
+  let zoomedAreas = [];
+  areas.forEach((area) => {
+    if (area.isActive) {
+      zoomedAreas.push(area.areaId);
+    }
+    if (area.geoArea.subAreas.length > 0) {
+      const zoomedToSubAreas = getZoomedToAreas(area.geoArea.subAreas);
+      zoomedAreas = zoomedAreas.concat(zoomedToSubAreas);
+    }
+  });
+  return zoomedAreas;
 }
 
 export function getMaxIdInList(list) {

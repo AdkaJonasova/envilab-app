@@ -11,7 +11,6 @@ const ReactTileLayer = ({ source, name, id, zIndex = 0, opacity }) => {
     if (!map) return;
 
     let transformedOpacity = opacity / 100;
-    console.log("Transformed opacity for layer " + name + ": ", opacity);
     let tileLayer = new TileLayer({
       source: source,
       zIndex: zIndex,
@@ -20,6 +19,26 @@ const ReactTileLayer = ({ source, name, id, zIndex = 0, opacity }) => {
       id: id,
     });
     map.addLayer(tileLayer);
+
+    // map.on("singleclick", function (evt) {
+    //   const viewResolution = map.getView().getResolution();
+    //   console.log("Resolution: ", viewResolution);
+    //   const source = tileLayer.getSource();
+    //   console.log("Source", source);
+    //   const url = source.getFeatureInfoUrl(
+    //     evt.coordinate,
+    //     viewResolution,
+    //     "EPSG:3857",
+    //     {
+    //       INFO_FORMAT: "application/json",
+    //     }
+    //   );
+    //   console.log("Url: ", url);
+    //   if (url) {
+    //     let data = fetch(url).then((response) => response.text());
+    //     console.log("Data: ", data);
+    //   }
+    // });
 
     return () => {
       if (map) {

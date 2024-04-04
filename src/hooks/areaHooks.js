@@ -27,11 +27,10 @@ export const activateArea = (userId, areaId) =>
 export const deactivateArea = (userId, areaId) =>
   apiClient.post(`/areas/deactivate/${userId}/${areaId}`);
 
-export const addFavoriteArea = (userId, areaId) =>
-  apiClient.post(`/areas/addFavorite/${userId}/${areaId}`);
-
-export const removeFavoriteArea = (userId, areaId) =>
-  apiClient.post(`/areas/removeFavorite/${userId}/${areaId}`);
+export const changeFavoriteAreas = (userId, areasToChange) =>
+  apiClient.post(`/areas/favorites/${userId}`, {
+    areas: areasToChange,
+  });
 
 export const addCustomArea = (userId, areaId) =>
   apiClient.post(`/areas/addCustom/${userId}/${areaId}`);
