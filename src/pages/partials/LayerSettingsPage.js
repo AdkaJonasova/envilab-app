@@ -47,10 +47,11 @@ const LayerSettingsPage = () => {
   async function SaveAll() {
     changedLayers.forEach((l) => {
       l.isFavorite
-        ? addFavoriteLayer(userId, l.layerId)
-        : removeFavoriteLayer(userId, l.layerId);
+        ? addFavoriteLayer(userId, l.name)
+        : removeFavoriteLayer(userId, l.name);
     });
   }
+
   function handleSave() {
     SaveAll().then(() => refetchLayers());
     setChangedLayers([]);
@@ -68,13 +69,13 @@ const LayerSettingsPage = () => {
   }
 
   function removeFromChanged(index, newChangedLayers) {
-    newChangedLayers.splice(index, newChangedLayers);
+    newChangedLayers.splice(index, 1);
   }
 
   function handleStarClick(layer) {
     let newChangedLayers = [...changedLayers];
     let layerChangedIndex = changedLayers.findIndex(
-      (l) => l.layerId === layer.layerId
+      (l) => l.name === layer.name
     );
     if (layerChangedIndex !== -1) {
       removeFromChanged(layerChangedIndex, newChangedLayers);
@@ -86,7 +87,7 @@ const LayerSettingsPage = () => {
 
   function isMarkedFavorite(layer) {
     return (
-      changedLayers.find((l) => l.layerId === layer.layerId)?.isFavorite ??
+      changedLayers.find((l) => l.name === layer.name)?.isFavorite ??
       layer.isFavorite
     );
   }
@@ -94,7 +95,7 @@ const LayerSettingsPage = () => {
   function getLayerItem(layer) {
     return (
       <LayerSettingsItem
-        key={`layer-settings-item-component-${layer.layerId}`}
+        key={`layer-settings-item-component-${layer.name}`}
         layer={layer}
         isMarkedFavorite={isMarkedFavorite}
         handleStarClick={handleStarClick}

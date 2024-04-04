@@ -10,10 +10,16 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PropTypes from "prop-types";
+import { setOpacityForLayer } from "../../hooks/layerHooks";
+import { userId } from "../../data/mockData";
 
 const LayerEdit = ({ layer, handleGoBack }) => {
-  const [opacity, setOpacity] = useState(90);
+  const [opacity, setOpacity] = useState(layer.opacity);
   const { t } = useTranslation();
+
+  const handleSaveEditedLayer = () => {
+    setOpacityForLayer(userId, layer.name, opacity);
+  };
 
   const handleOpacityChange = (newValue) => {
     setOpacity(newValue);
@@ -28,7 +34,7 @@ const LayerEdit = ({ layer, handleGoBack }) => {
           </IconButton>
         </Grid>
         <Grid item xs={8}>
-          <Typography variant="h2">{layer.geoLayer.name}</Typography>
+          <Typography variant="h2">{layer.title}</Typography>
         </Grid>
         <Grid item xs={2} />
       </Grid>
@@ -53,6 +59,7 @@ const LayerEdit = ({ layer, handleGoBack }) => {
           variant="outlined"
           color="darkGreen"
           fullWidth
+          onClick={() => handleSaveEditedLayer()}
           sx={{
             position: "absolute",
             bottom: "20px",

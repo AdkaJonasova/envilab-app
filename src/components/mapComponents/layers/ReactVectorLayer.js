@@ -4,19 +4,23 @@ import { useContext, useEffect } from "react";
 import MapContext from "../MapContext";
 import VectorLayer from "ol/layer/Vector";
 
-const ReactVectorLayer = ({ source, name, id, zIndex = 0 }) => {
+const ReactVectorLayer = ({ source, name, id, zIndex = 0, opacity }) => {
   const { map } = useContext(MapContext);
 
   useEffect(() => {
     if (!map) return;
+
+    let transformedOpacity = opacity / 100;
+    console.log("Opacity for layer " + name + ": ", transformedOpacity);
     let vectorLayer = new VectorLayer({
       source: source,
+      zIndex: zIndex,
+      opacity: transformedOpacity,
       name: name,
       id: id,
     });
-    vectorLayer.setZIndex(zIndex);
-    vectorLayer.setOpacity(0.5);
     map.addLayer(vectorLayer);
+
     return () => {
       if (map) {
         map.removeLayer(vectorLayer);

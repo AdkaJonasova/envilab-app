@@ -12,14 +12,14 @@ export default function LayerSettingsItem({
   }
 
   return (
-    <div key={`settings-layer-item-container-${layer.layerId}`}>
-      <ListItem key={`settings-layer-item-${layer.layerId}`}>
+    <div key={`settings-layer-item-container-${layer.name}`}>
+      <ListItem key={`settings-layer-item-${layer.name}`}>
         <ListItemText
-          key={`settings-layer-item-name-${layer.layerId}`}
-          primary={layer.geoLayer.name}
+          key={`settings-layer-item-name-${layer.name}`}
+          primary={layer.title}
         ></ListItemText>
         <IconButton
-          key={`settings-layer-item-icon-${layer.layerId}`}
+          key={`settings-layer-item-icon-${layer.name}`}
           size="small"
           color="beigeBrown"
           onClick={() => handleStarClick(layer)}
@@ -27,7 +27,7 @@ export default function LayerSettingsItem({
           {getStarForLayer(layer)}
         </IconButton>
       </ListItem>
-      <Divider key={`settings-layer-item-divider-${layer.layerId}`} />
+      <Divider key={`settings-layer-item-divider-${layer.name}`} />
     </div>
   );
 }

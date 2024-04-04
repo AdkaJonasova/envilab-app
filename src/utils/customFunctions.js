@@ -52,7 +52,7 @@ export function filterLayersByName(layers, filter) {
     return layers;
   }
   return layers.filter((l) =>
-    l.geoLayer.name.toLowerCase().includes(filter.toLowerCase())
+    l.title.toLowerCase().includes(filter.toLowerCase())
   );
 }
 
