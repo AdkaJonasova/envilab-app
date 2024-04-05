@@ -9,6 +9,8 @@ import { SidebarTypes } from "../utils/enums";
 import PropTypes from "prop-types";
 import LayerEdit from "./layers/LayerEdit";
 import LayerInfo from "./layers/LayerInfo";
+import { useDispatch, useSelector } from "react-redux";
+import { changeSidebarType } from "../redux/slices/SidebarSlice";
 
 export default function Sidebar({
   layers,
@@ -18,28 +20,28 @@ export default function Sidebar({
   height,
   marginBottom,
 }) {
-  const [barType, setBarType] = useState(
-    localStorage.getItem("activeSidebarTab") ?? SidebarTypes.Layers
-  );
+  const sidebar = useSelector((state) => state.sidebar);
+
   const [filter, setFilter] = useState("");
-  const [selectedLayer, setSelectedLayer] = useState(null);
+
+  const dispatch = useDispatch();
 
   const handleEditLayer = (layer) => {
-    setBarType(SidebarTypes.LayersEdit);
-    setSelectedLayer(layer);
+    dispatch(
+      changeSidebarType({ type: SidebarTypes.LayersEdit, selectedLayer: layer })
+    );
   };
 
   const handleDisplayLayerInfo = (layer) => {
-    setBarType(SidebarTypes.LayersInfo);
-    setSelectedLayer(layer);
+    dispatch(
+      changeSidebarType({ type: SidebarTypes.LayersInfo, selectedLayer: layer })
+    );
   };
 
   const handleGoBack = () => {
-    const newBarType = SidebarTypes.Layers;
-
-    localStorage.setItem("activeSidebarTab", newBarType);
-    setBarType(newBarType);
-    setSelectedLayer(null);
+    dispatch(
+      changeSidebarType({ type: SidebarTypes.Layers, selectedLayer: undefined })
+    );
   };
 
   const getSidebarContentByType = (data, type) => {
@@ -56,9 +58,19 @@ export default function Sidebar({
       case SidebarTypes.Areas:
         return <AreaList areas={data} refetch={refetchAreas} />;
       case SidebarTypes.LayersEdit:
-        return <LayerEdit layer={selectedLayer} handleGoBack={handleGoBack} />;
+        return (
+          <LayerEdit
+            layer={sidebar.selectedLayer}
+            handleGoBack={handleGoBack}
+          />
+        );
       case SidebarTypes.LayersInfo:
-        return <LayerInfo layer={selectedLayer} handleGoBack={handleGoBack} />;
+        return (
+          <LayerInfo
+            layer={sidebar.selectedLayer}
+            handleGoBack={handleGoBack}
+          />
+        );
     }
   };
 
@@ -66,7 +78,7 @@ export default function Sidebar({
     if (type !== SidebarTypes.LayersEdit && type !== SidebarTypes.LayersInfo) {
       return (
         <div>
-          <SideBarTabs selectedTab={barType} setSelectedTab={setBarType} />
+          <SideBarTabs />
           <SearchBar setFilter={setFilter} />
         </div>
       );
@@ -79,10 +91,10 @@ export default function Sidebar({
       overflow={"auto"}
       sx={{ marginBottom: `${marginBottom}px` }}
     >
-      {getSidebarHead(barType)}
+      {getSidebarHead(sidebar.type)}
       {getSidebarContentByType(
-        getSidebarDataByTypeAndFilter(layers, areas, barType, filter),
-        barType
+        getSidebarDataByTypeAndFilter(layers, areas, sidebar.type, filter),
+        sidebar.type
       )}
     </Box>
   );

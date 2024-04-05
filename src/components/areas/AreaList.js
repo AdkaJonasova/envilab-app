@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import List from "@mui/material/List";
 import { Button, Collapse, Grid, Typography } from "@mui/material";
 import AreaListItem from "./AreaListItem";
@@ -7,10 +7,14 @@ import { useTranslation } from "react-i18next";
 import { activateArea, deactivateArea } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
 import { getZoomedToAreas } from "../../utils/customFunctions";
+import { useDispatch, useSelector } from "react-redux";
+import { collapseAreaSection } from "../../redux/slices/AreaSectionsSlice";
 
 export default function AreaList({ areas, refetch }) {
-  const [expandedAreas, setExpandedAreas] = useState([]);
+  const collapsedAreas = useSelector((state) => state.collapsedAreaSections);
+
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   //#region Methods
   const zoomToArea = async (area) => {
@@ -31,20 +35,11 @@ export default function AreaList({ areas, refetch }) {
   };
 
   const handleExpandCollapse = (area) => {
-    const currentIndex = expandedAreas.indexOf(area.areaId);
-    const newExpanded = [...expandedAreas];
-
-    if (currentIndex === -1) {
-      newExpanded.push(area.areaId);
-    } else {
-      newExpanded.splice(currentIndex, 1);
-    }
-
-    setExpandedAreas(newExpanded);
+    dispatch(collapseAreaSection(area.areaId));
   };
 
   const isAreaExpanded = (area) => {
-    return expandedAreas.indexOf(area.areaId) !== -1;
+    return !collapsedAreas.includes(area.areaId);
   };
 
   const getAreaItem = (area, level) => {
@@ -76,7 +71,7 @@ export default function AreaList({ areas, refetch }) {
           />
           <Collapse
             key={`area-list-item-collapsable-${area.areaId}`}
-            in={expandedAreas.indexOf(area.areaId) !== -1}
+            in={isAreaExpanded(area)}
             timeout={"auto"}
             unmountOnExit
           >

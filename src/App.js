@@ -9,8 +9,6 @@ import SelectViewPage from "./pages/SelectViewPage";
 import SettingsPage from "./pages/SettingsPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import mainReducer from "./redux/reducers";
 import store from "./redux/store";
 
 function App() {

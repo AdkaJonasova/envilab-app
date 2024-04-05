@@ -3,22 +3,27 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { SidebarTypes } from "../utils/enums";
-import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { changeSidebarType } from "../redux/slices/SidebarSlice";
 
-export default function SideBarTabs({ selectedTab, setSelectedTab }) {
+export default function SideBarTabs() {
+  const sidebar = useSelector((state) => state.sidebar);
+
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const handleChangeTab = (newSelectedTab) => {
-    localStorage.setItem("activeSidebarTab", newSelectedTab);
-    setSelectedTab(newSelectedTab);
+    dispatch(
+      changeSidebarType({ type: newSelectedTab, selectedLayer: undefined })
+    );
   };
 
   return (
     <Box sx={{ width: "100%", borderRadius: "28" }}>
       <Tabs
-        value={selectedTab}
-        onChange={(event, newValue) => handleChangeTab(newValue)}
+        value={sidebar.type}
+        onChange={(_event, newValue) => handleChangeTab(newValue)}
         centered
         variant="fullWidth"
       >
@@ -34,8 +39,3 @@ export default function SideBarTabs({ selectedTab, setSelectedTab }) {
     </Box>
   );
 }
-
-SideBarTabs.propTypes = {
-  currValue: PropTypes.string,
-  setCurrValue: PropTypes.func,
-};
