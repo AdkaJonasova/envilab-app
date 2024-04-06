@@ -85,7 +85,7 @@ export function getZoomedToAreas(areas) {
   let zoomedAreas = [];
   areas.forEach((area) => {
     if (area.isActive) {
-      zoomedAreas.push(area.areaId);
+      zoomedAreas.push(area);
     }
     if (area.geoArea.subAreas.length > 0) {
       const zoomedToSubAreas = getZoomedToAreas(area.geoArea.subAreas);

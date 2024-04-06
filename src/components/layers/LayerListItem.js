@@ -7,14 +7,38 @@ import {
   Switch,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { changeLayerActiveState } from "../../redux/slices/LayersSlice";
+import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
+import { userId } from "../../data/mockData";
+import { changeSidebarType } from "../../redux/slices/SidebarSlice";
+import { SidebarTypes } from "../../utils/enums";
 
-export default function LayerListItem({
-  layer,
-  handleLayerStateSwitch,
-  handleEditLayer,
-  handleDisplayLayerInfo,
-}) {
+export default function LayerListItem({ layer }) {
   let paddingSize = 4;
+
+  const dispatch = useDispatch();
+
+  const handleLayerStateSwitch = (layer) => {
+    const isActive = layer.isActive;
+    dispatch(changeLayerActiveState({ layerName: layer.name }));
+    isActive
+      ? deactivateLayer(userId, layer.name)
+      : activateLayer(userId, layer.name);
+  };
+
+  const handleEditLayer = (layer) => {
+    dispatch(
+      changeSidebarType({ type: SidebarTypes.LayersEdit, selectedLayer: layer })
+    );
+  };
+
+  const handleDisplayLayerInfo = (layer) => {
+    dispatch(
+      changeSidebarType({ type: SidebarTypes.LayersInfo, selectedLayer: layer })
+    );
+  };
+
   return (
     <div key={`layer-list-item-container-${layer.name}`}>
       <ListItem key={`layer-list-item-${layer.name}`} sx={{ pl: paddingSize }}>
@@ -48,7 +72,4 @@ export default function LayerListItem({
 
 LayerListItem.propTypes = {
   layer: PropTypes.object,
-  handleLayerStateSwitch: PropTypes.func,
-  handleEditLayer: PropTypes.func,
-  handleDisplayLayerInfo: PropTypes.func,
 };

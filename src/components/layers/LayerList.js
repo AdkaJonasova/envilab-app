@@ -8,18 +8,13 @@ import {
 } from "@mui/material";
 import LayerListItem from "./LayerListItem";
 import PropTypes from "prop-types";
-import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
-import { userId } from "../../data/mockData";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { collapseLayerSection } from "../../redux/slices/LayerSectionsSlice";
+import { selectLayersByName } from "../../redux/slices/LayersSlice";
 
-export default function LayerList({
-  layers,
-  refetch,
-  handleEditLayer,
-  handleDisplayLayerInfo,
-}) {
+export default function LayerList({ filter }) {
+  const layerGroups = useSelector((state) => selectLayersByName(state, filter));
   const collapsedSections = useSelector(
     (state) => state.collapsedLayerSections
   );
@@ -28,18 +23,6 @@ export default function LayerList({
   const dispatch = useDispatch();
 
   //#region Methods
-  const handleLayerStateSwitch = (layer) => {
-    if (layer.isActive) {
-      deactivateLayer(userId, layer.name).then(() => {
-        refetch();
-      });
-    } else {
-      activateLayer(userId, layer.name).then(() => {
-        refetch();
-      });
-    }
-  };
-
   const handleExpandCollapse = (layerGroup) => {
     dispatch(collapseLayerSection(layerGroup.name));
   };
@@ -53,24 +36,18 @@ export default function LayerList({
       <LayerListItem
         key={`layer-list-item-component-${layer.name}`}
         layer={layer}
-        handleLayerStateSwitch={handleLayerStateSwitch}
-        handleEditLayer={handleEditLayer}
-        handleDisplayLayerInfo={handleDisplayLayerInfo}
       />
     );
   };
 
-  const getEmptyListText = () => {
+  //#endregion
+
+  if (layerGroups.length === 0) {
     return (
       <Typography variant="information">
         {t("layerViewSidebar.layerList.noLayers")}
       </Typography>
     );
-  };
-  //#endregion
-
-  if (layers.length === 0) {
-    return getEmptyListText();
   }
 
   return (
@@ -79,7 +56,7 @@ export default function LayerList({
       sx={{ width: "100%", bgcolor: "background.paper" }}
       dense
     >
-      {layers.map((layerGroup) => {
+      {layerGroups.map((layerGroup) => {
         return (
           <div key={`layer-list-section-${layerGroup.name}`}>
             <Button
@@ -108,8 +85,5 @@ export default function LayerList({
 }
 
 LayerList.propTypes = {
-  layers: PropTypes.array,
-  refetch: PropTypes.func,
-  handleEditLayer: PropTypes.func,
-  handleDisplayLayerInfo: PropTypes.func,
+  filter: PropTypes.string,
 };

@@ -20,6 +20,7 @@ export default function AreaListItem({
 }) {
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
+  //#region Methods
   const addUnzoomArea = (area) => {
     if (area.isActive) {
       return (
@@ -36,7 +37,7 @@ export default function AreaListItem({
     return null;
   };
 
-  function addExpandCollapseItem(area) {
+  const addExpandCollapseItem = (area) => {
     return (
       <IconButton
         key={`area-list-item-expand-${area.areaId}`}
@@ -46,7 +47,8 @@ export default function AreaListItem({
         {isExpanded(area) ? <ExpandLess /> : <ExpandMore />}
       </IconButton>
     );
-  }
+  };
+  //#endregion
 
   return (
     <div>

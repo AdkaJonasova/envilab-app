@@ -14,12 +14,22 @@ import PropTypes from "prop-types";
 import { setOpacityForLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
 import { Close } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { changeSidebarType } from "../../redux/slices/SidebarSlice";
+import { SidebarTypes } from "../../utils/enums";
 
-const LayerEdit = ({ layer, handleGoBack }) => {
+const LayerEdit = ({ layer }) => {
   const [opacity, setOpacity] = useState(layer.opacity);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const handleGoBack = () => {
+    dispatch(
+      changeSidebarType({ type: SidebarTypes.Layers, selectedLayer: undefined })
+    );
+  };
 
   const handleSaveEditedLayer = () => {
     setOpacityForLayer(userId, layer.name, opacity).then(() =>
@@ -99,5 +109,4 @@ export default LayerEdit;
 
 LayerEdit.propTypes = {
   layer: PropTypes.object,
-  handleGoBack: PropTypes.func,
 };

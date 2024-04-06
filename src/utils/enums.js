@@ -18,3 +18,10 @@ export const LayoutWindows = {
   GraphData: "graphData",
   TextData: "textData",
 };
+
+export const FetchStates = {
+  Idle: "idle",
+  Loading: "loading",
+  Succeeded: "succeeded",
+  Failed: "failed",
+};

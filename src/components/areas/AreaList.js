@@ -6,40 +6,44 @@ import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { activateArea, deactivateArea } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
-import { getZoomedToAreas } from "../../utils/customFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { collapseAreaSection } from "../../redux/slices/AreaSectionsSlice";
+import {
+  changeAreaActiveState,
+  selectActiveAreas,
+  selectAreasByName,
+} from "../../redux/slices/AreasSlice";
 
-export default function AreaList({ areas, refetch }) {
+export default function AreaList({ filter }) {
+  const areas = useSelector((state) => selectAreasByName(state, filter));
+  const zoomedAreas = useSelector((state) => selectActiveAreas(state));
   const collapsedAreas = useSelector((state) => state.collapsedAreaSections);
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   //#region Methods
-  const zoomToArea = async (area) => {
-    let zoomedToAreas = getZoomedToAreas(areas);
-    for (let i = 0; i < zoomedToAreas.length; i++) {
-      const zoomedAreaId = zoomedToAreas[i];
-      deactivateArea(userId, zoomedAreaId);
-    }
-    await activateArea(userId, area.areaId);
-  };
-
-  const handleZoomToArea = (area) => {
-    zoomToArea(area).then(() => refetch());
-  };
-
-  const handleUnzoomArea = (area) => {
-    deactivateArea(userId, area.areaId).then(() => refetch());
-  };
-
   const handleExpandCollapse = (area) => {
     dispatch(collapseAreaSection(area.areaId));
   };
 
   const isAreaExpanded = (area) => {
     return !collapsedAreas.includes(area.areaId);
+  };
+
+  const handleZoomToArea = (area) => {
+    zoomedAreas.forEach((area) => {
+      deactivateArea(userId, area.areaId);
+    });
+    activateArea(userId, area.areaId);
+
+    dispatch(changeAreaActiveState({ areaId: area.areaId, activate: true }));
+  };
+
+  const handleUnzoomArea = (area) => {
+    deactivateArea(userId, area.areaId);
+
+    dispatch(changeAreaActiveState({ areaId: area.areaId, activate: false }));
   };
 
   const getAreaItem = (area, level) => {
@@ -119,6 +123,5 @@ export default function AreaList({ areas, refetch }) {
 }
 
 AreaList.propTypes = {
-  areas: PropTypes.array,
-  refetch: PropTypes.func,
+  filter: PropTypes.string,
 };

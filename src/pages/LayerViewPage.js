@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import Sidebar from "../components/Sidebar";
 import Loading from "../components/global/Loading";
-import { useFavoriteLayers } from "../hooks/layerHooks";
-import { useFavoriteAreas } from "../hooks/areaHooks";
 import {
   header,
   states,
@@ -15,7 +13,7 @@ import {
 import LayerViewMap from "../components/mapComponents/LayerViewMap";
 import layoutConfig from "../layoutConfigurations/basicLayoutConfig.json";
 import RGL, { WidthProvider } from "react-grid-layout";
-import { LayoutWindows } from "../utils/enums";
+import { FetchStates, LayoutWindows } from "../utils/enums";
 import TableDataWindow from "../components/dataWindows/TableDataWindow";
 import TextDataWindow from "../components/dataWindows/TextDataWindow";
 import LineGraphDataWindow from "../components/dataWindows/LineGraphDataWindow";
@@ -27,26 +25,33 @@ import {
   pageBottomMargin,
   pageTopMargin,
 } from "../utils/data";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLayerGroups } from "../redux/slices/LayersSlice";
+import { fetchAreas } from "../redux/slices/AreasSlice";
 
 const LayerViewPage = () => {
-  const {
-    data: layers,
-    isFetched: areLayersReady,
-    isRefetching: areLayersRefetching,
-    refetch: refetchLayers,
-  } = useFavoriteLayers(userId);
-  const {
-    data: areas,
-    isFetched: areAreasReady,
-    isRefetching: areAreasRefetching,
-    refetch: refetchAreas,
-  } = useFavoriteAreas(userId);
-
   const { layout } = layoutConfig;
   const ReactGridLayout = WidthProvider(RGL);
 
   const [rowCount, setRowCount] = useState(0);
   const [rowHeight, setRowHeight] = useState(0);
+
+  const dispatch = useDispatch();
+  const { areas, areasStatus, areasError } = useSelector(
+    (state) => state.areas
+  );
+  const { layerGroups, layersStatus, layersError } = useSelector(
+    (state) => state.layers
+  );
+
+  useEffect(() => {
+    if (layersStatus === FetchStates.Idle) {
+      dispatch(fetchLayerGroups(userId));
+    }
+    if (areasStatus === FetchStates.Idle) {
+      dispatch(fetchAreas(userId));
+    }
+  }, [dispatch, layersStatus, areasStatus]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -65,15 +70,15 @@ const LayerViewPage = () => {
   }, []);
 
   if (
-    !areAreasReady ||
-    !areLayersReady ||
-    areAreasRefetching ||
-    areLayersRefetching
+    areasStatus === FetchStates.Loading ||
+    areasStatus === FetchStates.Idle ||
+    layersStatus === FetchStates.Loading ||
+    layersStatus === FetchStates.Idle
   ) {
     return <Loading />;
   }
 
-  function getLayoutPart(layoutElement) {
+  const getLayoutPart = (layoutElement) => {
     const isLast = isLastVerticalElement(layoutElement, rowCount);
     const height = isLast
       ? layoutElement.h * rowHeight
@@ -82,25 +87,9 @@ const LayerViewPage = () => {
 
     switch (layoutElement.i) {
       case LayoutWindows.ListSidebar:
-        return (
-          <Sidebar
-            layers={layers}
-            areas={areas}
-            refetchLayers={refetchLayers}
-            refetchAreas={refetchAreas}
-            height={height}
-            marginBottom={bottomMargin}
-          />
-        );
+        return <Sidebar height={height} marginBottom={bottomMargin} />;
       case LayoutWindows.MapView:
-        return (
-          <LayerViewMap
-            layers={layers}
-            areas={areas}
-            height={height}
-            marginBottom={bottomMargin}
-          />
-        );
+        return <LayerViewMap height={height} marginBottom={bottomMargin} />;
       case LayoutWindows.TableData:
         return (
           <TableDataWindow
@@ -125,7 +114,7 @@ const LayerViewPage = () => {
           <LineGraphDataWindow height={height} marginBottom={bottomMargin} />
         );
     }
-  }
+  };
 
   return (
     <Box

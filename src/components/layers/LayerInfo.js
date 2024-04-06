@@ -2,9 +2,19 @@ import { ArrowBack } from "@mui/icons-material";
 import { Grid, IconButton, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { changeSidebarType } from "../../redux/slices/SidebarSlice";
+import { SidebarTypes } from "../../utils/enums";
 
-const LayerInfo = ({ layer, handleGoBack }) => {
+const LayerInfo = ({ layer }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const handleGoBack = () => {
+    dispatch(
+      changeSidebarType({ type: SidebarTypes.Layers, selectedLayer: undefined })
+    );
+  };
 
   return (
     <div>
@@ -69,5 +79,4 @@ export default LayerInfo;
 
 LayerInfo.propTypes = {
   layer: PropTypes.object,
-  handleGoBack: PropTypes.func,
 };
