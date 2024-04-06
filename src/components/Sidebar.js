@@ -15,21 +15,24 @@ export default function Sidebar({ height, marginBottom }) {
 
   const [filter, setFilter] = useState("");
 
-  const getSidebarContentByType = (type) => {
-    switch (type) {
+  const getSidebarContentByType = () => {
+    switch (sidebar.type) {
       case SidebarTypes.Layers:
         return <LayerList filter={filter} />;
       case SidebarTypes.Areas:
         return <AreaList filter={filter} />;
       case SidebarTypes.LayersEdit:
-        return <LayerEdit layer={sidebar.selectedLayer} />;
+        return <LayerEdit layerName={sidebar.selectedLayer} />;
       case SidebarTypes.LayersInfo:
-        return <LayerInfo layer={sidebar.selectedLayer} />;
+        return <LayerInfo layerName={sidebar.selectedLayer} />;
     }
   };
 
-  const getSidebarHead = (type) => {
-    if (type !== SidebarTypes.LayersEdit && type !== SidebarTypes.LayersInfo) {
+  const getSidebarHead = () => {
+    if (
+      sidebar.type !== SidebarTypes.LayersEdit &&
+      sidebar.type !== SidebarTypes.LayersInfo
+    ) {
       return (
         <div>
           <SideBarTabs />
@@ -45,8 +48,8 @@ export default function Sidebar({ height, marginBottom }) {
       overflow={"auto"}
       sx={{ marginBottom: `${marginBottom}px` }}
     >
-      {getSidebarHead(sidebar.type)}
-      {getSidebarContentByType(sidebar.type)}
+      {getSidebarHead()}
+      {getSidebarContentByType()}
     </Box>
   );
 }

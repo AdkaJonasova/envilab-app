@@ -29,13 +29,19 @@ export default function LayerListItem({ layer }) {
 
   const handleEditLayer = (layer) => {
     dispatch(
-      changeSidebarType({ type: SidebarTypes.LayersEdit, selectedLayer: layer })
+      changeSidebarType({
+        type: SidebarTypes.LayersEdit,
+        selectedLayer: layer.name,
+      })
     );
   };
 
   const handleDisplayLayerInfo = (layer) => {
     dispatch(
-      changeSidebarType({ type: SidebarTypes.LayersInfo, selectedLayer: layer })
+      changeSidebarType({
+        type: SidebarTypes.LayersInfo,
+        selectedLayer: layer.name,
+      })
     );
   };
 

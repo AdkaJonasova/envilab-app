@@ -36,6 +36,17 @@ export const LayerGroupsSlice = createSlice({
         });
       });
     },
+    changeLayerOpacity(state, action) {
+      const { layerName, opacity } = action.payload;
+      let groups = state.layerGroups;
+      groups.forEach((group) => {
+        group.layers.forEach((layer) => {
+          if (layer.name === layerName) {
+            layer.opacity = opacity;
+          }
+        });
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -75,6 +86,24 @@ export const selectActiveLayers = createSelector(
   }
 );
 
-export const { changeLayerActiveState } = LayerGroupsSlice.actions;
+export const selectLayerByName = createSelector(
+  [(state) => state.layers.layerGroups, (_state, name) => name],
+  (groups, name) => {
+    let foundLayer = null;
+
+    groups.forEach((group) => {
+      group.layers.forEach((layer) => {
+        if (layer.name === name) {
+          foundLayer = layer;
+        }
+      });
+    });
+
+    return foundLayer;
+  }
+);
+
+export const { changeLayerActiveState, changeLayerOpacity } =
+  LayerGroupsSlice.actions;
 
 export default LayerGroupsSlice.reducer;

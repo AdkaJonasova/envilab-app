@@ -2,11 +2,14 @@ import { ArrowBack } from "@mui/icons-material";
 import { Grid, IconButton, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeSidebarType } from "../../redux/slices/SidebarSlice";
 import { SidebarTypes } from "../../utils/enums";
+import { selectLayerByName } from "../../redux/slices/LayersSlice";
 
-const LayerInfo = ({ layer }) => {
+const LayerInfo = ({ layerName }) => {
+  const layer = useSelector((state) => selectLayerByName(state, layerName));
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -78,5 +81,5 @@ const LayerInfo = ({ layer }) => {
 export default LayerInfo;
 
 LayerInfo.propTypes = {
-  layer: PropTypes.object,
+  layerName: PropTypes.string,
 };

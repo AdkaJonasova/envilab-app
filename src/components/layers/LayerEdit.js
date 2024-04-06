@@ -14,11 +14,17 @@ import PropTypes from "prop-types";
 import { setOpacityForLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
 import { Close } from "@mui/icons-material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeSidebarType } from "../../redux/slices/SidebarSlice";
 import { SidebarTypes } from "../../utils/enums";
+import {
+  changeLayerOpacity,
+  selectLayerByName,
+} from "../../redux/slices/LayersSlice";
 
-const LayerEdit = ({ layer }) => {
+const LayerEdit = ({ layerName }) => {
+  const layer = useSelector((state) => selectLayerByName(state, layerName));
+
   const [opacity, setOpacity] = useState(layer.opacity);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -32,9 +38,9 @@ const LayerEdit = ({ layer }) => {
   };
 
   const handleSaveEditedLayer = () => {
-    setOpacityForLayer(userId, layer.name, opacity).then(() =>
-      setSnackbarOpen(true)
-    );
+    dispatch(changeLayerOpacity({ layerName: layer.name, opacity: opacity }));
+    setOpacityForLayer(userId, layer.name, opacity);
+    setSnackbarOpen(true);
   };
 
   const handleOpacityChange = (newValue) => {
@@ -108,5 +114,5 @@ const LayerEdit = ({ layer }) => {
 export default LayerEdit;
 
 LayerEdit.propTypes = {
-  layer: PropTypes.object,
+  layerName: PropTypes.string,
 };
