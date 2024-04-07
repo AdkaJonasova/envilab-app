@@ -87,6 +87,12 @@ const LayoutSlice = createSlice({
   },
 });
 
+export const selectSidebarInfo = (state) => state.layout.sidebarElement;
+export const selectMapInfo = (state) => state.layout.mapElement;
+export const selectTableInfo = (state) => state.layout.tableWindowElement;
+export const selectGraphInfo = (state) => state.layout.graphWindowElement;
+export const selectTextInfo = (state) => state.layout.textWindowElement;
+
 export const { calculateLayout } = LayoutSlice.actions;
 
 export default LayoutSlice.reducer;

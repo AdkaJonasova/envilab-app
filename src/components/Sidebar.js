@@ -5,13 +5,14 @@ import SearchBar from "./global/SearchBar";
 import AreaList from "./areas/AreaList";
 import LayerList from "./layers/LayerList";
 import { SidebarTypes } from "../utils/enums";
-import PropTypes from "prop-types";
 import LayerEdit from "./layers/LayerEdit";
 import LayerInfo from "./layers/LayerInfo";
 import { useSelector } from "react-redux";
+import { selectSidebarInfo } from "../redux/slices/LayoutSlice";
 
-export default function Sidebar({ height, marginBottom }) {
+export default function Sidebar() {
   const sidebar = useSelector((state) => state.sidebar);
+  const layoutInfo = useSelector(selectSidebarInfo);
 
   const [filter, setFilter] = useState("");
 
@@ -44,19 +45,12 @@ export default function Sidebar({ height, marginBottom }) {
 
   return (
     <Box
-      height={height}
+      height={layoutInfo.height}
       overflow={"auto"}
-      sx={{ marginBottom: `${marginBottom}px` }}
+      sx={{ marginBottom: `${layoutInfo.bottomMargin}px` }}
     >
       {getSidebarHead()}
       {getSidebarContentByType()}
     </Box>
   );
 }
-
-Sidebar.propTypes = {
-  areas: PropTypes.array,
-  refetchAreas: PropTypes.func,
-  height: PropTypes.number,
-  marginBottom: PropTypes.number,
-};

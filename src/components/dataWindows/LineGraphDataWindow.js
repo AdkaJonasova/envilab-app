@@ -18,7 +18,8 @@ import {
 } from "../../data/mockData";
 import { Box } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { selectGraphInfo } from "../../redux/slices/LayoutSlice";
 
 ChartJS.register(
   CategoryScale,
@@ -30,7 +31,9 @@ ChartJS.register(
   Legend
 );
 
-export default function LineGraphDataWindow({ height, marginBottom }) {
+export default function LineGraphDataWindow() {
+  const layoutInfo = useSelector(selectGraphInfo);
+
   const theme = useTheme();
 
   const options = {
@@ -63,19 +66,14 @@ export default function LineGraphDataWindow({ height, marginBottom }) {
   return (
     <Box
       alignContent={"center"}
-      maxHeight={height}
+      height={layoutInfo.height}
       overflow={"auto"}
       border={1}
       borderColor={theme.palette.informationGrey.main}
       borderRadius={2}
-      sx={{ marginBottom: `${marginBottom}px` }}
+      sx={{ marginBottom: `${layoutInfo.bottomMargin}px` }}
     >
       <Line height="55%" options={options} data={data} />
     </Box>
   );
 }
-
-LineGraphDataWindow.propTypes = {
-  height: PropTypes.number,
-  marginBottom: PropTypes.number,
-};

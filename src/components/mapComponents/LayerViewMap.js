@@ -15,10 +15,12 @@ import ReactInteractions from "./interactions/ReactInteractions";
 import { useSelector } from "react-redux";
 import { selectActiveLayers } from "../../redux/slices/LayersSlice";
 import { selectActiveAreas } from "../../redux/slices/AreasSlice";
+import { selectMapInfo } from "../../redux/slices/LayoutSlice";
 
-const LayerViewMap = ({ height, marginBottom }) => {
+const LayerViewMap = () => {
   const layers = useSelector((state) => selectActiveLayers(state));
   const areas = useSelector((state) => selectActiveAreas(state));
+  const layoutInfo = useSelector(selectMapInfo);
 
   const [center, setCenter] = useState([0, 0]);
 
@@ -26,8 +28,8 @@ const LayerViewMap = ({ height, marginBottom }) => {
     <div>
       <ReactMap
         center={fromLonLat(center)}
-        height={height}
-        marginBottom={marginBottom}
+        height={layoutInfo.height}
+        marginBottom={layoutInfo.bottomMargin}
       >
         <ReactLayers>
           <ReactTileLayer source={new OSM()} zIndex={0} />
