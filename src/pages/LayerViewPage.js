@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Loading from "../components/global/Loading";
 import {
@@ -17,32 +16,24 @@ import { FetchStates, LayoutWindows } from "../utils/enums";
 import TableDataWindow from "../components/dataWindows/TableDataWindow";
 import TextDataWindow from "../components/dataWindows/TextDataWindow";
 import LineGraphDataWindow from "../components/dataWindows/LineGraphDataWindow";
-import { getRowCount, isLastVerticalElement } from "../utils/customFunctions";
 import { Box } from "@mui/material";
-import {
-  betweenElementsMargin,
-  mainMenuHeight,
-  pageBottomMargin,
-  pageTopMargin,
-} from "../utils/data";
+import { pageBottomMargin, pageTopMargin } from "../utils/data";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLayerGroups } from "../redux/slices/LayersSlice";
 import { fetchAreas } from "../redux/slices/AreasSlice";
+import { calculateLayout } from "../redux/slices/LayoutSlice";
 
 const LayerViewPage = () => {
-  const { layout } = layoutConfig;
-  const ReactGridLayout = WidthProvider(RGL);
-
-  const [rowCount, setRowCount] = useState(0);
-  const [rowHeight, setRowHeight] = useState(0);
-
-  const dispatch = useDispatch();
+  const layout = useSelector((state) => state.layout);
   const { areas, areasStatus, areasError } = useSelector(
     (state) => state.areas
   );
   const { layerGroups, layersStatus, layersError } = useSelector(
     (state) => state.layers
   );
+  const ReactGridLayout = WidthProvider(RGL);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (layersStatus === FetchStates.Idle) {
@@ -55,19 +46,19 @@ const LayerViewPage = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      const windowLayoutPart =
-        window.innerHeight - mainMenuHeight - pageBottomMargin - pageTopMargin;
-      const rowCount = getRowCount(layout);
-      const calculatedHeight = windowLayoutPart / getRowCount(layout);
-      setRowCount(rowCount);
-      setRowHeight(calculatedHeight);
+      dispatch(
+        calculateLayout({
+          layout: layoutConfig.layout,
+          windowHeight: window.innerHeight,
+        })
+      );
     };
     handleResize();
-    // window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      // window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [dispatch]);
 
   if (
     areasStatus === FetchStates.Loading ||
@@ -78,43 +69,78 @@ const LayerViewPage = () => {
     return <Loading />;
   }
 
-  const getLayoutPart = (layoutElement) => {
-    const isLast = isLastVerticalElement(layoutElement, rowCount);
-    const height = isLast
-      ? layoutElement.h * rowHeight
-      : layoutElement.h * rowHeight - 6;
-    const bottomMargin = isLast ? 0 : betweenElementsMargin;
+  //#region Methods
+  const getMapWindow = () => {
+    if (layout.mapElement.isActive) {
+      return (
+        <div key={LayoutWindows.MapView}>
+          <LayerViewMap
+            height={layout.mapElement.height}
+            marginBottom={layout.mapElement.bottomMargin}
+          />
+        </div>
+      );
+    }
+  };
 
-    switch (layoutElement.i) {
-      case LayoutWindows.ListSidebar:
-        return <Sidebar height={height} marginBottom={bottomMargin} />;
-      case LayoutWindows.MapView:
-        return <LayerViewMap height={height} marginBottom={bottomMargin} />;
-      case LayoutWindows.TableData:
-        return (
+  const getSidebarWindow = () => {
+    if (layout.sidebarElement.isActive) {
+      return (
+        <div key={LayoutWindows.ListSidebar}>
+          <Sidebar
+            height={layout.sidebarElement.height}
+            marginBottom={layout.sidebarElement.bottomMargin}
+          />
+        </div>
+      );
+    }
+  };
+
+  const getTableDataWindow = () => {
+    if (layout.tableWindowElement.isActive) {
+      return (
+        <div key={LayoutWindows.TableData}>
           <TableDataWindow
             headers={statesHeaders}
             data={states}
-            height={height}
-            marginBottom={bottomMargin}
+            height={layout.tableWindowElement.height}
+            marginBottom={layout.tableWindowElement.bottomMargin}
           />
-        );
-      case LayoutWindows.TextData:
-        return (
+        </div>
+      );
+    }
+  };
+
+  const getGraphDataWindow = () => {
+    if (layout.graphWindowElement.isActive) {
+      return (
+        <div key={LayoutWindows.GraphData}>
+          <LineGraphDataWindow
+            height={layout.graphWindowElement.height}
+            marginBottom={layout.graphWindowElement.bottomMargin}
+          />
+        </div>
+      );
+    }
+  };
+
+  const getTextDataWindow = () => {
+    if (layout.textWindowElement.isActive) {
+      return (
+        <div key={LayoutWindows.TextData}>
           <TextDataWindow
             header={header}
             subheader={subheader}
             text={text}
-            height={height}
-            marginBottom={bottomMargin}
+            height={layout.textWindowElement.height}
+            marginBottom={layout.textWindowElement.bottomMargin}
           />
-        );
-      case LayoutWindows.GraphData:
-        return (
-          <LineGraphDataWindow height={height} marginBottom={bottomMargin} />
-        );
+        </div>
+      );
     }
   };
+
+  //#endregion
 
   return (
     <Box
@@ -125,14 +151,16 @@ const LayerViewPage = () => {
     >
       <ReactGridLayout
         className="app-grid-layout"
-        layout={layout}
+        layout={layoutConfig.layout}
         cols={12}
-        rowHeight={rowHeight}
+        rowHeight={layout.rowHeight}
         margin={[10, 0]}
       >
-        {layout.map((layoutElement) => (
-          <div key={layoutElement.i}>{getLayoutPart(layoutElement)}</div>
-        ))}
+        {getMapWindow()}
+        {getSidebarWindow()}
+        {getGraphDataWindow()}
+        {getTableDataWindow()}
+        {getTextDataWindow()}
       </ReactGridLayout>
     </Box>
   );

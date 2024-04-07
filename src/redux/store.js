@@ -4,6 +4,7 @@ import collapsedAreaSectionsReducer from "./slices/AreaSectionsSlice";
 import sidebarReducer from "./slices/SidebarSlice";
 import layerGroupsReducer from "./slices/LayersSlice";
 import areasReducer from "./slices/AreasSlice";
+import layoutReducer from "./slices/LayoutSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     sidebar: sidebarReducer,
     layers: layerGroupsReducer,
     areas: areasReducer,
+    layout: layoutReducer,
   },
 });
 
