@@ -80,5 +80,8 @@
       "cancelBtnLabel": "Zrušit",
       "saveBtnLabel": "Uložit"
     }
+  },
+  "errorWindow": {
+    "errorMessage": "Něco se pokazilo! Velmi se omlouváme, zkuste to prosím později znovu nebo kontaktujte svého administrátora."
   }
 }

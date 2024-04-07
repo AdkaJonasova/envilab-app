@@ -80,5 +80,8 @@
       "cancelBtnLabel": "Cancel",
       "saveBtnLabel": "Save"
     }
+  },
+  "errorWindow": {
+    "errorMessage": "Something went wrong! We are very sorry, please try again later or contact your administrator."
   }
 }

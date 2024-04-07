@@ -20,6 +20,10 @@ let theme = createTheme({
     informationGrey: {
       main: grey[400],
     },
+
+    errorRed: {
+      main: "#D55B5B",
+    },
   },
 });
 
@@ -60,6 +64,13 @@ theme = createTheme(theme, {
     information: {
       fontSize: "0.9rem",
       color: theme.palette.informationGrey.main,
+      textAlign: "center",
+      marginBottom: 5,
+      marginTop: 5,
+    },
+    error: {
+      fontSize: "0.9rem",
+      color: theme.palette.errorRed.main,
       textAlign: "center",
       marginBottom: 5,
       marginTop: 5,

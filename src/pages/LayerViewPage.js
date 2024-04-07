@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLayerGroups } from "../redux/slices/LayersSlice";
 import { fetchAreas } from "../redux/slices/AreasSlice";
 import { calculateLayout } from "../redux/slices/LayoutSlice";
+import ErrorWindow from "../components/global/ErrorWindow";
 
 const LayerViewPage = () => {
   const layout = useSelector((state) => state.layout);
@@ -67,6 +68,14 @@ const LayerViewPage = () => {
     layersStatus === FetchStates.Idle
   ) {
     return <Loading />;
+  }
+
+  if (areasStatus === FetchStates.Failed) {
+    return <ErrorWindow errorMessage={areasError} />;
+  }
+
+  if (layersStatus === FetchStates.Failed) {
+    return <ErrorWindow errorMessage={layersError} />;
   }
 
   //#region Methods
