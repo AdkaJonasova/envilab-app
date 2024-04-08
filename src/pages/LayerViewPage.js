@@ -23,6 +23,7 @@ import { fetchLayerGroups } from "../redux/slices/LayersSlice";
 import { fetchAreas } from "../redux/slices/AreasSlice";
 import { calculateLayout } from "../redux/slices/LayoutSlice";
 import ErrorWindow from "../components/global/ErrorWindow";
+import LayerDetailPopup from "../components/layers/LayerDetailPopup";
 
 const LayerViewPage = () => {
   const layout = useSelector((state) => state.layout);
@@ -152,26 +153,29 @@ const LayerViewPage = () => {
   //#endregion
 
   return (
-    <Box
-      sx={{
-        marginTop: `${pageTopMargin}px`,
-        marginBottom: `${pageBottomMargin}px`,
-      }}
-    >
-      <ReactGridLayout
-        className="app-grid-layout"
-        layout={layoutConfig.layout}
-        cols={12}
-        rowHeight={layout.rowHeight}
-        margin={[10, 0]}
+    <div>
+      <Box
+        sx={{
+          marginTop: `${pageTopMargin}px`,
+          marginBottom: `${pageBottomMargin}px`,
+        }}
       >
-        {getMapWindow()}
-        {getSidebarWindow()}
-        {getGraphDataWindow()}
-        {getTableDataWindow()}
-        {getTextDataWindow()}
-      </ReactGridLayout>
-    </Box>
+        <ReactGridLayout
+          className="app-grid-layout"
+          layout={layoutConfig.layout}
+          cols={12}
+          rowHeight={layout.rowHeight}
+          margin={[10, 0]}
+        >
+          {getMapWindow()}
+          {getSidebarWindow()}
+          {getGraphDataWindow()}
+          {getTableDataWindow()}
+          {getTextDataWindow()}
+        </ReactGridLayout>
+      </Box>
+      <LayerDetailPopup />
+    </div>
   );
 };
 

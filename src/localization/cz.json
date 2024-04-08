@@ -34,6 +34,10 @@
       "type": "Typ vrstvy",
       "projection": "Projekce",
       "description": "Popis vrstvy"
+    },
+    "layersDetail": {
+      "dialogTitle": "Podrobné informace",
+      "noDetail": "Žádné detailní informace nejsou k dispozici."
     }
   },
   "selectViewSidebar": {
