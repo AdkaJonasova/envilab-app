@@ -4,7 +4,12 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import apiClient from "../../http-common";
-import { filterLayersByName } from "../../utils/customFunctions";
+import {
+  filterFavoriteLayersByTitle,
+  filterLayersByTitle,
+  getActiveLayers,
+  getFavoriteLayers,
+} from "../../utils/customFilteringFunctions";
 import { FetchStates } from "../../utils/enums";
 
 const initialState = {
@@ -16,7 +21,7 @@ const initialState = {
 export const fetchLayerGroups = createAsyncThunk(
   "layerGroups/fetchLayerGroups",
   async (userId) => {
-    const response = await apiClient.get(`/layers/favorite/${userId}`);
+    const response = await apiClient.get(`/layers/${userId}`);
     return response.data;
   }
 );
@@ -32,6 +37,24 @@ export const LayerGroupsSlice = createSlice({
         group.layers.forEach((layer) => {
           if (layer.name === layerName) {
             layer.isActive = !layer.isActive;
+          }
+        });
+      });
+    },
+    changeLayerFavorites(state, action) {
+      const { changes } = action.payload;
+      console.log("Changes: ", changes);
+      let groups = state.layerGroups;
+
+      groups.forEach((group) => {
+        group.layers.forEach((layer) => {
+          const changedLayer = changes.find(
+            (change) => change.name === layer.name
+          );
+          console.log("Changed layer: ", changedLayer);
+          if (changedLayer) {
+            console.log("I am in modifying");
+            layer.isFavorite = changedLayer.value;
           }
         });
       });
@@ -64,26 +87,24 @@ export const LayerGroupsSlice = createSlice({
   },
 });
 
-export const selectLayersByName = createSelector(
+export const selectLayersByTitle = createSelector(
   [(state) => state.layers.layerGroups, (state, name) => name],
-  (groups, name) => filterLayersByName(groups, name)
+  (groups, name) => filterLayersByTitle(groups, name)
+);
+
+export const selectFavoriteLayersByTitle = createSelector(
+  [(state) => state.layers.layerGroups, (state, name) => name],
+  (groups, name) => filterFavoriteLayersByTitle(groups, name)
 );
 
 export const selectActiveLayers = createSelector(
   [(state) => state.layers.layerGroups],
-  (groups) => {
-    let layers = [];
+  (groups) => getActiveLayers(groups)
+);
 
-    groups.forEach((group) => {
-      group.layers
-        .filter((layer) => layer.isActive)
-        .forEach((layer) => {
-          layers.push(layer);
-        });
-    });
-
-    return layers;
-  }
+export const selectFavoriteLayers = createSelector(
+  [(state) => state.layers.layerGroups],
+  (groups) => getFavoriteLayers(groups)
 );
 
 export const selectLayerByName = createSelector(
@@ -103,7 +124,13 @@ export const selectLayerByName = createSelector(
   }
 );
 
-export const { changeLayerActiveState, changeLayerOpacity } =
-  LayerGroupsSlice.actions;
+export const selectLayersStatus = (state) => state.layers.layersStatus;
+export const selectLayersError = (state) => state.layers.layersError;
+
+export const {
+  changeLayerActiveState,
+  changeLayerFavorites,
+  changeLayerOpacity,
+} = LayerGroupsSlice.actions;
 
 export default LayerGroupsSlice.reducer;

@@ -19,7 +19,11 @@ import LineGraphDataWindow from "../components/dataWindows/LineGraphDataWindow";
 import { Box } from "@mui/material";
 import { pageBottomMargin, pageTopMargin } from "../utils/data";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchLayerGroups } from "../redux/slices/LayersSlice";
+import {
+  fetchLayerGroups,
+  selectLayersError,
+  selectLayersStatus,
+} from "../redux/slices/LayersSlice";
 import { fetchAreas } from "../redux/slices/AreasSlice";
 import { calculateLayout } from "../redux/slices/LayoutSlice";
 import ErrorWindow from "../components/global/ErrorWindow";
@@ -27,12 +31,13 @@ import LayerDetailPopup from "../components/layers/LayerDetailPopup";
 
 const LayerViewPage = () => {
   const layout = useSelector((state) => state.layout);
+  const layersStatus = useSelector(selectLayersStatus);
+  const layersError = useSelector(selectLayersError);
+
   const { areas, areasStatus, areasError } = useSelector(
     (state) => state.areas
   );
-  const { layerGroups, layersStatus, layersError } = useSelector(
-    (state) => state.layers
-  );
+
   const ReactGridLayout = WidthProvider(RGL);
 
   const dispatch = useDispatch();

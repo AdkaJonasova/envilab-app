@@ -10,11 +10,14 @@ import LayerListItem from "./LayerListItem";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { collapseLayerSection } from "../../redux/slices/LayerSectionsSlice";
-import { selectLayersByName } from "../../redux/slices/LayersSlice";
+import { collapseLayerSection } from "../../redux/slices/LayerListSectionsSlice";
+import { selectFavoriteLayersByTitle } from "../../redux/slices/LayersSlice";
 
 export default function LayerList({ filter }) {
-  const layerGroups = useSelector((state) => selectLayersByName(state, filter));
+  const layerGroups = useSelector((state) =>
+    selectFavoriteLayersByTitle(state, filter)
+  );
+  console.log("Layer groups: ", layerGroups);
   const collapsedSections = useSelector(
     (state) => state.collapsedLayerSections
   );

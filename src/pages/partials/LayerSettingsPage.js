@@ -1,88 +1,96 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Close } from "@mui/icons-material";
-import { Grid, IconButton, List, Snackbar } from "@mui/material";
+import {
+  Button,
+  Collapse,
+  IconButton,
+  List,
+  ListSubheader,
+  Snackbar,
+} from "@mui/material";
 import SettingsHeader from "../../components/settings/SettingsHeader";
 import { userId } from "../../data/mockData";
 import { useTranslation } from "react-i18next";
-import { changeFavoriteLayers, useLayers } from "../../hooks/layerHooks";
+import { changeFavoriteLayers } from "../../hooks/layerHooks";
 import Loading from "../../components/global/Loading";
 import LayerSettingsItem from "../../components/settings/LayerSettingsItem";
-import { filterLayersByName } from "../../utils/customFunctions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeLayerFavorites,
+  selectLayersByTitle,
+  selectLayersError,
+  selectLayersStatus,
+} from "../../redux/slices/LayersSlice";
+import { FetchStates } from "../../utils/enums";
+import ErrorWindow from "../../components/global/ErrorWindow";
+import {
+  clearChanges,
+  markLayer,
+  selectChangedLayers,
+  selectCollapsedSections,
+  collapseLayerSettingsSection,
+} from "../../redux/slices/LayerSettingsSlice";
 
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const [changedLayers, setChangedLayers] = useState([]);
-  const [firstHalfLayers, setFirstHalfLayers] = useState([]);
-  const [secondHalfLayers, setSecondHalfLayers] = useState([]);
+  const layerGroups = useSelector((state) =>
+    selectLayersByTitle(state, filter)
+  );
+  const layersStatus = useSelector(selectLayersStatus);
+  const layersError = useSelector(selectLayersError);
+
+  const collapsedSections = useSelector(selectCollapsedSections);
+  const changedLayers = useSelector(selectChangedLayers);
 
   const { t } = useTranslation();
-  const {
-    data: layers,
-    isFetched: areLayersReady,
-    isRefetching: areLayersRefetching,
-    refetch: refetchLayers,
-  } = useLayers(userId);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (areLayersReady) {
-      const filtered = filterLayersByName(layers, filter);
-      const midpoint = Math.ceil(filtered.length / 2);
-      setFirstHalfLayers(filtered.slice(0, midpoint));
-      setSecondHalfLayers(filtered.slice(midpoint));
-    }
-  }, [filter, layers]);
-
-  if (!areLayersReady || areLayersRefetching) {
+  if (
+    layersStatus === FetchStates.Idle ||
+    layersStatus === FetchStates.Loading
+  ) {
     return <Loading />;
   }
 
-  //#region Helper methods
+  if (layersStatus === FetchStates.Failed) {
+    return <ErrorWindow errorMessage={layersError} />;
+  }
 
-  function handleSave() {
-    changeFavoriteLayers(userId, changedLayers).then(() => refetchLayers());
-    setChangedLayers([]);
+  //#region Methods
+
+  const handleExpandCollapse = (layerGroup) => {
+    dispatch(collapseLayerSettingsSection({ sectionName: layerGroup.name }));
+  };
+
+  const isSectionExpanded = (layerGroup) => {
+    return !collapsedSections.includes(layerGroup.name);
+  };
+
+  const handleSave = () => {
+    dispatch(changeLayerFavorites({ changes: changedLayers }));
+    changeFavoriteLayers(userId, changedLayers);
+    dispatch(clearChanges());
     setSnackbarOpen(true);
-  }
+  };
 
-  function handleReset() {
-    setChangedLayers([]);
-  }
+  const handleReset = () => {
+    dispatch(clearChanges());
+  };
 
-  function addToChanged(layer, newChangedLayers) {
-    let changedLayer = {
-      name: layer.name,
-      value: !layer.isFavorite,
-    };
-    newChangedLayers.push(changedLayer);
-  }
+  const handleStarClick = (layer) => {
+    dispatch(markLayer({ layerName: layer.name, value: !layer.isFavorite }));
+  };
 
-  function removeFromChanged(index, newChangedLayers) {
-    newChangedLayers.splice(index, 1);
-  }
-
-  function handleStarClick(layer) {
-    let newChangedLayers = [...changedLayers];
-    let layerChangedIndex = changedLayers.findIndex(
-      (l) => l.name === layer.name
-    );
-    if (layerChangedIndex !== -1) {
-      removeFromChanged(layerChangedIndex, newChangedLayers);
-    } else {
-      addToChanged(layer, newChangedLayers);
-    }
-    setChangedLayers(newChangedLayers);
-  }
-
-  function isMarkedFavorite(layer) {
+  const isMarkedFavorite = (layer) => {
     return (
       changedLayers.find((l) => l.name === layer.name)?.value ??
       layer.isFavorite
     );
-  }
+  };
 
-  function getLayerItem(layer) {
+  const getLayerItem = (layer) => {
     return (
       <LayerSettingsItem
         key={`layer-settings-item-component-${layer.name}`}
@@ -91,7 +99,7 @@ const LayerSettingsPage = () => {
         handleStarClick={handleStarClick}
       />
     );
-  }
+  };
 
   //#endregion
 
@@ -104,18 +112,33 @@ const LayerSettingsPage = () => {
         handleSettingsSave={handleSave}
         handleSettingsReset={handleReset}
       />
-      <Grid container>
-        <Grid item xs={6}>
-          <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
-            {firstHalfLayers.map((layer) => getLayerItem(layer))}
-          </List>
-        </Grid>
-        <Grid item xs={6}>
-          <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
-            {secondHalfLayers.map((layer) => getLayerItem(layer))}
-          </List>
-        </Grid>
-      </Grid>
+
+      <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
+        {layerGroups.map((group) => {
+          return (
+            <div key={`settings-layer-section-${group.name}`}>
+              <Button
+                key={`settings-layer-section-btn-${group.name}`}
+                fullWidth
+                style={{ textTransform: "none" }}
+                onClick={() => handleExpandCollapse(group)}
+              >
+                <ListSubheader key={`settings-layersection-head-${group.name}`}>
+                  {group.title}
+                </ListSubheader>
+              </Button>
+              <Collapse
+                key={`settings-layersection-collapse-${group.name}`}
+                in={isSectionExpanded(group)}
+                timeout="auto"
+                unmountOnExit
+              >
+                {group.layers.map((layer) => getLayerItem(layer))}
+              </Collapse>
+            </div>
+          );
+        })}
+      </List>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}

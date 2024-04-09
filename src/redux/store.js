@@ -1,21 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
-import collapsedLayerSectionsReducer from "./slices/LayerSectionsSlice";
-import collapsedAreaSectionsReducer from "./slices/AreaSectionsSlice";
+import collapsedLayerSectionsReducer from "./slices/LayerListSectionsSlice";
+import collapsedAreaSectionsReducer from "./slices/AreaListSectionsSlice";
 import sidebarReducer from "./slices/SidebarSlice";
 import layerGroupsReducer from "./slices/LayersSlice";
 import areasReducer from "./slices/AreasSlice";
 import layoutReducer from "./slices/LayoutSlice";
 import layersDetailReducer from "./slices/DetailedDataSlice";
+import layersSettingsReducer from "./slices/LayerSettingsSlice";
 
 const store = configureStore({
   reducer: {
-    collapsedLayerSections: collapsedLayerSectionsReducer,
-    collapsedAreaSections: collapsedAreaSectionsReducer,
+    layout: layoutReducer,
     sidebar: sidebarReducer,
     layers: layerGroupsReducer,
-    areas: areasReducer,
-    layout: layoutReducer,
     layersDetail: layersDetailReducer,
+    areas: areasReducer,
+    layerSettings: layersSettingsReducer,
+    collapsedLayerSections: collapsedLayerSectionsReducer,
+    collapsedAreaSections: collapsedAreaSectionsReducer,
   },
 });
 

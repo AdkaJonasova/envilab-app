@@ -7,7 +7,7 @@ import Loading from "../../components/global/Loading";
 import { Close } from "@mui/icons-material";
 import { Collapse, IconButton, List, Snackbar } from "@mui/material";
 import AreaSettingsItem from "../../components/settings/AreaSettingsItem";
-import { filterAreasByName } from "../../utils/customFunctions";
+import { filterAreasByName } from "../../utils/customFilteringFunctions";
 
 const AreaSettingsPage = () => {
   const [filter, setFilter] = useState("");

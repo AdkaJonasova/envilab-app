@@ -7,7 +7,7 @@ import apiClient from "../../http-common";
 import {
   filterAreasByName,
   getZoomedToAreas,
-} from "../../utils/customFunctions";
+} from "../../utils/customFilteringFunctions";
 import { FetchStates } from "../../utils/enums";
 
 const handleRecursiveStatusChange = (areaData, areaId, activate) => {

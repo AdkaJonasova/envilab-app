@@ -4,7 +4,7 @@ import {
   getElementHeight,
   getRowCount,
   getRowHeight,
-} from "../../utils/customFunctions";
+} from "../../utils/customLayoutFunctions";
 import { LayoutWindows } from "../../utils/enums";
 
 const initialState = {

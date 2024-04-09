@@ -11,7 +11,7 @@ const GeoJsonReactArea = ({ areaSource, areaSourceId }) => {
     import(`../../../data/areas/${areaSource}`).then((data) => {
       const source = new VectorSource({
         features: new GeoJSON().readFeatures(data.default, {
-          featureProjection: "EPSG:3857",
+          featureProjection: "EPSG:4326",
         }),
       });
       const feature = source.getFeatures()[areaSourceId];

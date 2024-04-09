@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { activateArea, deactivateArea } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
 import { useDispatch, useSelector } from "react-redux";
-import { collapseAreaSection } from "../../redux/slices/AreaSectionsSlice";
+import { collapseAreaSection } from "../../redux/slices/AreaListSectionsSlice";
 import {
   changeAreaActiveState,
   selectActiveAreas,

@@ -8,7 +8,7 @@ import {
   pageTopMargin,
 } from "../utils/data";
 import SelectViewHeader from "../components/selectView/SelectViewHeader";
-import { getSelectViewMapHeight } from "../utils/customFunctions";
+import { getSelectViewMapHeight } from "../utils/customLayoutFunctions";
 import { getCoordsObjectForDrawType } from "../utils/decisionCriteriaHandlers";
 import NewAreaSavePopup from "../components/selectView/NewAreaSavePopup";
 
