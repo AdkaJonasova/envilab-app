@@ -1,5 +1,7 @@
 import {
+  Box,
   Dialog,
+  DialogContent,
   DialogTitle,
   Grid,
   Tab,
@@ -46,9 +48,11 @@ const LayerDetailPopup = () => {
         <DialogTitle>
           {t("layerViewSidebar.layersDetail.dialogTitle")}
         </DialogTitle>
-        <Typography variant="information" paddingY={1}>
-          {t("layerViewSidebar.layersDetail.noDetail")}
-        </Typography>
+        <DialogContent>
+          <Typography variant="information" paddingY={1}>
+            {t("layerViewSidebar.layersDetail.noDetail")}
+          </Typography>
+        </DialogContent>
       </Dialog>
     );
   }
@@ -58,35 +62,35 @@ const LayerDetailPopup = () => {
       <DialogTitle>
         {t("layerViewSidebar.layersDetail.dialogTitle")}
       </DialogTitle>
-      <Tabs
-        value={selectedLayer}
-        onChange={(_event, newValue) => handleTabChange(newValue)}
-        centered
-        variant="fullWidth"
-      >
-        {layersDetail.map((detail) => (
-          <Tab value={detail.identificator} label={detail.title} />
-        ))}
-      </Tabs>
+      <DialogContent>
+        <Box minWidth={500} maxWidth={1000} overflow={"auto"}>
+          <Tabs
+            value={selectedLayer}
+            onChange={(_event, newValue) => handleTabChange(newValue)}
+            centered
+            variant="fullWidth"
+          >
+            {layersDetail.map((detail) => (
+              <Tab value={detail.identificator} label={detail.title} />
+            ))}
+          </Tabs>
 
-      <Grid
-        container
-        direction={"column"}
-        padding={2}
-        minHeight={200}
-        rowSpacing={1}
-      >
-        {Object.entries(currentData.data).map(([key, value]) => (
-          <Grid container item xs={12}>
-            <Grid item xs={6}>
-              <Typography variant="h3">{key}</Typography>
+          <Box maxHeight={400} overflow={"auto"} minHeight={200} padding={2}>
+            <Grid container direction={"column"} rowSpacing={1}>
+              {Object.entries(currentData.data).map(([key, value]) => (
+                <Grid container item xs={12}>
+                  <Grid item xs={6}>
+                    <Typography variant="h3">{key}</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography>{value}</Typography>
+                  </Grid>
+                </Grid>
+              ))}
             </Grid>
-            <Grid item xs={6}>
-              <Typography>{value}</Typography>
-            </Grid>
-          </Grid>
-        ))}
-      </Grid>
+          </Box>
+        </Box>
+      </DialogContent>
     </Dialog>
   );
 };
