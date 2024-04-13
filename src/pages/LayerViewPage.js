@@ -24,19 +24,23 @@ import {
   selectLayersError,
   selectLayersStatus,
 } from "../redux/slices/LayersSlice";
-import { fetchAreas } from "../redux/slices/AreasSlice";
+import {
+  fetchAreas,
+  selectAreasError,
+  selectAreasStatus,
+} from "../redux/slices/AreasSlice";
 import { calculateLayout } from "../redux/slices/LayoutSlice";
 import ErrorWindow from "../components/global/ErrorWindow";
 import LayerDetailPopup from "../components/layers/LayerDetailPopup";
 
 const LayerViewPage = () => {
   const layout = useSelector((state) => state.layout);
+
   const layersStatus = useSelector(selectLayersStatus);
   const layersError = useSelector(selectLayersError);
 
-  const { areas, areasStatus, areasError } = useSelector(
-    (state) => state.areas
-  );
+  const areasStatus = useSelector(selectAreasStatus);
+  const areasError = useSelector(selectAreasError);
 
   const ReactGridLayout = WidthProvider(RGL);
 

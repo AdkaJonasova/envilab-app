@@ -11,11 +11,13 @@ import { collapseAreaSection } from "../../redux/slices/AreaListSectionsSlice";
 import {
   changeAreaActiveState,
   selectActiveAreas,
-  selectAreasByName,
+  selectFavoriteAreasByTitle,
 } from "../../redux/slices/AreasSlice";
 
 export default function AreaList({ filter }) {
-  const areas = useSelector((state) => selectAreasByName(state, filter));
+  const areas = useSelector((state) =>
+    selectFavoriteAreasByTitle(state, filter)
+  );
   const zoomedAreas = useSelector((state) => selectActiveAreas(state));
   const collapsedAreas = useSelector((state) => state.collapsedAreaSections);
 

@@ -7,6 +7,7 @@ import areasReducer from "./slices/AreasSlice";
 import layoutReducer from "./slices/LayoutSlice";
 import layersDetailReducer from "./slices/DetailedDataSlice";
 import layersSettingsReducer from "./slices/LayerSettingsSlice";
+import areasSettingsReducer from "./slices/AreaSettingsSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     layersDetail: layersDetailReducer,
     areas: areasReducer,
     layerSettings: layersSettingsReducer,
+    areaSettings: areasSettingsReducer,
     collapsedLayerSections: collapsedLayerSectionsReducer,
     collapsedAreaSections: collapsedAreaSectionsReducer,
   },

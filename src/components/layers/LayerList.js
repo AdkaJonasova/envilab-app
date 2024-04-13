@@ -17,7 +17,6 @@ export default function LayerList({ filter }) {
   const layerGroups = useSelector((state) =>
     selectFavoriteLayersByTitle(state, filter)
   );
-  console.log("Layer groups: ", layerGroups);
   const collapsedSections = useSelector(
     (state) => state.collapsedLayerSections
   );

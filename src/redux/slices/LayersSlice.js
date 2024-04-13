@@ -43,7 +43,6 @@ export const LayerGroupsSlice = createSlice({
     },
     changeLayerFavorites(state, action) {
       const { changes } = action.payload;
-      console.log("Changes: ", changes);
       let groups = state.layerGroups;
 
       groups.forEach((group) => {
@@ -51,9 +50,7 @@ export const LayerGroupsSlice = createSlice({
           const changedLayer = changes.find(
             (change) => change.name === layer.name
           );
-          console.log("Changed layer: ", changedLayer);
           if (changedLayer) {
-            console.log("I am in modifying");
             layer.isFavorite = changedLayer.value;
           }
         });

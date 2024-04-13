@@ -5,30 +5,53 @@ import {
 } from "@reduxjs/toolkit";
 import apiClient from "../../http-common";
 import {
-  filterAreasByName,
-  getZoomedToAreas,
+  filterAreasByTitle,
+  filterFavoriteAreasByTitle,
+  getActiveAreas,
+  getFavoriteAreas,
 } from "../../utils/customFilteringFunctions";
 import { FetchStates } from "../../utils/enums";
 
-const handleRecursiveStatusChange = (areaData, areaId, activate) => {
-  let updatesAreas = [];
+const handleRecursiveActiveStatusChange = (areaData, areaId, activate) => {
+  let result = [];
   areaData.forEach((area) => {
-    let updatedArea = { ...area };
-    if (updatedArea.areaId === areaId) {
-      updatedArea.isActive = activate;
-    } else if (updatedArea.isActive) {
-      updatedArea.isActive = false;
+    let newArea = { ...area };
+    if (newArea.areaId === areaId) {
+      newArea.isActive = activate;
+    } else if (newArea.isActive) {
+      newArea.isActive = false;
     }
     if (area.geoArea.subAreas.length > 0) {
-      updatedArea.geoArea.subAreas = handleRecursiveStatusChange(
-        updatedArea.geoArea.subAreas,
+      newArea.geoArea.subAreas = handleRecursiveActiveStatusChange(
+        newArea.geoArea.subAreas,
         areaId,
         activate
       );
     }
-    updatesAreas.push(updatedArea);
+    result.push(newArea);
   });
-  return updatesAreas;
+  return result;
+};
+
+const handleRecursiveFavoriteStatusChange = (areaData, changedAreas) => {
+  let result = [];
+  areaData.forEach((area) => {
+    let newArea = { ...area };
+    const changedArea = changedAreas.find(
+      (change) => newArea.areaId === change.identificator
+    );
+    if (changedArea) {
+      newArea.isFavorite = changedArea.value;
+    }
+    if (area.geoArea.subAreas.length > 0) {
+      newArea.geoArea.subAreas = handleRecursiveFavoriteStatusChange(
+        newArea.geoArea.subAreas,
+        changedAreas
+      );
+    }
+    result.push(newArea);
+  });
+  return result;
 };
 
 const initialState = {
@@ -40,7 +63,7 @@ const initialState = {
 export const fetchAreas = createAsyncThunk(
   "areas/fetchAreas",
   async (userId) => {
-    const response = await apiClient.get(`/areas/favorite/${userId}`);
+    const response = await apiClient.get(`/areas/${userId}`);
     return response.data;
   }
 );
@@ -51,10 +74,19 @@ export const AreasSlice = createSlice({
   reducers: {
     changeAreaActiveState(state, action) {
       const { areaId, activate } = action.payload;
-      let updatedAreas = handleRecursiveStatusChange(
+      let updatedAreas = handleRecursiveActiveStatusChange(
         state.areas,
         areaId,
         activate
+      );
+      state.areas = updatedAreas;
+    },
+
+    changeAreasFavoriteState(state, action) {
+      const { changes } = action.payload;
+      let updatedAreas = handleRecursiveFavoriteStatusChange(
+        state.areas,
+        changes
       );
       state.areas = updatedAreas;
     },
@@ -75,16 +107,30 @@ export const AreasSlice = createSlice({
   },
 });
 
-export const selectAreasByName = createSelector(
+export const selectAreasByTitle = createSelector(
   [(state) => state.areas.areas, (_state, name) => name],
-  (areas, name) => filterAreasByName(areas, name)
+  (areas, name) => filterAreasByTitle(areas, name)
+);
+
+export const selectFavoriteAreasByTitle = createSelector(
+  [(state) => state.areas.areas, (_state, name) => name],
+  (areas, name) => filterFavoriteAreasByTitle(areas, name)
 );
 
 export const selectActiveAreas = createSelector(
   [(state) => state.areas.areas],
-  (hierarchicalAreas) => getZoomedToAreas(hierarchicalAreas)
+  (hierarchicalAreas) => getActiveAreas(hierarchicalAreas)
 );
 
-export const { changeAreaActiveState } = AreasSlice.actions;
+export const selectFavoriteAreas = createSelector(
+  [(state) => state.areas.areas],
+  (hierarchicalAreas) => getFavoriteAreas(hierarchicalAreas)
+);
+
+export const selectAreasStatus = (state) => state.areas.areasStatus;
+export const selectAreasError = (state) => state.areas.areasError;
+
+export const { changeAreaActiveState, changeAreasFavoriteState } =
+  AreasSlice.actions;
 
 export default AreasSlice.reducer;

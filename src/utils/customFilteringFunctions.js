@@ -69,33 +69,101 @@ export function getActiveLayers(layerGroups) {
 
 //#region Areas
 
-export function filterAreasByName(areas, filter) {
+export function filterAreasByTitle(areas, filter) {
   if (!filter) {
     return areas;
   }
-  let filteredAreas = [];
+  let result = [];
   areas.forEach((area) => {
     if (area.geoArea.name.toLowerCase().includes(filter.toLowerCase())) {
-      filteredAreas.push(area);
+      result.push(area);
     } else if (area.geoArea.subAreas.length > 0) {
-      const filteredSubAreas = filterAreasByName(area.geoArea.subAreas, filter);
-      filteredAreas = filteredAreas.concat(filteredSubAreas);
+      const filteredSubAreas = filterAreasByTitle(
+        area.geoArea.subAreas,
+        filter
+      );
+      result = result.concat(filteredSubAreas);
     }
   });
-  return filteredAreas;
+  return result;
 }
 
-export function getZoomedToAreas(areas) {
-  let zoomedAreas = [];
+export function filterFavoriteAreasByTitle(
+  areas,
+  filter,
+  parentTitleMatches = false
+) {
+  if (!filter) {
+    return getFavoriteAreas(areas);
+  }
+
+  let result = [];
   areas.forEach((area) => {
-    if (area.isActive) {
-      zoomedAreas.push(area);
+    let copiedArea = { ...area };
+    let titleMatches = false;
+
+    // Check whether the area or one of the parent areas matches the filter.
+    if (
+      copiedArea.geoArea.name.toLowerCase().includes(filter.toLowerCase()) ||
+      parentTitleMatches
+    ) {
+      titleMatches = true;
     }
-    if (area.geoArea.subAreas.length > 0) {
-      const zoomedToSubAreas = getZoomedToAreas(area.geoArea.subAreas);
-      zoomedAreas = zoomedAreas.concat(zoomedToSubAreas);
+
+    // Process sub areas
+    if (copiedArea.geoArea.subAreas.length > 0) {
+      copiedArea.geoArea = {
+        ...copiedArea.geoArea,
+        subAreas: filterFavoriteAreasByTitle(
+          copiedArea.geoArea.subAreas,
+          filter,
+          titleMatches
+        ),
+      };
+    }
+
+    // Add to result - if the area is favorite and title matches the filter or if has any subareas
+    if (copiedArea.isFavorite && titleMatches) {
+      result.push(copiedArea);
+    } else if (copiedArea.geoArea.subAreas.length > 0) {
+      result = result.concat(copiedArea.geoArea.subAreas);
     }
   });
-  return zoomedAreas;
+  return result;
+}
+
+export function getActiveAreas(areas) {
+  let result = [];
+  areas.forEach((area) => {
+    if (area.isActive) {
+      result.push(area);
+    }
+    if (area.geoArea.subAreas.length > 0) {
+      const zoomedToSubAreas = getActiveAreas(area.geoArea.subAreas);
+      result = result.concat(zoomedToSubAreas);
+    }
+  });
+  return result;
+}
+
+export function getFavoriteAreas(areas) {
+  let result = [];
+  areas.forEach((area) => {
+    let copiedArea = { ...area };
+
+    if (copiedArea.geoArea.subAreas.length > 0) {
+      copiedArea.geoArea = {
+        ...copiedArea.geoArea,
+        subAreas: getFavoriteAreas(copiedArea.geoArea.subAreas),
+      };
+    }
+
+    if (copiedArea.isFavorite) {
+      result.push(copiedArea);
+    } else if (copiedArea.geoArea.subAreas.length > 0) {
+      result.concat(copiedArea.geoArea.subAreas);
+    }
+  });
+  return result;
 }
 //#endregion
