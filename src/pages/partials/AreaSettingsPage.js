@@ -16,13 +16,11 @@ import {
 } from "../../redux/slices/AreasSlice";
 import {
   clearChanges,
-  markArea,
   selectChangedAreas,
   selectCollapsedAreas,
 } from "../../redux/slices/AreaSettingsSlice";
 import { FetchStates } from "../../utils/enums";
 import ErrorWindow from "../../components/global/ErrorWindow";
-import { collapseAreaSection } from "../../redux/slices/AreaListSectionsSlice";
 
 const AreaSettingsPage = () => {
   const [filter, setFilter] = useState("");
@@ -59,21 +57,6 @@ const AreaSettingsPage = () => {
     dispatch(clearChanges());
   };
 
-  const handleStarClick = (area) => {
-    dispatch(markArea({ area: area }));
-  };
-
-  const isMarkedFavorite = (area) => {
-    return (
-      changedAreas.find((a) => a.identificator === area.areaId)?.value ??
-      area.isFavorite
-    );
-  };
-
-  const handleExpandCollapse = (area) => {
-    dispatch(collapseAreaSection({ areaId: area.areaId }));
-  };
-
   const isExpanded = (area) => {
     return !collapsedAreas.includes(area.areaId);
   };
@@ -87,9 +70,6 @@ const AreaSettingsPage = () => {
           hierarchyLevel={level}
           isExpandable={false}
           isExpanded={isExpanded}
-          isMarkedFavorite={isMarkedFavorite}
-          handleExpandCollapse={handleExpandCollapse}
-          handleStarClick={handleStarClick}
         />
       );
     } else {
@@ -101,9 +81,6 @@ const AreaSettingsPage = () => {
             hierarchyLevel={level}
             isExpandable={true}
             isExpanded={isExpanded}
-            isMarkedFavorite={isMarkedFavorite}
-            handleExpandCollapse={handleExpandCollapse}
-            handleStarClick={handleStarClick}
           />
           <Collapse
             key={`settings-area-item-collapsable-${area.areaId}`}

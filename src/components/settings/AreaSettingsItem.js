@@ -1,20 +1,37 @@
 import { ExpandLess, ExpandMore, Star, StarBorder } from "@mui/icons-material";
 import { Divider, IconButton, ListItem, ListItemText } from "@mui/material";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  collapseAreaSettingsArea,
+  markArea,
+  selectChangedAreas,
+} from "../../redux/slices/AreaSettingsSlice";
 
 const AreaSettingsItem = ({
   area,
   hierarchyLevel,
   isExpandable,
   isExpanded,
-  isMarkedFavorite,
-  handleExpandCollapse,
-  handleStarClick,
 }) => {
+  const changedAreas = useSelector(selectChangedAreas);
+  const dispatch = useDispatch();
+
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
   const getStarForArea = (area) => {
-    return isMarkedFavorite(area) ? <Star /> : <StarBorder />;
+    const isMarkedFavorite =
+      changedAreas.find((a) => a.identificator === area.areaId)?.value ??
+      area.isFavorite;
+    return isMarkedFavorite ? <Star /> : <StarBorder />;
+  };
+
+  const handleExpandCollapse = (area) => {
+    dispatch(collapseAreaSettingsArea({ areaId: area.areaId }));
+  };
+
+  const handleStarClick = (area) => {
+    dispatch(markArea({ area: area }));
   };
 
   const addExpandCollapseItem = (area) => {
@@ -65,7 +82,4 @@ AreaSettingsItem.propTypes = {
   hierarchyLevel: PropTypes.number,
   isExpandable: PropTypes.bool,
   isExpanded: PropTypes.func,
-  isMarkedFavorite: PropTypes.func,
-  handleExpandCollapse: PropTypes.func,
-  handleStarClick: PropTypes.func,
 };
