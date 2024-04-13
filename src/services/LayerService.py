@@ -37,7 +37,6 @@ def __merge_layers__(layer_infos: List[dict], geo_layers: List[dict], include_al
                 'isActive': layer_info['isActive'] if layer_info else False,
                 'isFavorite': layer_info['isFavorite'] if layer_info else False,
                 'opacity': layer_info['opacity'] if layer_info else 100,
-                'data': geo_layer["data"],
             }
             result.append(layer)
     return result
@@ -51,8 +50,8 @@ class LayerService:
 
     def get_layers(self, user_id: int):
         layer_infos = self.layer_repository.get_all_for_user(user_id)
-        geo_layers = self.geoserver_service.get_layers()
-        merged_layers = __merge_layers__(layer_infos, geo_layers, True)
+        geo_layers = self.geoserver_service.get_layers_in_groups()
+        merged_layers = __merge_layers_in_groups__(layer_infos, geo_layers, True)
         return merged_layers
 
     def get_favorite_layers(self, user_id: int):

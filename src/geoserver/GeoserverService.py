@@ -3,7 +3,6 @@ from requests import JSONDecodeError
 from requests.auth import HTTPBasicAuth
 
 from src.mockdata.MockAreas import mock_areas
-from src.mockdata.MockLayers import mock_layers
 from src.utils.ConfigReader import load_config
 from src.utils.JsonHelper import create_geo_layer_json, get_json_string_attribute, create_geo_layer_group_json, \
     get_json_list_attribute
@@ -79,7 +78,11 @@ class GeoserverService:
                 group_layers = get_json_list_attribute(group_response_content, "layerGroup.publishables.published")
 
                 # Transform layers of the group
-                transformed_layers = self.__transform__layers__(group_layers)
+                transformed_layers = []
+                if type(group_layers) is list:
+                    transformed_layers = self.__transform__layers__(group_layers)
+                else:
+                    transformed_layers = self.__transform__layers__([group_layers])
 
                 # Create json with layer group information and layers
                 transformed_group = create_geo_layer_group_json(group_name, group_title, group_desc, transformed_layers)
@@ -92,18 +95,28 @@ class GeoserverService:
 
     def __transform__layers__(self, layers: list):
         transformed_layers = []
+
         for layer in layers:
-            try:
-                layer_name = get_json_string_attribute(layer, "name")  # layer name
-                layer_link = get_json_string_attribute(layer, "href")
+            transformed_layer = self.__transform_layer__(layer)
+            if transformed_layer is not None:
+                transformed_layers.append(transformed_layer)
 
-                # Fetch layer information from geoserver
-                layer_response = requests.get(layer_link, auth=self.__get_geoserver_auth__())
-                if layer_response.status_code != 200:
-                    self.logger.error(f"Unable to fetch layer information for layer {layer_name} from geoserver, "
-                                      f"request failed with status code {layer_response.status_code}")
-                    continue
+        return transformed_layers
 
+    def __transform_layer__(self, layer):
+        transformed_layer = None
+
+        try:
+            layer_name = get_json_string_attribute(layer, "name")  # layer name
+            layer_link = get_json_string_attribute(layer, "href")
+
+            # Fetch layer information from geoserver
+            layer_response = requests.get(layer_link, auth=self.__get_geoserver_auth__())
+            if layer_response.status_code != 200:
+                self.logger.error(f"Unable to fetch layer information for layer {layer_name} from geoserver, "
+                                  f"request failed with status code {layer_response.status_code}")
+
+            else:
                 layer_response_content = layer_response.json()
                 layer_type = get_json_string_attribute(layer_response_content, "layer.type")  # layer type
                 src_link = get_json_string_attribute(layer_response_content, "layer.resource.href")
@@ -114,28 +127,19 @@ class GeoserverService:
                 if src_response.status_code != 200:
                     self.logger.error(f"Unable to fetch source information for layer {layer_name} from geoserver, "
                                       f"request failed with status code {src_response.status_code}")
-                    continue
+                else:
+                    src_response_content = src_response.json()
+                    layer_title = get_json_string_attribute(src_response_content, f"{src_class}.title")  # layer title
+                    layer_desc = get_json_string_attribute(src_response_content,
+                                                           f"{src_class}.abstract")  # layer description
+                    layer_proj = get_json_string_attribute(src_response_content, f"{src_class}.srs")  # layer projection
 
-                src_response_content = src_response.json()
-                layer_title = get_json_string_attribute(src_response_content, f"{src_class}.title")  # layer title
-                layer_desc = get_json_string_attribute(src_response_content,
-                                                       f"{src_class}.abstract")  # layer description
-                layer_proj = get_json_string_attribute(src_response_content, f"{src_class}.srs")  # layer projection
+                    transformed_layer = create_geo_layer_json(layer_name, layer_type, layer_title, layer_desc, layer_proj)
 
-                # Fetch layer data for vector layer
-                layer_data = {}
-                # if layer_type == "VECTOR":  # TODO constant/enum
-                #     layer_data = self.__get_features_for_vector_layer(layer_name, layer_proj)
+        except Exception as e:
+            self.logger.error(f"Unable to transform layer {layer}. Failed with error: {str(e)}")
 
-                # Create json with layer information and data
-                transformed_layer = create_geo_layer_json(layer_name, layer_type, layer_title, layer_desc, layer_proj,
-                                                          layer_data)
-                transformed_layers.append(transformed_layer)
-
-            except Exception as e:
-                self.logger.error(f"Unable to transform layer {layer}. Failed with error: {str(e)}")
-
-        return transformed_layers
+        return transformed_layer
 
     def __get_geoserver_auth__(self):
         return HTTPBasicAuth(self.username, self.password)
@@ -171,7 +175,3 @@ class GeoserverService:
 # ---------- Mock methods ----------
 def get_areas():
     return mock_areas
-
-
-def get_layers():
-    return mock_layers

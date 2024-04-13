@@ -8,7 +8,7 @@ class Area:
         self.subAreas = sub_areas
 
 
-sub_area1 = Area(
+jihomoravsky = Area(
     area_id=10,
     name="Jihomoravsky kraj",
     source="czechRepublicRegions.json",
@@ -17,7 +17,7 @@ sub_area1 = Area(
     sub_areas=[]
 )
 
-sub_area2 = Area(
+jihocesky = Area(
     area_id=11,
     name="Jihocesky kraj",
     source="czechRepublicRegions.json",
@@ -26,16 +26,16 @@ sub_area2 = Area(
     sub_areas=[]
 )
 
-area1 = Area(
+czech_republic = Area(
     area_id=0,
     name="Czech republic",
     source="czechRepublic.json",
     source_id=0,
     is_editable=False,
-    sub_areas=[sub_area1, sub_area2]
+    sub_areas=[jihomoravsky, jihocesky]
 )
 
-area2 = Area(
+slovakia = Area(
     area_id=1,
     name="Slovakia",
     source="slovakia.json",
@@ -44,13 +44,31 @@ area2 = Area(
     sub_areas=[]
 )
 
-custom_area1 = Area(
-    area_id=2,
-    name="Custom area 1",
-    source="",
-    source_id=0,
-    is_editable=True,
+new_york = Area(
+    area_id=20,
+    name="New York",
+    source="usaStates.json",
+    source_id=32,
+    is_editable=False,
     sub_areas=[]
 )
 
-mock_areas = [area1, area2, custom_area1]
+south_dakota = Area(
+    area_id=21,
+    name="South Dakota",
+    source="usaStates.json",
+    source_id=41,
+    is_editable=False,
+    sub_areas=[]
+)
+
+usa = Area(
+    area_id=2,
+    name="United States",
+    source="usa.json",
+    source_id=0,
+    is_editable=False,
+    sub_areas=[new_york]
+)
+
+mock_areas = [czech_republic, slovakia, usa]

@@ -34,14 +34,13 @@ def get_json_list_attribute(json_data: dict, attribute_path: str):
 
 
 def create_geo_layer_json(name: str, layer_type: str, title: str, description: str,
-                          projection: str, layer_data: dict):
+                          projection: str):
     layer_json = {
         "name": name,
         "type": layer_type,
         "title": title,
         "description": description,
-        "projection": projection,
-        "data": layer_data
+        "projection": projection
     }
     return layer_json
 
