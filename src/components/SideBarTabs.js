@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { changeSidebarType } from "../redux/slices/SidebarSlice";
 
-export default function SideBarTabs() {
+const SideBarTabs = () => {
   const sidebar = useSelector((state) => state.sidebar);
 
   const { t } = useTranslation();
@@ -38,4 +38,6 @@ export default function SideBarTabs() {
       </Tabs>
     </Box>
   );
-}
+};
+
+export default SideBarTabs;

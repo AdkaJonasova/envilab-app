@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { getTabIdByType } from "../utils/customFunctions";
 import PropTypes from "prop-types";
 
-export default function SideMenu({ tab }) {
+const SideMenu = ({ tab }) => {
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(
     getTabIdByType(tab)
   );
@@ -26,7 +26,7 @@ export default function SideMenu({ tab }) {
     navigate(tab.navigation);
   };
 
-  function getSideMenuItem(tab) {
+  const getSideMenuItem = (tab) => {
     return (
       <div key={`side-menu-list-item${tab.tabId}`}>
         <ListItemButton
@@ -39,7 +39,7 @@ export default function SideMenu({ tab }) {
         <Divider />
       </div>
     );
-  }
+  };
 
   return (
     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: ".paper" }}>
@@ -48,7 +48,9 @@ export default function SideMenu({ tab }) {
       </List>
     </Box>
   );
-}
+};
+
+export default SideMenu;
 
 SideMenu.propTypes = {
   tab: PropTypes.string,

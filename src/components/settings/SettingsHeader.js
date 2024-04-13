@@ -3,13 +3,13 @@ import SearchBar from "../global/SearchBar";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
-export default function SettingsHeader({
+const SettingsHeader = ({
   title,
   annotation,
   setFilter,
   handleSettingsSave,
   handleSettingsReset,
-}) {
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -45,7 +45,9 @@ export default function SettingsHeader({
       </Grid>
     </div>
   );
-}
+};
+
+export default SettingsHeader;
 
 SettingsHeader.propTypes = {
   title: PropTypes.string,

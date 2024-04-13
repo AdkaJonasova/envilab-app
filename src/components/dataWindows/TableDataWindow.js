@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { selectTableInfo } from "../../redux/slices/LayoutSlice";
 
-export default function TableDataWindow({ headers, data }) {
+const TableDataWindow = ({ headers, data }) => {
   const layoutInfo = useSelector(selectTableInfo);
 
   return (
@@ -52,7 +52,9 @@ export default function TableDataWindow({ headers, data }) {
       </TableContainer>
     </div>
   );
-}
+};
+
+export default TableDataWindow;
 
 TableDataWindow.propTypes = {
   headers: PropTypes.array,

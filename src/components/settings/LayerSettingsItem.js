@@ -2,14 +2,10 @@ import { Star, StarBorder } from "@mui/icons-material";
 import { Divider, IconButton, ListItem, ListItemText } from "@mui/material";
 import PropTypes from "prop-types";
 
-export default function LayerSettingsItem({
-  layer,
-  isMarkedFavorite,
-  handleStarClick,
-}) {
-  function getStarForLayer(layer) {
+const LayerSettingsItem = ({ layer, isMarkedFavorite, handleStarClick }) => {
+  const getStarForLayer = (layer) => {
     return isMarkedFavorite(layer) ? <Star /> : <StarBorder />;
-  }
+  };
 
   return (
     <div key={`settings-layer-item-container-${layer.name}`}>
@@ -30,7 +26,9 @@ export default function LayerSettingsItem({
       <Divider key={`settings-layer-item-divider-${layer.name}`} />
     </div>
   );
-}
+};
+
+export default LayerSettingsItem;
 
 LayerSettingsItem.propTypes = {
   layer: PropTypes.object,

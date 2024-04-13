@@ -14,7 +14,7 @@ import { userId } from "../../data/mockData";
 import { changeSidebarType } from "../../redux/slices/SidebarSlice";
 import { SidebarTypes } from "../../utils/enums";
 
-export default function LayerListItem({ layer }) {
+const LayerListItem = ({ layer }) => {
   let paddingSize = 4;
 
   const dispatch = useDispatch();
@@ -74,7 +74,9 @@ export default function LayerListItem({ layer }) {
       <Divider key={`layer-list-divider-${layer.name}`} />
     </div>
   );
-}
+};
+
+export default LayerListItem;
 
 LayerListItem.propTypes = {
   layer: PropTypes.object,

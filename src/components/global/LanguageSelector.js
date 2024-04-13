@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { languages } from "../../utils/data";
 
-function LanguageSelector() {
+const LanguageSelector = () => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language);
 
@@ -55,6 +55,6 @@ function LanguageSelector() {
       </Select>
     </FormControl>
   );
-}
+};
 
 export default LanguageSelector;

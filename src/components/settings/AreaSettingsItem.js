@@ -2,7 +2,7 @@ import { ExpandLess, ExpandMore, Star, StarBorder } from "@mui/icons-material";
 import { Divider, IconButton, ListItem, ListItemText } from "@mui/material";
 import PropTypes from "prop-types";
 
-export default function AreaSettingsItem({
+const AreaSettingsItem = ({
   area,
   hierarchyLevel,
   isExpandable,
@@ -10,14 +10,14 @@ export default function AreaSettingsItem({
   isMarkedFavorite,
   handleExpandCollapse,
   handleStarClick,
-}) {
+}) => {
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
-  function getStarForArea(area) {
+  const getStarForArea = (area) => {
     return isMarkedFavorite(area) ? <Star /> : <StarBorder />;
-  }
+  };
 
-  function addExpandCollapseItem(area) {
+  const addExpandCollapseItem = (area) => {
     if (isExpandable) {
       return (
         <IconButton
@@ -30,7 +30,7 @@ export default function AreaSettingsItem({
       );
     }
     return null;
-  }
+  };
 
   return (
     <div key={`settings-area-item-container-${area.areaId}`}>
@@ -56,7 +56,9 @@ export default function AreaSettingsItem({
       <Divider key={`settings-area-item-divider-${area.areaId}`} />
     </div>
   );
-}
+};
+
+export default AreaSettingsItem;
 
 AreaSettingsItem.propTypes = {
   area: PropTypes.object,

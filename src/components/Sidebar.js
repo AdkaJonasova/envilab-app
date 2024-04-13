@@ -10,7 +10,7 @@ import LayerInfo from "./layers/LayerInfo";
 import { useSelector } from "react-redux";
 import { selectSidebarInfo } from "../redux/slices/LayoutSlice";
 
-export default function Sidebar() {
+const Sidebar = () => {
   const sidebar = useSelector((state) => state.sidebar);
   const layoutInfo = useSelector(selectSidebarInfo);
 
@@ -53,4 +53,6 @@ export default function Sidebar() {
       {getSidebarContentByType()}
     </Box>
   );
-}
+};
+
+export default Sidebar;

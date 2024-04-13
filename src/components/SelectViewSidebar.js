@@ -15,7 +15,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
-export default function SelectViewSidebar({ points, deletePoint }) {
+const SelectViewSidebar = ({ points, deletePoint }) => {
   const { t } = useTranslation();
 
   return (
@@ -62,7 +62,9 @@ export default function SelectViewSidebar({ points, deletePoint }) {
       </Button>
     </Box>
   );
-}
+};
+
+export default SelectViewSidebar;
 
 SelectViewSidebar.propTypes = {
   points: PropTypes.array,

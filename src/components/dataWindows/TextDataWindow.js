@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { selectTextInfo } from "../../redux/slices/LayoutSlice";
 
-export default function TextDataWindow({ header, subheader, text }) {
+const TextDataWindow = ({ header, subheader, text }) => {
   const layoutInfo = useSelector(selectTextInfo);
 
   const theme = useTheme();
@@ -25,7 +25,9 @@ export default function TextDataWindow({ header, subheader, text }) {
       <Typography variant="body1">{text}</Typography>
     </Box>
   );
-}
+};
+
+export default TextDataWindow;
 
 TextDataWindow.propTypes = {
   header: PropTypes.string,

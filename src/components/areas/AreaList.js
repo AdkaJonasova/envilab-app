@@ -14,7 +14,7 @@ import {
   selectFavoriteAreasByTitle,
 } from "../../redux/slices/AreasSlice";
 
-export default function AreaList({ filter }) {
+const AreaList = ({ filter }) => {
   const areas = useSelector((state) =>
     selectFavoriteAreasByTitle(state, filter)
   );
@@ -122,7 +122,9 @@ export default function AreaList({ filter }) {
       </List>
     </div>
   );
-}
+};
+
+export default AreaList;
 
 AreaList.propTypes = {
   filter: PropTypes.string,

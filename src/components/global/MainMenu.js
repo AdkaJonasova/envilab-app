@@ -15,7 +15,7 @@ import {
 import LanguageSelector from "./LanguageSelector";
 import { useTranslation } from "react-i18next";
 
-export default function MainMenu() {
+const MainMenu = () => {
   const [subMenu, setSubMenu] = React.useState(null);
 
   const handleOpenSubMenu = (event) => {
@@ -102,4 +102,6 @@ export default function MainMenu() {
       </Toolbar>
     </AppBar>
   );
-}
+};
+
+export default MainMenu;

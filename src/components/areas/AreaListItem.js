@@ -9,7 +9,7 @@ import {
 
 import PropTypes from "prop-types";
 
-export default function AreaListItem({
+const AreaListItem = ({
   area,
   hierarchyLevel,
   isExpandable,
@@ -17,7 +17,7 @@ export default function AreaListItem({
   handleUnzoomArea,
   handleExpandCollapse,
   isExpanded,
-}) {
+}) => {
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
   //#region Methods
@@ -75,7 +75,9 @@ export default function AreaListItem({
       <Divider key={`area-list-item-divider-${area.areaId}`} />
     </div>
   );
-}
+};
+
+export default AreaListItem;
 
 AreaListItem.propTypes = {
   area: PropTypes.object,

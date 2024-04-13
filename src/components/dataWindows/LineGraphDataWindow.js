@@ -31,7 +31,7 @@ ChartJS.register(
   Legend
 );
 
-export default function LineGraphDataWindow() {
+const LineGraphDataWindow = () => {
   const layoutInfo = useSelector(selectGraphInfo);
 
   const theme = useTheme();
@@ -76,4 +76,6 @@ export default function LineGraphDataWindow() {
       <Line height="55%" options={options} data={data} />
     </Box>
   );
-}
+};
+
+export default LineGraphDataWindow;

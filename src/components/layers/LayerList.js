@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { collapseLayerSection } from "../../redux/slices/LayerListSectionsSlice";
 import { selectFavoriteLayersByTitle } from "../../redux/slices/LayersSlice";
 
-export default function LayerList({ filter }) {
+const LayerList = ({ filter }) => {
   const layerGroups = useSelector((state) =>
     selectFavoriteLayersByTitle(state, filter)
   );
@@ -84,7 +84,9 @@ export default function LayerList({ filter }) {
       })}
     </List>
   );
-}
+};
+
+export default LayerList;
 
 LayerList.propTypes = {
   filter: PropTypes.string,
