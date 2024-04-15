@@ -1,11 +1,10 @@
 import requests
-from requests import JSONDecodeError
 from requests.auth import HTTPBasicAuth
 
 from src.mockdata.MockAreas import mock_areas
 from src.utils.ConfigReader import load_config
 from src.utils.JsonHelper import create_geo_layer_json, get_json_string_attribute, create_geo_layer_group_json, \
-    get_json_list_attribute
+    get_json_list_attribute, create_geo_area_json
 from src.utils.LoggingUtil import logging
 
 
@@ -14,10 +13,30 @@ class GeoserverService:
         self.logger = logging.getLogger(__name__)
 
         config = load_config(section="geoserver")
-        self.geoserver_name = config["host"]
         self.geoserver_rest = config["host_rest"]
+        self.geoserver_areas = config["host_areas"]
         self.username = config["user"]
         self.password = config["password"]
+
+    def get_areas(self):
+        result = []
+        try:
+            response = requests.get(self.geoserver_areas, auth=self.__get_geoserver_auth__(),
+                                    headers={"Content-type": "application/json"})
+            if response.status_code == 200:
+                response_content = response.json()
+                areas = get_json_list_attribute(response_content, "layerGroup.publishables.published")
+                if type(areas) is list:
+                    result = self.__get_data_for_areas__(areas)
+                else:
+                    result = self.__get_data_for_areas__([areas])
+            else:
+                self.logger.error(f"Unable to fetch areas from geoserver, "
+                                  f"request failed with status code {response.status_code}")
+        except Exception as e:
+            self.logger.error(f"Unable to fetch areas from geoserver, request failed with error: {str(e)}")
+
+        return result
 
     def get_layers_in_groups(self):
         transformed_groups = []
@@ -134,42 +153,91 @@ class GeoserverService:
                                                            f"{src_class}.abstract")  # layer description
                     layer_proj = get_json_string_attribute(src_response_content, f"{src_class}.srs")  # layer projection
 
-                    transformed_layer = create_geo_layer_json(layer_name, layer_type, layer_title, layer_desc, layer_proj)
+                    transformed_layer = create_geo_layer_json(layer_name, layer_type, layer_title, layer_desc,
+                                                              layer_proj)
 
         except Exception as e:
             self.logger.error(f"Unable to transform layer {layer}. Failed with error: {str(e)}")
 
         return transformed_layer
 
+    def __get_data_for_areas__(self, areas):
+        areas_data = []
+        for area in areas:
+            area_type = get_json_string_attribute(area, "@type")
+
+            if area_type == "layerGroup":
+                hierarchical_area_data = self.__get_data_for_hierarchical_area__(area)
+                if len(hierarchical_area_data) != 0:
+                    areas_data.extend(hierarchical_area_data)
+            elif area_type == "layer":
+                data_for_area = self.__get_data_for_area__(area, [])
+                if data_for_area is not None:
+                    areas_data.append(data_for_area)
+
+        return areas_data
+
+    def __get_data_for_hierarchical_area__(self, area: dict):
+        result = []
+        area_data_link = get_json_string_attribute(area, "href")
+
+        area_data_response = requests.get(area_data_link, auth=self.__get_geoserver_auth__())
+        if area_data_response.status_code != 200:
+            self.logger.error(f"Unable to fetch area information for area {area} from geoserver, "
+                              f"request failed with status code {area_data_response.status_code}")
+        else:
+            area_data_content = area_data_response.json()
+
+            root_area = get_json_string_attribute(area_data_content, "layerGroup.rootLayer")
+            sub_areas = get_json_list_attribute(area_data_content, "layerGroup.publishables.published")
+            if type(sub_areas) is list:
+                sub_areas_data = self.__get_data_for_areas__(sub_areas)
+            else:
+                sub_areas_data = self.__get_data_for_areas__([sub_areas])
+
+            root_area_data = self.__get_data_for_area__(root_area, sub_areas_data)
+            if root_area_data is not None:
+                result.append(root_area_data)
+
+        return result
+
+    def __get_data_for_area__(self, area: dict, sub_areas: list):
+        result = None
+        try:
+            area_data_link = get_json_string_attribute(area, "href")
+
+            area_data_response = requests.get(area_data_link, auth=self.__get_geoserver_auth__())
+            if area_data_response.status_code != 200:
+                self.logger.error(f"Unable to fetch area information for area {area} from geoserver, "
+                                  f"request failed with status code {area_data_response.status_code}")
+            else:
+                area_data_content = area_data_response.json()
+                area_resource_link = get_json_string_attribute(area_data_content, "layer.resource.href")
+
+                area_resource_response = requests.get(area_resource_link, auth=self.__get_geoserver_auth__())
+                if area_resource_response.status_code != 200:
+                    self.logger.error(f"Unable to fetch source information for area {area} from geoserver, "
+                                      f"request failed with status code {area_resource_response.status_code}")
+                else:
+                    area_resource_content = area_resource_response.json()
+                    area_name = get_json_string_attribute(area_resource_content, "featureType.name")
+                    area_title = get_json_string_attribute(area_resource_content, "featureType.title")
+                    area_projection = get_json_string_attribute(area_resource_content,
+                                                                "featureType.nativeBoundsBox.crs")
+                    area_minx = get_json_string_attribute(area_resource_content, "featureType.nativeBoundingBox.minx")
+                    area_maxx = get_json_string_attribute(area_resource_content, "featureType.nativeBoundingBox.maxx")
+                    area_miny = get_json_string_attribute(area_resource_content, "featureType.nativeBoundingBox.miny")
+                    area_maxy = get_json_string_attribute(area_resource_content, "featureType.nativeBoundingBox.maxy")
+
+                    result = create_geo_area_json(area_name, area_title, area_projection,
+                                                  area_minx, area_maxx, area_miny, area_maxy, sub_areas)
+        except Exception as e:
+            self.logger.error(f"Unable to get data for area {area}. Failed with error: {str(e)}")
+
+        return result
+
     def __get_geoserver_auth__(self):
         return HTTPBasicAuth(self.username, self.password)
-
-    def __get_features_for_vector_layer(self, layer_name: str, projection: str):
-        layer_features = {}
-        try:
-            params = {
-                "service": "wfs",
-                "version": "1.1.0",
-                "request": "GetFeature",
-                "typeName": layer_name,
-                "srsName": projection,
-                "outputFormat": "application/json"
-            }
-
-            response = requests.get(
-                url=f"{self.geoserver_name}ows",
-                params=params,
-                auth=self.__get_geoserver_auth__()
-            )
-            if response.status_code == 200:
-                layer_features = response.json()
-            else:
-                self.logger.error(f"Unable to fetch features for layer {layer_name}, "
-                                  f"request failed with status code {response.status_code}")
-        except JSONDecodeError as e:
-            self.logger.error(f"Unable to fetch features for layer {layer_name}, failed with error: {str(e)}")
-
-        return layer_features
 
 
 # ---------- Mock methods ----------

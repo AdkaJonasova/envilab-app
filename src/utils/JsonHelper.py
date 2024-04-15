@@ -33,6 +33,21 @@ def get_json_list_attribute(json_data: dict, attribute_path: str):
     return value
 
 
+def create_geo_area_json(name: str, title: str, projection: str,
+                         minx: float, maxx: float, miny: float, maxy: float, sub_areas: list):
+    area_json = {
+        "name": name,
+        "title": title,
+        "projection": projection,
+        "minx": minx,
+        "maxx": maxx,
+        "miny": miny,
+        "maxy": maxy,
+        "subAreas": sub_areas
+    }
+    return area_json
+
+
 def create_geo_layer_json(name: str, layer_type: str, title: str, description: str,
                           projection: str):
     layer_json = {

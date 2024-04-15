@@ -27,14 +27,14 @@ def get_custom_areas_for_user(user_id: int):
     return area_service.get_custom_areas(user_id)
 
 
-@area_router.post('/areas/activate/{user_id}/{area_id}')
-def activate_area_for_user(user_id: int, area_id: int):
-    area_service.activate_area(user_id, area_id)
+@area_router.post('/areas/activate/{user_id}/{area_name}')
+def activate_area_for_user(user_id: int, area_name: str):
+    area_service.activate_area(area_name, user_id)
 
 
-@area_router.post('/areas/deactivate/{user_id}/{area_id}')
-def deactivate_area_for_user(user_id: int, area_id):
-    area_service.deactivate_area(user_id, area_id)
+@area_router.post('/areas/deactivate/{user_id}/{area_name}')
+def deactivate_area_for_user(user_id: int, area_name: str):
+    area_service.deactivate_area(area_name, user_id)
 
 
 @area_router.post('/areas/favorites/{user_id}')

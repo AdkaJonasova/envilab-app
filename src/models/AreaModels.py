@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class FavoritePairModel(BaseModel):
-    identificator: int
+    identificator: str
     value: bool
 
 
