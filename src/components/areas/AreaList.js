@@ -26,33 +26,33 @@ const AreaList = ({ filter }) => {
 
   //#region Methods
   const handleExpandCollapse = (area) => {
-    dispatch(collapseAreaSection(area.areaId));
+    dispatch(collapseAreaSection(area.name));
   };
 
   const isAreaExpanded = (area) => {
-    return !collapsedAreas.includes(area.areaId);
+    return !collapsedAreas.includes(area.name);
   };
 
   const handleZoomToArea = (area) => {
     zoomedAreas.forEach((area) => {
-      deactivateArea(userId, area.areaId);
+      deactivateArea(userId, area.name);
     });
-    activateArea(userId, area.areaId);
+    activateArea(userId, area.name);
 
-    dispatch(changeAreaActiveState({ areaId: area.areaId, activate: true }));
+    dispatch(changeAreaActiveState({ areaName: area.name, activate: true }));
   };
 
   const handleUnzoomArea = (area) => {
-    deactivateArea(userId, area.areaId);
+    deactivateArea(userId, area.name);
 
-    dispatch(changeAreaActiveState({ areaId: area.areaId, activate: false }));
+    dispatch(changeAreaActiveState({ areaName: area.name, activate: false }));
   };
 
   const getAreaItem = (area, level) => {
-    if (area.geoArea.subAreas.length === 0) {
+    if (area.subAreas.length === 0) {
       return (
         <AreaListItem
-          key={`area-list-item-component-${area.areaId}`}
+          key={`area-list-item-component-${area.name}`}
           area={area}
           hierarchyLevel={level}
           isExpandable={false}
@@ -64,9 +64,9 @@ const AreaList = ({ filter }) => {
       );
     } else {
       return (
-        <div key={`area-list-item-outer-container-${area.areaId}`}>
+        <div key={`area-list-item-outer-container-${area.name}`}>
           <AreaListItem
-            key={`area-list-item-component-${area.areaId}`}
+            key={`area-list-item-component-${area.name}`}
             area={area}
             hierarchyLevel={level}
             isExpandable={true}
@@ -76,15 +76,13 @@ const AreaList = ({ filter }) => {
             isExpanded={isAreaExpanded}
           />
           <Collapse
-            key={`area-list-item-collapsable-${area.areaId}`}
+            key={`area-list-item-collapsable-${area.name}`}
             in={isAreaExpanded(area)}
             timeout={"auto"}
             unmountOnExit
           >
             <List disablePadding>
-              {area.geoArea.subAreas.map((subArea) =>
-                getAreaItem(subArea, level + 1)
-              )}
+              {area.subAreas.map((subArea) => getAreaItem(subArea, level + 1))}
             </List>
           </Collapse>
         </div>

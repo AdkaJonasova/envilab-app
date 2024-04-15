@@ -6,7 +6,7 @@ const removeFromChanged = (index, newChangedAreas) => {
 
 const addToChanged = (area, newChangedAreas) => {
   let changedArea = {
-    identificator: area.areaId,
+    identificator: area.name,
     value: !area.isFavorite,
   };
   newChangedAreas.push(changedArea);
@@ -21,7 +21,7 @@ const handleRecursiveMarkArea = (
   // child area should have the same value as parent
   if (useParent) {
     let areaChangedIndex = newChangedAreas.findIndex(
-      (a) => a.identificator === area.areaId
+      (a) => a.identificator === area.name
     );
 
     // child area is changed and the changed value is not equal to parent value -> remove from changed
@@ -36,16 +36,16 @@ const handleRecursiveMarkArea = (
     // change the value only based on the area itself
   } else {
     let areaChangedIndex = newChangedAreas.findIndex(
-      (a) => a.identificator === area.areaId
+      (a) => a.identificator === area.name
     );
     if (areaChangedIndex !== -1) {
       removeFromChanged(areaChangedIndex, newChangedAreas);
-      area.geoArea.subAreas.forEach((subArea) =>
+      area.subAreas.forEach((subArea) =>
         handleRecursiveMarkArea(subArea, newChangedAreas, area.isFavorite, true)
       );
     } else {
       addToChanged(area, newChangedAreas);
-      area.geoArea.subAreas.forEach((subArea) =>
+      area.subAreas.forEach((subArea) =>
         handleRecursiveMarkArea(
           subArea,
           newChangedAreas,
@@ -67,13 +67,13 @@ const AreaSettingsSlice = createSlice({
   initialState,
   reducers: {
     collapseAreaSettingsArea(state, action) {
-      const { areaId } = action.payload;
-      const areaIndex = state.collapsedAreas.indexOf(areaId);
+      const { areaName } = action.payload;
+      const areaIndex = state.collapsedAreas.indexOf(areaName);
 
       if (areaIndex !== -1) {
         state.collapsedAreas.splice(areaIndex, 1);
       } else {
-        state.collapsedAreas.push(areaId);
+        state.collapsedAreas.push(areaName);
       }
     },
 

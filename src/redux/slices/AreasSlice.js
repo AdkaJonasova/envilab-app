@@ -12,19 +12,19 @@ import {
 } from "../../utils/customFilteringFunctions";
 import { FetchStates } from "../../utils/enums";
 
-const handleRecursiveActiveStatusChange = (areaData, areaId, activate) => {
+const handleRecursiveActiveStatusChange = (areaData, areaName, activate) => {
   let result = [];
   areaData.forEach((area) => {
     let newArea = { ...area };
-    if (newArea.areaId === areaId) {
+    if (newArea.name === areaName) {
       newArea.isActive = activate;
     } else if (newArea.isActive) {
       newArea.isActive = false;
     }
-    if (area.geoArea.subAreas.length > 0) {
-      newArea.geoArea.subAreas = handleRecursiveActiveStatusChange(
-        newArea.geoArea.subAreas,
-        areaId,
+    if (area.subAreas.length > 0) {
+      newArea.subAreas = handleRecursiveActiveStatusChange(
+        newArea.subAreas,
+        areaName,
         activate
       );
     }
@@ -38,14 +38,14 @@ const handleRecursiveFavoriteStatusChange = (areaData, changedAreas) => {
   areaData.forEach((area) => {
     let newArea = { ...area };
     const changedArea = changedAreas.find(
-      (change) => newArea.areaId === change.identificator
+      (change) => newArea.name === change.identificator
     );
     if (changedArea) {
       newArea.isFavorite = changedArea.value;
     }
-    if (area.geoArea.subAreas.length > 0) {
-      newArea.geoArea.subAreas = handleRecursiveFavoriteStatusChange(
-        newArea.geoArea.subAreas,
+    if (area.subAreas.length > 0) {
+      newArea.subAreas = handleRecursiveFavoriteStatusChange(
+        newArea.subAreas,
         changedAreas
       );
     }
@@ -73,10 +73,10 @@ export const AreasSlice = createSlice({
   initialState,
   reducers: {
     changeAreaActiveState(state, action) {
-      const { areaId, activate } = action.payload;
+      const { areaName, activate } = action.payload;
       let updatedAreas = handleRecursiveActiveStatusChange(
         state.areas,
-        areaId,
+        areaName,
         activate
       );
       state.areas = updatedAreas;

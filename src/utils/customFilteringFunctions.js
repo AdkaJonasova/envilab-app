@@ -75,13 +75,10 @@ export function filterAreasByTitle(areas, filter) {
   }
   let result = [];
   areas.forEach((area) => {
-    if (area.geoArea.name.toLowerCase().includes(filter.toLowerCase())) {
+    if (area.title.toLowerCase().includes(filter.toLowerCase())) {
       result.push(area);
-    } else if (area.geoArea.subAreas.length > 0) {
-      const filteredSubAreas = filterAreasByTitle(
-        area.geoArea.subAreas,
-        filter
-      );
+    } else if (area.subAreas.length > 0) {
+      const filteredSubAreas = filterAreasByTitle(area.subAreas, filter);
       result = result.concat(filteredSubAreas);
     }
   });
@@ -104,29 +101,26 @@ export function filterFavoriteAreasByTitle(
 
     // Check whether the area or one of the parent areas matches the filter.
     if (
-      copiedArea.geoArea.name.toLowerCase().includes(filter.toLowerCase()) ||
+      copiedArea.title.toLowerCase().includes(filter.toLowerCase()) ||
       parentTitleMatches
     ) {
       titleMatches = true;
     }
 
     // Process sub areas
-    if (copiedArea.geoArea.subAreas.length > 0) {
-      copiedArea.geoArea = {
-        ...copiedArea.geoArea,
-        subAreas: filterFavoriteAreasByTitle(
-          copiedArea.geoArea.subAreas,
-          filter,
-          titleMatches
-        ),
-      };
+    if (copiedArea.subAreas.length > 0) {
+      copiedArea.subAreas = filterFavoriteAreasByTitle(
+        copiedArea.subAreas,
+        filter,
+        titleMatches
+      );
     }
 
     // Add to result - if the area is favorite and title matches the filter or if has any subareas
     if (copiedArea.isFavorite && titleMatches) {
       result.push(copiedArea);
-    } else if (copiedArea.geoArea.subAreas.length > 0) {
-      result = result.concat(copiedArea.geoArea.subAreas);
+    } else if (copiedArea.subAreas.length > 0) {
+      result = result.concat(copiedArea.subAreas);
     }
   });
   return result;
@@ -138,8 +132,8 @@ export function getActiveAreas(areas) {
     if (area.isActive) {
       result.push(area);
     }
-    if (area.geoArea.subAreas.length > 0) {
-      const zoomedToSubAreas = getActiveAreas(area.geoArea.subAreas);
+    if (area.subAreas.length > 0) {
+      const zoomedToSubAreas = getActiveAreas(area.subAreas);
       result = result.concat(zoomedToSubAreas);
     }
   });
@@ -151,17 +145,14 @@ export function getFavoriteAreas(areas) {
   areas.forEach((area) => {
     let copiedArea = { ...area };
 
-    if (copiedArea.geoArea.subAreas.length > 0) {
-      copiedArea.geoArea = {
-        ...copiedArea.geoArea,
-        subAreas: getFavoriteAreas(copiedArea.geoArea.subAreas),
-      };
+    if (copiedArea.subAreas.length > 0) {
+      copiedArea.subAreas = getFavoriteAreas(copiedArea.subAreas);
     }
 
     if (copiedArea.isFavorite) {
       result.push(copiedArea);
-    } else if (copiedArea.geoArea.subAreas.length > 0) {
-      result.concat(copiedArea.geoArea.subAreas);
+    } else if (copiedArea.subAreas.length > 0) {
+      result = result.concat(copiedArea.subAreas);
     }
   });
   return result;

@@ -58,14 +58,14 @@ const AreaSettingsPage = () => {
   };
 
   const isExpanded = (area) => {
-    return !collapsedAreas.includes(area.areaId);
+    return !collapsedAreas.includes(area.name);
   };
 
   const getAreaItem = (area, level) => {
-    if (area.geoArea.subAreas.length === 0) {
+    if (area.subAreas.length === 0) {
       return (
         <AreaSettingsItem
-          key={`settings-area-item-component-${area.areaId}`}
+          key={`settings-area-item-component-${area.name}`}
           area={area}
           hierarchyLevel={level}
           isExpandable={false}
@@ -74,24 +74,22 @@ const AreaSettingsPage = () => {
       );
     } else {
       return (
-        <div key={`settings-area-item-exp-container-${area.areaId}`}>
+        <div key={`settings-area-item-exp-container-${area.name}`}>
           <AreaSettingsItem
-            key={`settings-area-item-component-${area.areaId}`}
+            key={`settings-area-item-component-${area.name}`}
             area={area}
             hierarchyLevel={level}
             isExpandable={true}
             isExpanded={isExpanded}
           />
           <Collapse
-            key={`settings-area-item-collapsable-${area.areaId}`}
+            key={`settings-area-item-collapsable-${area.name}`}
             in={isExpanded(area)}
             timeout={"auto"}
             unmountOnExit
           >
             <List dense disablePadding>
-              {area.geoArea.subAreas.map((subArea) =>
-                getAreaItem(subArea, level + 1)
-              )}
+              {area.subAreas.map((subArea) => getAreaItem(subArea, level + 1))}
             </List>
           </Collapse>
         </div>

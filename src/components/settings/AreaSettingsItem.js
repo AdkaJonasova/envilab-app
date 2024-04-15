@@ -21,13 +21,13 @@ const AreaSettingsItem = ({
 
   const getStarForArea = (area) => {
     const isMarkedFavorite =
-      changedAreas.find((a) => a.identificator === area.areaId)?.value ??
+      changedAreas.find((a) => a.identificator === area.name)?.value ??
       area.isFavorite;
     return isMarkedFavorite ? <Star /> : <StarBorder />;
   };
 
   const handleExpandCollapse = (area) => {
-    dispatch(collapseAreaSettingsArea({ areaId: area.areaId }));
+    dispatch(collapseAreaSettingsArea({ areaName: area.name }));
   };
 
   const handleStarClick = (area) => {
@@ -38,7 +38,7 @@ const AreaSettingsItem = ({
     if (isExpandable) {
       return (
         <IconButton
-          key={`area-list-item-expand-${area.areaId}`}
+          key={`area-list-item-expand-${area.name}`}
           size="small"
           onClick={() => handleExpandCollapse(area)}
         >
@@ -50,18 +50,18 @@ const AreaSettingsItem = ({
   };
 
   return (
-    <div key={`settings-area-item-container-${area.areaId}`}>
+    <div key={`settings-area-item-container-${area.name}`}>
       <ListItem
-        key={`settings-area-item-${area.areaId}`}
+        key={`settings-area-item-${area.name}`}
         sx={{ pl: paddingSize }}
       >
         {addExpandCollapseItem(area)}
         <ListItemText
-          key={`settings-area-item-name-${area.areaId}`}
-          primary={area.geoArea.name}
+          key={`settings-area-item-name-${area.name}`}
+          primary={area.title}
         ></ListItemText>
         <IconButton
-          key={`settings-area-item-icon-${area.areaId}`}
+          key={`settings-area-item-icon-${area.name}`}
           size="small"
           color="beigeBrown"
           onClick={() => handleStarClick(area)}
@@ -70,7 +70,7 @@ const AreaSettingsItem = ({
           {getStarForArea(area)}
         </IconButton>
       </ListItem>
-      <Divider key={`settings-area-item-divider-${area.areaId}`} />
+      <Divider key={`settings-area-item-divider-${area.name}`} />
     </div>
   );
 };

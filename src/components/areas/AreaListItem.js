@@ -25,7 +25,7 @@ const AreaListItem = ({
     if (area.isActive) {
       return (
         <IconButton
-          key={`area-list-item-unzoom-${area.areaId}`}
+          key={`area-list-item-unzoom-${area.name}`}
           size="small"
           color="beigeBrown"
           onClick={() => handleUnzoomArea(area)}
@@ -40,7 +40,7 @@ const AreaListItem = ({
   const addExpandCollapseItem = (area) => {
     return (
       <IconButton
-        key={`area-list-item-expand-${area.areaId}`}
+        key={`area-list-item-expand-${area.name}`}
         size="small"
         onClick={() => handleExpandCollapse(area)}
       >
@@ -52,19 +52,19 @@ const AreaListItem = ({
 
   return (
     <div>
-      <ListItem key={`area-list-item-${area.areaId}`} sx={{ pl: paddingSize }}>
+      <ListItem key={`area-list-item-${area.name}`} sx={{ pl: paddingSize }}>
         {isExpandable ? addExpandCollapseItem(area) : ""}
-        <ListItemText key={`area-list-item-name-${area.areaId}`}>
+        <ListItemText key={`area-list-item-name-${area.name}`}>
           <Typography
             variant="body1"
             fontWeight={area.isActive ? "bold" : "normal"}
           >
-            {area.geoArea.name}
+            {area.title}
           </Typography>
         </ListItemText>
         {addUnzoomArea(area)}
         <IconButton
-          key={`area-list-item-zoom-into-${area.areaId}`}
+          key={`area-list-item-zoom-into-${area.name}`}
           size="small"
           color="beigeBrown"
           onClick={() => handleZoomToArea(area)}
@@ -72,7 +72,7 @@ const AreaListItem = ({
           <ZoomIn />
         </IconButton>
       </ListItem>
-      <Divider key={`area-list-item-divider-${area.areaId}`} />
+      <Divider key={`area-list-item-divider-${area.name}`} />
     </div>
   );
 };
