@@ -1,7 +1,6 @@
 import requests
 from requests.auth import HTTPBasicAuth
 
-from src.mockdata.MockAreas import mock_areas
 from src.utils.ConfigReader import load_config
 from src.utils.JsonHelper import create_geo_layer_json, get_json_string_attribute, create_geo_layer_group_json, \
     get_json_list_attribute, create_geo_area_json
@@ -239,7 +238,3 @@ class GeoserverService:
     def __get_geoserver_auth__(self):
         return HTTPBasicAuth(self.username, self.password)
 
-
-# ---------- Mock methods ----------
-def get_areas():
-    return mock_areas
