@@ -8,6 +8,7 @@ import layoutReducer from "./slices/LayoutSlice";
 import layersDetailReducer from "./slices/DetailedDataSlice";
 import layersSettingsReducer from "./slices/LayerSettingsSlice";
 import areasSettingsReducer from "./slices/AreaSettingsSlice";
+import selectViewReducer from "./slices/SelectViewSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     areaSettings: areasSettingsReducer,
     collapsedLayerSections: collapsedLayerSectionsReducer,
     collapsedAreaSections: collapsedAreaSectionsReducer,
+    selectView: selectViewReducer,
   },
 });
 

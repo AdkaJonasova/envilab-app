@@ -150,8 +150,8 @@ theme = createTheme(theme, {
     MuiListSubheader: {
       styleOverrides: {
         root: {
-          backgroundColor: theme.palette.darkGreen.main,
-          color: theme.palette.darkGreen.contrastText,
+          backgroundColor: theme.palette.lightGreen.main,
+          color: theme.palette.lightGreen.contrastText,
           fontSize: "0.9rem",
           textAlign: "left",
           lineHeight: 2,

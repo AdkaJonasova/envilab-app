@@ -4,11 +4,16 @@ import { Vector as VectorSource } from "ol/source";
 import MapContext from "../MapContext";
 import VectorLayer from "ol/layer/Vector";
 import { drawInteractionStyle, drawnFeatureStyle } from "../../../utils/data";
+import { useDispatch } from "react-redux";
+import { addFeature } from "../../../redux/slices/SelectViewSlice";
+import GeoJSON from "ol/format/GeoJSON.js";
 
 const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
   const { map } = useContext(MapContext);
   const drawLayerRef = useRef(null);
   const drawInteractionRef = useRef(null);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!map) return;
@@ -31,8 +36,15 @@ const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
 
     draw.on("drawend", (event) => {
       const feature = event.feature;
-      const source = drawLayerRef.current.getSource();
-      source.addFeature(feature);
+      var writer = new GeoJSON();
+      var geojsonStr = writer.writeFeatureObject(feature);
+
+      console.log("Feature: ", geojsonStr);
+      dispatch(addFeature({ feature: geojsonStr }));
+      // const source = drawLayerRef.current.getSource();
+      // source.addFeature(feature);
+      // let features = source.getFeatures();
+      // console.log("Features: ", features);
       onDrawEnd(feature);
     });
 

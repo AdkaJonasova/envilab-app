@@ -9,6 +9,34 @@ import { Projection } from "ol/proj";
 import Static from "ol/source/ImageStatic";
 import { transformProjections } from "./mapFunctions";
 
+export function createVectorLayerFromFeatures(features) {
+  if (features.length > 0) {
+    const geojsonObject = {
+      type: "FeatureCollection",
+      crs: {
+        type: "name",
+        properties: {
+          name: "EPSG:4326",
+        },
+      },
+      features: features,
+    };
+    console.log("Before features: ", features);
+    const vectorSource = new VectorSource({
+      features: new GeoJSON().readFeatures(geojsonObject),
+    });
+
+    return (
+      <ReactVectorLayer
+        source={vectorSource}
+        opacity={100}
+        id={"selectViewLayer"}
+        name={"Select view layer"}
+      />
+    );
+  }
+}
+
 export function createLayerByType(layer) {
   switch (layer.type) {
     case LayerTypes.Vector:
