@@ -17,6 +17,122 @@ class GeoserverService:
         self.username = config["user"]
         self.password = config["password"]
 
+    def get_layer_group(self, workspace: str, group_name: str):
+        url = f"{self.geoserver_rest}/workspaces/{workspace}/layergroups/{group_name}"
+        layer_group_response = requests.get(
+            url=url,
+            headers={"Content-type": "application/json"},
+            auth=self.__get_geoserver_auth__()
+        )
+        if layer_group_response.status_code == 200:
+            layer_group_response_content = layer_group_response.json()
+            return layer_group_response_content
+        else:
+            return None
+
+    def create_layer_group(self, workspace: str, group_name: str, group_title: str, mode: str, layers: list):
+        published_list = []
+        for layer in layers:
+            published_layer = {
+                "@type": "layer",
+                "name": f"{workspace}:{layer}",
+                "href": f"{self.geoserver_rest}/workspaces/{workspace}/layers/{layer}.json"
+            }
+            published_list.append(published_layer)
+
+        data = {
+            "layerGroup": {
+                "name": group_name,
+                "title": group_title,
+                "mode": mode,
+                "workspace": {
+                    "name": workspace
+                },
+                "publishables": {
+                    "published": published_list
+                }
+            }
+        }
+        url = f"{self.geoserver_rest}/workspaces/{workspace}/layergroups"
+
+        r = requests.post(
+            url=url,
+            headers={"Content-type": "application/json"},
+            auth=self.__get_geoserver_auth__(),
+            json=data
+        )
+        status = r.status_code
+        print()
+
+    def add_layer_to_layer_group(self, workspace: str, group_name: str, layer_name: str):
+        layer_group = self.get_layer_group(workspace, group_name)
+
+        if layer_group is None:
+            self.create_layer_group(workspace, group_name, group_name, "SINGLE", [layer_name])
+
+        else:
+            publishables = get_json_list_attribute(layer_group, "layerGroup.publishables.published")
+            if type(publishables) is not list:
+                publishables = [publishables]
+            new_publishable = {
+                "@type": "layer",
+                "name": f"{workspace}:{layer_name}",
+                "href": f"{self.geoserver_rest}/workspaces/{workspace}/layers/{layer_name}.json",
+            }
+            publishables.append(new_publishable)
+
+            request = {
+                "publishables":
+                {
+                    "published": publishables
+                }
+            }
+            url = f"{self.geoserver_rest}/workspaces/{workspace}/layergroups/{group_name}"
+            requests.put(
+                url=url,
+                headers={"Content-type": "application/json"},
+                auth=self.__get_geoserver_auth__(),
+                json=request
+            )
+
+    def create_layer(self, datastore_name: str, native_layer_name: str, layer_name: str, layer_title: str, ):
+        request = {
+            "featureType": {
+                "name": layer_name,
+                "nativeName": native_layer_name,
+                "title": layer_title,
+                "srs": "EPSG:4326",
+            }
+        }
+
+        url = f"{self.geoserver_rest}/workspaces/customAreas/datastores/{datastore_name}/featuretypes?recalculate=nativebbox"
+        r = requests.post(
+            url=url,
+            headers={"Content-type": "application/json"},
+            auth=self.__get_geoserver_auth__(),
+            json=request
+        )
+
+    def create_datastore(self, file_path: str, store_name: str, format: str):
+        request = {
+            "dataStore": {
+                "name": store_name,
+                "connectionParameters": {
+                    "entry": [
+                        {"@key": "database", "$": file_path},
+                        {"@key": "dbtype", "$": format}
+                    ]
+                }
+            }
+        }
+        url = f"{self.geoserver_rest}/workspaces/customAreas/datastores"
+        r = requests.post(
+            url=url,
+            headers={"Content-type": "application/json"},
+            auth=self.__get_geoserver_auth__(),
+            json=request
+        )
+
     def get_areas(self):
         result = []
         try:
@@ -237,4 +353,3 @@ class GeoserverService:
 
     def __get_geoserver_auth__(self):
         return HTTPBasicAuth(self.username, self.password)
-

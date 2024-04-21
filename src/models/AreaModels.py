@@ -8,3 +8,8 @@ class FavoritePairModel(BaseModel):
 
 class AreasFavoriteModel(BaseModel):
     areas: list[FavoritePairModel]
+
+
+class CreateCustomArea(BaseModel):
+    title: str
+    geojson: dict

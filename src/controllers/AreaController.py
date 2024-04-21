@@ -41,12 +41,8 @@ def deactivate_area_for_user(user_id: int, area_name: str):
 def change_favorite_areas_for_user(user_id: int, areas_favorite: AreasFavoriteModel):
     area_service.change_favorite_areas(user_id, areas_favorite.areas)
 
-#
-# @router.post('/areas/addCustom/{user_id}/{area_id}')
-# def add_area_to_custom_for_user(user_id: int, area_id: int):
-#     area_repo.add_custom_for_user(user_id, area_id)
-#
-#
-# @router.post('/areas/removeCustom/{user_id}/{area_id}')
-# def remove_area_from_custom_for_user(user_id: int, area_id: int):
-#     area_repo.remove_custom_for_user(user_id, area_id)
+
+@area_router.put('/areas/custom/{user_id}')
+def create_custom_area(user_id: int):
+    area_service.create_custom_area(user_id)
+

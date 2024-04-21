@@ -1,4 +1,5 @@
 from typing import List
+import datetime
 
 from src.geoserver.GeoserverService import GeoserverService
 from src.models.AreaModels import FavoritePairModel
@@ -84,4 +85,20 @@ class AreaService:
                 self.area_repository.add_favorite_for_user(area.identificator, user_id)
             else:
                 self.area_repository.remove_favorite_for_user(area.identificator, user_id)
+
+    def create_custom_area(self, user_id: int, layer_title: str):
+        timestamp = datetime.datetime.now().strftime("%b_%d_%Y_%H_%M_%S")
+        workspace = "customAreas"
+        store_name = f"customStore_{timestamp}"
+        group_name = f"customAreas_{user_id}"
+        layer_name = f"customLayer_{timestamp}"
+        file_format = "geopkg"
+        file_path = r"file://C:\geoserverCustomData\file.gpkg"
+
+        self.geoserver_service.create_datastore(file_path, store_name, file_format)
+        self.geoserver_service.create_layer(store_name, "geometry1", layer_name, layer_title)
+        self.geoserver_service.add_layer_to_layer_group(workspace, group_name, layer_name)
+
+        # self.area_repository.add_custom_for_user(layer_name, user_id)
+
 
