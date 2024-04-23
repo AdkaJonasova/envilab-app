@@ -6,6 +6,8 @@ import {
   selectViewHeaderHeight,
   selectViewHeaderPadding,
 } from "../../utils/data";
+import { createCustomArea } from "../../hooks/areaHooks";
+import { userId } from "../../data/mockData";
 
 const SelectViewHeader = ({
   drawType,
@@ -13,6 +15,10 @@ const SelectViewHeader = ({
   openSaveAreaPopup,
 }) => {
   const { t } = useTranslation();
+
+  const handleImportArea = () => {
+    createCustomArea(userId);
+  };
 
   return (
     <div>
@@ -41,7 +47,13 @@ const SelectViewHeader = ({
             </Button>
           </Grid>
           <Grid item xs={1} container justifyContent={"flex-end"} paddingX={1}>
-            <Button fullWidth color="darkGreen" variant="outlined" size="small">
+            <Button
+              fullWidth
+              color="darkGreen"
+              variant="outlined"
+              size="small"
+              onClick={() => handleImportArea()}
+            >
               {t("selectView.importBtn")}
             </Button>
           </Grid>

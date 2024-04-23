@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 import { selectFeatures } from "../../redux/slices/SelectViewSlice";
 import ReactVectorLayer from "./layers/ReactVectorLayer";
 import GeoJSON from "ol/format/GeoJSON.js";
+import { useEffect } from "react";
+import { Feature } from "ol";
 
 const SelectViewMap = ({ height, marginBottom, drawType, handleDrawEnd }) => {
   const activeFeatures = useSelector(selectFeatures);
@@ -48,7 +50,12 @@ const SelectViewMap = ({ height, marginBottom, drawType, handleDrawEnd }) => {
       <ReactMap height={height} marginBottom={marginBottom}>
         <ReactLayers>
           <ReactTileLayer source={new OSM()} zIndex={0} />
-          {createVectorLayerFromFeatures()}
+          {/* <ReactVectorLayer
+            source={vectorSource}
+            opacity={100}
+            id={"selectViewLayer"}
+            name={"Select view layer"}
+          /> */}
         </ReactLayers>
         <ReactControls>
           <ReactFullScreenControl />

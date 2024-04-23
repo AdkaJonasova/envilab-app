@@ -4,8 +4,11 @@ import { Vector as VectorSource } from "ol/source";
 import MapContext from "../MapContext";
 import VectorLayer from "ol/layer/Vector";
 import { drawInteractionStyle, drawnFeatureStyle } from "../../../utils/data";
-import { useDispatch } from "react-redux";
-import { addFeature } from "../../../redux/slices/SelectViewSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addFeature,
+  selectFeatures,
+} from "../../../redux/slices/SelectViewSlice";
 import GeoJSON from "ol/format/GeoJSON.js";
 
 const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
@@ -13,12 +16,29 @@ const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
   const drawLayerRef = useRef(null);
   const drawInteractionRef = useRef(null);
 
+  const activeFeatures = useSelector(selectFeatures);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!map) return;
 
-    const source = new VectorSource({ wrapX: false });
+    const geojsonObject = {
+      type: "FeatureCollection",
+      crs: {
+        type: "name",
+        properties: {
+          name: "EPSG:4326",
+        },
+      },
+      features: activeFeatures,
+    };
+
+    const source = new VectorSource({
+      features: new GeoJSON().readFeatures(geojsonObject),
+      wrapX: false,
+    });
+
     drawLayerRef.current = new VectorLayer({
       source: source,
       style: drawnFeatureStyle,
@@ -39,12 +59,7 @@ const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
       var writer = new GeoJSON();
       var geojsonStr = writer.writeFeatureObject(feature);
 
-      console.log("Feature: ", geojsonStr);
       dispatch(addFeature({ feature: geojsonStr }));
-      // const source = drawLayerRef.current.getSource();
-      // source.addFeature(feature);
-      // let features = source.getFeatures();
-      // console.log("Features: ", features);
       onDrawEnd(feature);
     });
 
@@ -52,7 +67,7 @@ const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
       map.removeLayer(drawLayerRef.current);
       map.removeInteraction(drawInteractionRef.current);
     };
-  }, [variant, onDrawEnd, map]);
+  }, [variant, onDrawEnd, map, activeFeatures]);
   return null;
 };
 

@@ -11,6 +11,10 @@ import SelectViewHeader from "../components/selectView/SelectViewHeader";
 import { getSelectViewMapHeight } from "../utils/customLayoutFunctions";
 import { getCoordsObjectForDrawType } from "../utils/decisionCriteriaHandlers";
 import NewAreaSavePopup from "../components/selectView/NewAreaSavePopup";
+import { useSelector } from "react-redux";
+import { selectFeatures } from "../redux/slices/SelectViewSlice";
+import { createCustomArea } from "../hooks/areaHooks";
+import { userId } from "../data/mockData";
 
 const SelectViewPage = () => {
   const [savePopupOpened, setSavePopupOpened] = useState(false);
@@ -18,6 +22,8 @@ const SelectViewPage = () => {
   const [mapHeight, setMapHeight] = useState(
     getSelectViewMapHeight(window.innerHeight)
   );
+
+  const selectedFeatures = useSelector(selectFeatures);
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,6 +56,13 @@ const SelectViewPage = () => {
   };
 
   const handleAreaSave = (name) => {
+    const f = selectedFeatures;
+    console.log(f);
+    const geojsonObject = {
+      type: "FeatureCollection",
+      features: f,
+    };
+    createCustomArea(userId, name, geojsonObject);
     setSavePopupOpened(false);
   };
 
