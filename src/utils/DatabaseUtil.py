@@ -1,9 +1,12 @@
+from __future__ import annotations
+
+from typing import Optional
 import psycopg2
 
 from src.utils.ConfigReader import load_config
 
 
-def connect():
+def connect() -> Optional[psycopg2.connection]:
     connection = None
     try:
         config = load_config()

@@ -9,7 +9,7 @@ from src.services.FileService import FileService
 from src.utils.ConfigReader import load_config
 
 
-def __merge_area__(geo_area: dict, area_info: dict):
+def __merge_area__(geo_area: dict, area_info: dict) -> dict:
     merged_area = {
         'name': geo_area["name"],
         'title': geo_area["title"],
@@ -28,11 +28,11 @@ def __merge_area__(geo_area: dict, area_info: dict):
     return merged_area
 
 
-def __has_sub_areas__(geo_area: dict):
+def __has_sub_areas__(geo_area: dict) -> bool:
     return len(geo_area["subAreas"]) != 0
 
 
-def __merge_areas__(area_infos: List, geo_areas: List[dict], include_all: bool = False):
+def __merge_areas__(area_infos: List, geo_areas: List[dict], include_all: bool = False) -> list:
     result = []
     for geo_area in geo_areas:
         area_info = next((area_info for area_info in area_infos if area_info['areaName'] == geo_area["name"]), None)
@@ -57,25 +57,25 @@ class AreaService:
         self.workspace = config["workspace"]
         self.output_folder = config["output_folder"]
 
-    def get_areas(self, user_id: int):
+    def get_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_areas_for_user(user_id)
         geo_areas = self.geoserver_service.get_areas()
         merged_areas = __merge_areas__(area_infos, geo_areas, True)
         return merged_areas
 
-    def get_favorite_areas(self, user_id: int):
+    def get_favorite_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_favorite_areas_for_user(user_id)
         geo_areas = self.geoserver_service.get_areas()
         merged_areas = __merge_areas__(area_infos, geo_areas)
         return merged_areas
 
-    def get_active_areas(self, user_id: int):
+    def get_active_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_active_areas_for_user(user_id)
         geo_areas = self.geoserver_service.get_areas()
         merged_areas = __merge_areas__(area_infos, geo_areas)
         return merged_areas
 
-    def get_custom_areas(self, user_id: int):
+    def get_custom_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_custom_areas_for_user(user_id)
         geo_areas = self.geoserver_service.get_areas()
         merged_areas = __merge_areas__(area_infos, geo_areas)

@@ -3,7 +3,7 @@ import logging
 logger = logging.getLogger()
 
 
-def get_json_string_attribute(json_data: dict, attribute_path: str):
+def get_json_string_attribute(json_data: dict, attribute_path: str) -> str:
     value = ""
     keys = attribute_path.split('.')
 
@@ -18,7 +18,7 @@ def get_json_string_attribute(json_data: dict, attribute_path: str):
     return value
 
 
-def get_json_list_attribute(json_data: dict, attribute_path: str):
+def get_json_list_attribute(json_data: dict, attribute_path: str) -> list:
     value = []
     keys = attribute_path.split('.')
 
@@ -34,7 +34,7 @@ def get_json_list_attribute(json_data: dict, attribute_path: str):
 
 
 def create_geo_area_json(name: str, title: str, projection: str,
-                         minx: float, maxx: float, miny: float, maxy: float, sub_areas: list):
+                         minx: float, maxx: float, miny: float, maxy: float, sub_areas: list) -> dict:
     area_json = {
         "name": name,
         "title": title,
@@ -49,7 +49,7 @@ def create_geo_area_json(name: str, title: str, projection: str,
 
 
 def create_geo_layer_json(name: str, layer_type: str, title: str, description: str,
-                          projection: str):
+                          projection: str) -> dict:
     layer_json = {
         "name": name,
         "type": layer_type,
@@ -60,7 +60,7 @@ def create_geo_layer_json(name: str, layer_type: str, title: str, description: s
     return layer_json
 
 
-def create_geo_layer_group_json(name: str, title: str, description: str, layers: list):
+def create_geo_layer_group_json(name: str, title: str, description: str, layers: list) -> dict:
     group_json = {
         "name": name,
         "title": title,

@@ -2,7 +2,7 @@ from configparser import ConfigParser
 import os
 
 
-def load_config(filename='database.ini', section='postgresql'):
+def load_config(filename='configuration.ini', section='postgresql') -> dict[str, str]:
     work_directory = os.path.dirname(os.path.abspath(__file__))
     config_filename = os.path.join(work_directory, filename)
 

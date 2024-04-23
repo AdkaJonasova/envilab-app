@@ -6,7 +6,7 @@ from src.repositories.LayerRepository import LayerRepository
 from src.utils.JsonHelper import get_json_string_attribute, get_json_list_attribute
 
 
-def __merge_layers_in_groups__(layer_infos: list[dict], layer_groups: list[dict], include_all: bool = False):
+def __merge_layers_in_groups__(layer_infos: list[dict], layer_groups: list[dict], include_all: bool = False) -> list:
     result = []
     for layer_group in layer_groups:
         layers = get_json_list_attribute(layer_group, "layers")
@@ -21,7 +21,7 @@ def __merge_layers_in_groups__(layer_infos: list[dict], layer_groups: list[dict]
     return result
 
 
-def __merge_layers__(layer_infos: List[dict], geo_layers: List[dict], include_all: bool = False):
+def __merge_layers__(layer_infos: List[dict], geo_layers: List[dict], include_all: bool = False) -> list:
     result = []
 
     for geo_layer in geo_layers:
@@ -48,19 +48,19 @@ class LayerService:
         self.layer_repository = LayerRepository()
         self.geoserver_service = GeoserverService()
 
-    def get_layers(self, user_id: int):
+    def get_layers(self, user_id: int) -> list:
         layer_infos = self.layer_repository.get_all_for_user(user_id)
         geo_layers = self.geoserver_service.get_layers_in_groups()
         merged_layers = __merge_layers_in_groups__(layer_infos, geo_layers, True)
         return merged_layers
 
-    def get_favorite_layers(self, user_id: int):
+    def get_favorite_layers(self, user_id: int) -> list:
         layer_infos = self.layer_repository.get_all_favorite_for_user(user_id)
         geo_layer_groups = self.geoserver_service.get_layers_in_groups()
         merged_layer_groups = __merge_layers_in_groups__(layer_infos, geo_layer_groups)
         return merged_layer_groups
 
-    def get_active_layers(self, user_id: int):
+    def get_active_layers(self, user_id: int) -> list:
         layer_infos = self.layer_repository.get_all_active_for_user(user_id)
         geo_layers = self.geoserver_service.get_layers()
         merged_layers = __merge_layers__(layer_infos, geo_layers)

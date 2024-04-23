@@ -1,3 +1,5 @@
+from typing import Optional
+
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -17,7 +19,7 @@ class GeoserverService:
         self.username = config["user"]
         self.password = config["password"]
 
-    def get_layer_group(self, workspace: str, group_name: str):
+    def get_layer_group(self, workspace: str, group_name: str) -> Optional[dict]:
         url = f"{self.geoserver_rest}/workspaces/{workspace}/layergroups/{group_name}"
         layer_group_response = requests.get(
             url=url,
@@ -61,8 +63,6 @@ class GeoserverService:
             auth=self.__get_geoserver_auth__(),
             json=data
         )
-        status = r.status_code
-        print()
 
     def add_layer_to_layer_group(self, workspace: str, group_name: str, layer_name: str):
         layer_group = self.get_layer_group(workspace, group_name)
@@ -113,14 +113,14 @@ class GeoserverService:
             json=request
         )
 
-    def create_datastore(self, file_path: str, store_name: str, format: str):
+    def create_datastore(self, file_path: str, store_name: str, file_format: str):
         request = {
             "dataStore": {
                 "name": store_name,
                 "connectionParameters": {
                     "entry": [
                         {"@key": "database", "$": file_path},
-                        {"@key": "dbtype", "$": format}
+                        {"@key": "dbtype", "$": file_format}
                     ]
                 }
             }
@@ -133,7 +133,7 @@ class GeoserverService:
             json=request
         )
 
-    def get_areas(self):
+    def get_areas(self) -> list:
         result = []
         try:
             response = requests.get(self.geoserver_areas, auth=self.__get_geoserver_auth__(),
@@ -153,7 +153,7 @@ class GeoserverService:
 
         return result
 
-    def get_layers_in_groups(self):
+    def get_layers_in_groups(self) -> list:
         transformed_groups = []
         try:
             headers = {"Content-type": "application/json"}
@@ -172,7 +172,7 @@ class GeoserverService:
 
         return transformed_groups
 
-    def get_layers(self):
+    def get_layers(self) -> list:
         transformed_layers = []
         try:
             headers = {"Content-type": "application/json"}
@@ -191,7 +191,7 @@ class GeoserverService:
 
         return transformed_layers
 
-    def __transform_layer_groups__(self, layer_groups: list):
+    def __transform_layer_groups__(self, layer_groups: list) -> list:
         transformed_groups = []
         for group in layer_groups:
             try:
@@ -227,7 +227,7 @@ class GeoserverService:
 
         return transformed_groups
 
-    def __transform__layers__(self, layers: list):
+    def __transform__layers__(self, layers: list) -> list:
         transformed_layers = []
 
         for layer in layers:
@@ -237,7 +237,7 @@ class GeoserverService:
 
         return transformed_layers
 
-    def __transform_layer__(self, layer):
+    def __transform_layer__(self, layer) -> Optional[dict]:
         transformed_layer = None
 
         try:
@@ -276,7 +276,7 @@ class GeoserverService:
 
         return transformed_layer
 
-    def __get_data_for_areas__(self, areas):
+    def __get_data_for_areas__(self, areas) -> list:
         areas_data = []
         for area in areas:
             area_type = get_json_string_attribute(area, "@type")
@@ -292,7 +292,7 @@ class GeoserverService:
 
         return areas_data
 
-    def __get_data_for_hierarchical_area__(self, area: dict):
+    def __get_data_for_hierarchical_area__(self, area: dict) -> list:
         result = []
         area_data_link = get_json_string_attribute(area, "href")
 
@@ -316,7 +316,7 @@ class GeoserverService:
 
         return result
 
-    def __get_data_for_area__(self, area: dict, sub_areas: list):
+    def __get_data_for_area__(self, area: dict, sub_areas: list) -> Optional[dict]:
         result = None
         try:
             area_data_link = get_json_string_attribute(area, "href")
@@ -351,5 +351,5 @@ class GeoserverService:
 
         return result
 
-    def __get_geoserver_auth__(self):
+    def __get_geoserver_auth__(self) -> HTTPBasicAuth:
         return HTTPBasicAuth(self.username, self.password)

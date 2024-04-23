@@ -1,4 +1,4 @@
-from psycopg2.extras import RealDictCursor
+from psycopg2.extras import RealDictCursor, RealDictRow
 from pypika import Table, PostgreSQLQuery
 
 from src.utils.DatabaseUtil import connect
@@ -11,7 +11,7 @@ class AreaRepository:
     def __init__(self):
         self.connection = connect()
 
-    def get_area_by_id_and_user(self, area_name: str, user_id: int):
+    def get_area_by_id_and_user(self, area_name: str, user_id: int) -> list[RealDictRow]:
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
@@ -24,7 +24,7 @@ class AreaRepository:
         cursor.execute(str(query))
         return cursor.fetchall()
 
-    def get_areas_for_user(self, user_id: int):
+    def get_areas_for_user(self, user_id: int) -> list[RealDictRow]:
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
@@ -36,7 +36,7 @@ class AreaRepository:
         cursor.execute(str(query))
         return cursor.fetchall()
 
-    def get_active_areas_for_user(self, user_id: int):
+    def get_active_areas_for_user(self, user_id: int) -> list[RealDictRow]:
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
@@ -49,7 +49,7 @@ class AreaRepository:
         cursor.execute(str(query))
         return cursor.fetchall()
 
-    def get_favorite_areas_for_user(self, user_id: int):
+    def get_favorite_areas_for_user(self, user_id: int) -> list[RealDictRow]:
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
@@ -62,7 +62,7 @@ class AreaRepository:
         cursor.execute(str(query))
         return cursor.fetchall()
 
-    def get_custom_areas_for_user(self, user_id: int):
+    def get_custom_areas_for_user(self, user_id: int) -> list[RealDictRow]:
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
