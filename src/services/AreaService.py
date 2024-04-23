@@ -1,9 +1,12 @@
 from typing import List
 import datetime
+import os
 
 from src.geoserver.GeoserverService import GeoserverService
 from src.models.AreaModels import FavoritePairModel
 from src.repositories.AreaRepository import AreaRepository
+from src.services.FileService import FileService
+from src.utils.ConfigReader import load_config
 
 
 def __merge_area__(geo_area: dict, area_info: dict):
@@ -48,6 +51,11 @@ class AreaService:
     def __init__(self):
         self.area_repository = AreaRepository()
         self.geoserver_service = GeoserverService()
+        self.file_service = FileService()
+
+        config = load_config(section="custom_areas")
+        self.workspace = config["workspace"]
+        self.output_folder = config["output_folder"]
 
     def get_areas(self, user_id: int):
         area_infos = self.area_repository.get_areas_for_user(user_id)
@@ -86,19 +94,20 @@ class AreaService:
             else:
                 self.area_repository.remove_favorite_for_user(area.identificator, user_id)
 
-    def create_custom_area(self, user_id: int, layer_title: str):
+    def create_custom_area(self, user_id: int, layer_title: str, geojson: dict):
         timestamp = datetime.datetime.now().strftime("%b_%d_%Y_%H_%M_%S")
-        workspace = "customAreas"
-        store_name = f"customStore_{timestamp}"
+
+        layer_native_name = "customLayer"
+        file_name = f"customLayer_{user_id}_{timestamp}.gpkg"
+        self.file_service.write_geojson_to_geopackage(geojson, layer_native_name, file_name)
+
+        store_name = f"customStore_{user_id}_{timestamp}"
         group_name = f"customAreas_{user_id}"
-        layer_name = f"customLayer_{timestamp}"
-        file_format = "geopkg"
-        file_path = r"file://C:\geoserverCustomData\file.gpkg"
+        layer_name = f"customLayer_{user_id}_{timestamp}"
+        file_path = os.path.join(f"file://{self.output_folder}", file_name)
 
-        self.geoserver_service.create_datastore(file_path, store_name, file_format)
-        self.geoserver_service.create_layer(store_name, "geometry1", layer_name, layer_title)
-        self.geoserver_service.add_layer_to_layer_group(workspace, group_name, layer_name)
+        self.geoserver_service.create_datastore(file_path, store_name, "geopkg")
+        self.geoserver_service.create_layer(store_name, layer_native_name, layer_name, layer_title)
+        self.geoserver_service.add_layer_to_layer_group(self.workspace, group_name, layer_name)
 
-        # self.area_repository.add_custom_for_user(layer_name, user_id)
-
-
+        self.area_repository.add_custom_for_user(layer_name, user_id)

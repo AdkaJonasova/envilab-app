@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from src.models.AreaModels import AreasFavoriteModel
+from src.models.AreaModels import AreasFavoriteModel, CreateCustomArea
 from src.services.AreaService import AreaService
 
 area_router = APIRouter()
@@ -43,6 +43,5 @@ def change_favorite_areas_for_user(user_id: int, areas_favorite: AreasFavoriteMo
 
 
 @area_router.put('/areas/custom/{user_id}')
-def create_custom_area(user_id: int):
-    area_service.create_custom_area(user_id)
-
+def create_custom_area(user_id: int, custom_area: CreateCustomArea):
+    area_service.create_custom_area(user_id, custom_area.title, custom_area.geojson)
