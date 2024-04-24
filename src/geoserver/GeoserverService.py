@@ -3,6 +3,7 @@ from typing import Optional
 import requests
 from requests.auth import HTTPBasicAuth
 
+from src.enums.AreaType import AreaType
 from src.utils.ConfigReader import load_config
 from src.utils.JsonHelper import create_geo_layer_json, get_json_string_attribute, create_geo_layer_group_json, \
     get_json_list_attribute, create_geo_area_json
@@ -16,6 +17,7 @@ class GeoserverService:
         config = load_config(section="geoserver")
         self.geoserver_rest = config["host_rest"]
         self.geoserver_areas = config["host_areas"]
+        self.geoserver_custom_ares = config["host_custom_areas"]
         self.username = config["user"]
         self.password = config["password"]
 
@@ -133,10 +135,12 @@ class GeoserverService:
             json=request
         )
 
-    def get_areas(self) -> list:
+    def get_areas(self, areas_type: AreaType, user_id: Optional[int] = None) -> list:
         result = []
+        request_url = self.geoserver_areas if areas_type == AreaType.GeneralArea \
+            else f"{self.geoserver_custom_ares}/customAreas_{user_id}"
         try:
-            response = requests.get(self.geoserver_areas, auth=self.__get_geoserver_auth__(),
+            response = requests.get(request_url, auth=self.__get_geoserver_auth__(),
                                     headers={"Content-type": "application/json"})
             if response.status_code == 200:
                 response_content = response.json()

@@ -3,7 +3,7 @@ import logging
 logger = logging.getLogger()
 
 
-def get_json_string_attribute(json_data: dict, attribute_path: str) -> str:
+def get_json_string_attribute(json_data: dict, attribute_path: str):
     value = ""
     keys = attribute_path.split('.')
 

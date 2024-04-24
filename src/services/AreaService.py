@@ -2,6 +2,7 @@ from typing import List
 import datetime
 import os
 
+from src.enums.AreaType import AreaType
 from src.geoserver.GeoserverService import GeoserverService
 from src.models.AreaModels import FavoritePairModel
 from src.repositories.AreaRepository import AreaRepository
@@ -59,25 +60,33 @@ class AreaService:
 
     def get_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_areas_for_user(user_id)
-        geo_areas = self.geoserver_service.get_areas()
+        general_areas = self.geoserver_service.get_areas(AreaType.GeneralArea)
+        custom_areas = self.geoserver_service.get_areas(AreaType.CustomArea, user_id)
+        geo_areas = general_areas + custom_areas
         merged_areas = __merge_areas__(area_infos, geo_areas, True)
         return merged_areas
 
     def get_favorite_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_favorite_areas_for_user(user_id)
-        geo_areas = self.geoserver_service.get_areas()
+        general_areas = self.geoserver_service.get_areas(AreaType.GeneralArea)
+        custom_areas = self.geoserver_service.get_areas(AreaType.CustomArea, user_id)
+        geo_areas = general_areas + custom_areas
         merged_areas = __merge_areas__(area_infos, geo_areas)
         return merged_areas
 
     def get_active_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_active_areas_for_user(user_id)
-        geo_areas = self.geoserver_service.get_areas()
+        general_areas = self.geoserver_service.get_areas(AreaType.GeneralArea)
+        custom_areas = self.geoserver_service.get_areas(AreaType.CustomArea, user_id)
+        geo_areas = general_areas + custom_areas
         merged_areas = __merge_areas__(area_infos, geo_areas)
         return merged_areas
 
     def get_custom_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_custom_areas_for_user(user_id)
-        geo_areas = self.geoserver_service.get_areas()
+        general_areas = self.geoserver_service.get_areas(AreaType.GeneralArea)
+        custom_areas = self.geoserver_service.get_areas(AreaType.CustomArea, user_id)
+        geo_areas = general_areas + custom_areas
         merged_areas = __merge_areas__(area_infos, geo_areas)
         return merged_areas
 
