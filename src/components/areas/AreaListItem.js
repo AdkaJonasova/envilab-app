@@ -6,6 +6,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import LockPersonIcon from "@mui/icons-material/LockPerson";
 
 import PropTypes from "prop-types";
 
@@ -48,6 +49,12 @@ const AreaListItem = ({
       </IconButton>
     );
   };
+
+  const addAreaCustomIcon = (area) => {
+    if (area.isCustom) {
+      return <LockPersonIcon color="darkGreen" />;
+    }
+  };
   //#endregion
 
   return (
@@ -62,6 +69,7 @@ const AreaListItem = ({
             {area.title}
           </Typography>
         </ListItemText>
+        {addAreaCustomIcon(area)}
         {addUnzoomArea(area)}
         <IconButton
           key={`area-list-item-zoom-into-${area.name}`}

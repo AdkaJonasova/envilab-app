@@ -16,46 +16,11 @@ import { useEffect } from "react";
 import { Feature } from "ol";
 
 const SelectViewMap = ({ height, marginBottom, drawType, handleDrawEnd }) => {
-  const activeFeatures = useSelector(selectFeatures);
-
-  const createVectorLayerFromFeatures = () => {
-    if (activeFeatures.length > 0) {
-      const geojsonObject = {
-        type: "FeatureCollection",
-        crs: {
-          type: "name",
-          properties: {
-            name: "EPSG:4326",
-          },
-        },
-        features: activeFeatures,
-      };
-      const vectorSource = new Vector({
-        features: new GeoJSON().readFeatures(geojsonObject),
-      });
-
-      return (
-        <ReactVectorLayer
-          source={vectorSource}
-          opacity={100}
-          id={"selectViewLayer"}
-          name={"Select view layer"}
-        />
-      );
-    }
-  };
-
   return (
     <div>
       <ReactMap height={height} marginBottom={marginBottom}>
         <ReactLayers>
           <ReactTileLayer source={new OSM()} zIndex={0} />
-          {/* <ReactVectorLayer
-            source={vectorSource}
-            opacity={100}
-            id={"selectViewLayer"}
-            name={"Select view layer"}
-          /> */}
         </ReactLayers>
         <ReactControls>
           <ReactFullScreenControl />
