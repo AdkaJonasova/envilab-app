@@ -21,6 +21,28 @@ class GeoserverService:
         self.username = config["user"]
         self.password = config["password"]
 
+    def get_area(self, workspace: str, area_name: str) -> Optional[dict]:
+        layer = self.get_layer(workspace, area_name)
+        area = create_geo_area_json(
+            get_json_string_attribute(layer, "featureType.name"),
+            get_json_string_attribute(layer, "featureType.title"),
+            get_json_string_attribute(layer, "featureType.nativeBoundsBox.crs"),
+            get_json_string_attribute(layer, "featureType.nativeBoundsBox.minx"),
+            get_json_string_attribute(layer, "featureType.nativeBoundsBox.maxx"),
+            get_json_string_attribute(layer, "featureType.nativeBoundsBox.miny"),
+            get_json_string_attribute(layer, "featureType.nativeBoundsBox.maxy"),
+            []
+        )
+        return area
+
+    def get_layer(self, workspace: str, layer_name: str) -> Optional[dict]:
+        url = f"{self.geoserver_rest}/workspaces/{workspace}/layers/{layer_name}"
+        layer_response = requests.get(
+            url=url,
+            auth=self.__get_geoserver_auth__()
+        )
+        return layer_response.json()
+
     def get_layer_group(self, workspace: str, group_name: str) -> Optional[dict]:
         url = f"{self.geoserver_rest}/workspaces/{workspace}/layergroups/{group_name}"
         layer_group_response = requests.get(
@@ -68,14 +90,22 @@ class GeoserverService:
 
     def add_layer_to_layer_group(self, workspace: str, group_name: str, layer_name: str):
         layer_group = self.get_layer_group(workspace, group_name)
+        layer_info = self.get_layer(workspace, layer_name)
 
         if layer_group is None:
             self.create_layer_group(workspace, group_name, group_name, "SINGLE", [layer_name])
 
         else:
+            # Get existing publishables and styles
             publishables = get_json_list_attribute(layer_group, "layerGroup.publishables.published")
             if type(publishables) is not list:
                 publishables = [publishables]
+
+            styles = get_json_list_attribute(layer_group, "layerGroup.styles.style")
+            if type(styles) is not list:
+                styles = [styles]
+
+            # Add new layer to publishables and styles
             new_publishable = {
                 "@type": "layer",
                 "name": f"{workspace}:{layer_name}",
@@ -83,12 +113,23 @@ class GeoserverService:
             }
             publishables.append(new_publishable)
 
+            new_style = get_json_string_attribute(layer_info, "layer.defaultStyle")
+            styles.append(new_style)
+
+            # Create a request body
             request = {
-                "publishables":
-                {
-                    "published": publishables
+                "layerGroup": {
+                    "publishables":
+                        {
+                            "published": publishables
+                        },
+                    "styles":
+                        {
+                            "style": styles
+                        }
                 }
             }
+
             url = f"{self.geoserver_rest}/workspaces/{workspace}/layergroups/{group_name}"
             requests.put(
                 url=url,
@@ -103,6 +144,7 @@ class GeoserverService:
                 "name": layer_name,
                 "nativeName": native_layer_name,
                 "title": layer_title,
+                "nativeCRS": "EPSG:3857",
                 "srs": "EPSG:4326",
             }
         }

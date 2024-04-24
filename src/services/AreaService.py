@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 import datetime
 import os
 
@@ -103,7 +103,7 @@ class AreaService:
             else:
                 self.area_repository.remove_favorite_for_user(area.identificator, user_id)
 
-    def create_custom_area(self, user_id: int, layer_title: str, geojson: dict):
+    def create_custom_area(self, user_id: int, layer_title: str, geojson: dict) -> Optional[dict]:
         timestamp = datetime.datetime.now().strftime("%b_%d_%Y_%H_%M_%S")
 
         layer_native_name = "customLayer"
@@ -120,3 +120,8 @@ class AreaService:
         self.geoserver_service.add_layer_to_layer_group(self.workspace, group_name, layer_name)
 
         self.area_repository.add_custom_for_user(layer_name, user_id)
+
+        created_custom_geo_area = self.geoserver_service.get_area(self.workspace, layer_name)
+        created_area_info = self.area_repository.get_area_by_id_and_user(layer_name, user_id)[0]
+        created_area = __merge_area__(created_custom_geo_area, created_area_info)
+        return created_area
