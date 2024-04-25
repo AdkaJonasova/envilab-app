@@ -1,23 +1,18 @@
 from typing import List
 
 from src.geoserver.GeoserverService import GeoserverService
+from src.geoserver.GeoserverService2 import GeoserverService2
 from src.models.LayerModels import FavoritePairModel
 from src.repositories.LayerRepository import LayerRepository
-from src.utils.JsonHelper import get_json_string_attribute, get_json_list_attribute
+from src.utils.JsonHelper import get_json_list_attribute
 
 
 def __merge_layers_in_groups__(layer_infos: list[dict], layer_groups: list[dict], include_all: bool = False) -> list:
     result = []
     for layer_group in layer_groups:
         layers = get_json_list_attribute(layer_group, "layers")
-        merged_layers = __merge_layers__(layer_infos, layers, include_all)
-        merged_layer_group = {
-            "name": get_json_string_attribute(layer_group, "name"),
-            "title": get_json_string_attribute(layer_group, "title"),
-            "description": get_json_string_attribute(layer_group, "description"),
-            "layers": merged_layers
-        }
-        result.append(merged_layer_group)
+        layer_group["layers"] = __merge_layers__(layer_infos, layers, include_all)
+        result.append(layer_group)
     return result
 
 
@@ -28,17 +23,10 @@ def __merge_layers__(layer_infos: List[dict], geo_layers: List[dict], include_al
         layer_info = next((layer_info for layer_info in layer_infos if layer_info['layerName'] == geo_layer['name']),
                           None)
         if layer_info or include_all:
-            layer = {
-                'name': geo_layer["name"],
-                'title': geo_layer["title"],
-                'type': geo_layer["type"],
-                'description': geo_layer["description"],
-                'projection': geo_layer["projection"],
-                'isActive': layer_info['isActive'] if layer_info else False,
-                'isFavorite': layer_info['isFavorite'] if layer_info else False,
-                'opacity': layer_info['opacity'] if layer_info else 100,
-            }
-            result.append(layer)
+            geo_layer["isActive"] = layer_info['isActive'] if layer_info else False
+            geo_layer["isFavorite"] = layer_info['isFavorite'] if layer_info else False
+            geo_layer["opacity"] = layer_info['opacity'] if layer_info else 100
+            result.append(geo_layer)
     return result
 
 
@@ -47,10 +35,11 @@ class LayerService:
     def __init__(self):
         self.layer_repository = LayerRepository()
         self.geoserver_service = GeoserverService()
+        self.geoserver_service2 = GeoserverService2()
 
     def get_layers(self, user_id: int) -> list:
         layer_infos = self.layer_repository.get_all_for_user(user_id)
-        geo_layers = self.geoserver_service.get_layers_in_groups()
+        geo_layers = self.geoserver_service2.get_layers_in_groups()
         merged_layers = __merge_layers_in_groups__(layer_infos, geo_layers, True)
         return merged_layers
 
