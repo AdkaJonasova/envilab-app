@@ -11,7 +11,7 @@ import {
 } from "../../../redux/slices/SelectViewSlice";
 import GeoJSON from "ol/format/GeoJSON.js";
 
-const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
+const ReactDrawInteraction = ({ variant }) => {
   const { map } = useContext(MapContext);
   const drawLayerRef = useRef(null);
   const drawInteractionRef = useRef(null);
@@ -28,7 +28,7 @@ const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
       crs: {
         type: "name",
         properties: {
-          name: "EPSG:4326",
+          name: "EPSG:3857",
         },
       },
       features: activeFeatures,
@@ -58,16 +58,14 @@ const ReactDrawInteraction = ({ variant, onDrawEnd }) => {
       const feature = event.feature;
       var writer = new GeoJSON();
       var geojsonStr = writer.writeFeatureObject(feature);
-
       dispatch(addFeature({ feature: geojsonStr }));
-      onDrawEnd(feature);
     });
 
     return () => {
       map.removeLayer(drawLayerRef.current);
       map.removeInteraction(drawInteractionRef.current);
     };
-  }, [variant, onDrawEnd, map, activeFeatures]);
+  }, [variant, map, activeFeatures]);
   return null;
 };
 

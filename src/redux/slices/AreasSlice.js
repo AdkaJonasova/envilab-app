@@ -90,6 +90,11 @@ export const AreasSlice = createSlice({
       );
       state.areas = updatedAreas;
     },
+
+    addArea(state, action) {
+      const { area } = action.payload;
+      state.areas.push(area);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -130,7 +135,7 @@ export const selectFavoriteAreas = createSelector(
 export const selectAreasStatus = (state) => state.areas.areasStatus;
 export const selectAreasError = (state) => state.areas.areasError;
 
-export const { changeAreaActiveState, changeAreasFavoriteState } =
+export const { changeAreaActiveState, changeAreasFavoriteState, addArea } =
   AreasSlice.actions;
 
 export default AreasSlice.reducer;

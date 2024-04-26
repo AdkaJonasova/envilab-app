@@ -9,12 +9,12 @@ import {
 } from "../utils/data";
 import SelectViewHeader from "../components/selectView/SelectViewHeader";
 import { getSelectViewMapHeight } from "../utils/customLayoutFunctions";
-import { getCoordsObjectForDrawType } from "../utils/decisionCriteriaHandlers";
 import NewAreaSavePopup from "../components/selectView/NewAreaSavePopup";
-import { useSelector } from "react-redux";
-import { selectFeatures } from "../redux/slices/SelectViewSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearFeatures, selectFeatures } from "../redux/slices/SelectViewSlice";
 import { createCustomArea } from "../hooks/areaHooks";
 import { userId } from "../data/mockData";
+import { addArea } from "../redux/slices/AreasSlice";
 
 const SelectViewPage = () => {
   const [savePopupOpened, setSavePopupOpened] = useState(false);
@@ -24,6 +24,7 @@ const SelectViewPage = () => {
   );
 
   const selectedFeatures = useSelector(selectFeatures);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,11 +43,6 @@ const SelectViewPage = () => {
     setDrawType(newValue);
   };
 
-  const handleDrawEnd = (feature) => {
-    const geometry = feature.getGeometry();
-    const coordsObject = getCoordsObjectForDrawType(geometry);
-  };
-
   const handleSavePopupOpen = () => {
     setSavePopupOpened(true);
   };
@@ -56,14 +52,15 @@ const SelectViewPage = () => {
   };
 
   const handleAreaSave = (name) => {
-    const f = selectedFeatures;
-    console.log(f);
     const geojsonObject = {
       type: "FeatureCollection",
-      features: f,
+      features: selectedFeatures,
     };
-    createCustomArea(userId, name, geojsonObject);
-    setSavePopupOpened(false);
+    createCustomArea(userId, name, "EPSG:3857", geojsonObject).then((r) => {
+      setSavePopupOpened(false);
+      dispatch(addArea({ area: r.data }));
+      dispatch(clearFeatures());
+    });
   };
 
   return (
@@ -78,7 +75,6 @@ const SelectViewPage = () => {
           height={mapHeight}
           marginBottom={betweenElementsMargin}
           drawType={drawType}
-          handleDrawEnd={handleDrawEnd}
         />
         <NewAreaSavePopup
           opened={savePopupOpened}

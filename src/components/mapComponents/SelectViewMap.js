@@ -7,15 +7,9 @@ import ReactInteractions from "./interactions/ReactInteractions";
 import ReactDrawInteraction from "./interactions/ReactDrawInteraction";
 import ReactLayers from "./layers/ReactLayers";
 import ReactTileLayer from "./layers/ReactTileLayer";
-import { OSM, Vector } from "ol/source";
-import { useSelector } from "react-redux";
-import { selectFeatures } from "../../redux/slices/SelectViewSlice";
-import ReactVectorLayer from "./layers/ReactVectorLayer";
-import GeoJSON from "ol/format/GeoJSON.js";
-import { useEffect } from "react";
-import { Feature } from "ol";
+import { OSM } from "ol/source";
 
-const SelectViewMap = ({ height, marginBottom, drawType, handleDrawEnd }) => {
+const SelectViewMap = ({ height, marginBottom, drawType }) => {
   return (
     <div>
       <ReactMap height={height} marginBottom={marginBottom}>
@@ -28,7 +22,7 @@ const SelectViewMap = ({ height, marginBottom, drawType, handleDrawEnd }) => {
           <ReactMouseControl />
         </ReactControls>
         <ReactInteractions>
-          <ReactDrawInteraction variant={drawType} onDrawEnd={handleDrawEnd} />
+          <ReactDrawInteraction variant={drawType} />
         </ReactInteractions>
       </ReactMap>
     </div>

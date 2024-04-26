@@ -14,8 +14,12 @@ const ReactArea = ({ area }) => {
     const miny = area.extent.miny;
     const maxy = area.extent.maxy;
 
-    const extent4326 = [minX, miny, maxx, maxy];
-    const extent3857 = transformExtent(extent4326, "EPSG:4326", "EPSG:3857");
+    const areaExtent = [minX, miny, maxx, maxy];
+    const extent3857 = transformExtent(
+      areaExtent,
+      area.projection,
+      "EPSG:3857"
+    );
 
     map
       .getView()
