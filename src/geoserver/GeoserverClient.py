@@ -5,7 +5,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from src.geoserver.GeoserverException import GeoserverException
-from src.geoserver.GeoserverResponseAdapter import get_create_datastore_request, get_create_layer_request, \
+from src.geoserver.GeoserverRequestResponseUtil import get_create_datastore_request, get_create_layer_request, \
     get_create_layer_group_request, get_add_layer_to_group_request
 from src.utils.ConfigReader import load_config
 from src.utils.JsonHelper import get_json_list_attribute, get_json_string_attribute
@@ -76,7 +76,7 @@ class GeoserverClient:
         url = f"{self.geoserver_rest}/workspaces/{workspace}/layergroups"
         self.__send_post_request_to_geoserver__(
             url,
-            get_create_layer_group_request(workspace, group_name, group_title, mode, layers),
+            get_create_layer_group_request(workspace, group_name, group_title, mode, published_list),
             "layer group"
         )
 
@@ -109,7 +109,7 @@ class GeoserverClient:
 
             # Send request to update layer group
             url = f"{self.geoserver_rest}/workspaces/{workspace}/layergroups/{group_name}"
-            self.__send_post_request_to_geoserver__(
+            self.__send_put_request_to_geoserver__(
                 url,
                 get_add_layer_to_group_request(publishables, styles),
                 "layer group"
@@ -144,11 +144,28 @@ class GeoserverClient:
             )
             if response.status_code not in (200, 201, 202):
                 self.logger.error(
-                    f"Unable to create/update {data_type} request failed with status code {response.status_code}")
+                    f"Unable to create {data_type} request failed with status code {response.status_code}")
                 raise GeoserverException(response.content, response.status_code)
 
         except Exception as e:
-            self.logger.error(f"Unable to create/update {data_type} request failed with message {str(e)}")
+            self.logger.error(f"Unable to create {data_type} request failed with message {str(e)}")
+            raise GeoserverException(str(e))
+
+    def __send_put_request_to_geoserver__(self, url: str, data: dict, data_type: str):
+        try:
+            response = requests.put(
+                url=url,
+                headers=self.REQUEST_CONTENT_TYPE,
+                auth=self.__get_geoserver_auth__(),
+                json=data
+            )
+            if response.status_code not in (200, 201, 202):
+                self.logger.error(
+                    f"Unable to update {data_type} request failed with status code {response.status_code}")
+                raise GeoserverException(response.content, response.status_code)
+
+        except Exception as e:
+            self.logger.error(f"Unable to update {data_type} request failed with message {str(e)}")
             raise GeoserverException(str(e))
 
     def __get_geoserver_auth__(self) -> HTTPBasicAuth:

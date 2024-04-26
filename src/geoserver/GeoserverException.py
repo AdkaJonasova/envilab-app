@@ -1,7 +1,7 @@
 from typing import Optional
 
 
-class GeoserverException(Exception):
+class GeoserverException(BaseException):
     def __init__(self, message, status: Optional[int] = None):
         self.status = status
         self.message = message

@@ -1,7 +1,6 @@
 from typing import List
 
 from src.geoserver.GeoserverService import GeoserverService
-from src.geoserver.GeoserverService2 import GeoserverService2
 from src.models.LayerModels import FavoritePairModel
 from src.repositories.LayerRepository import LayerRepository
 from src.utils.JsonHelper import get_json_list_attribute
@@ -35,11 +34,10 @@ class LayerService:
     def __init__(self):
         self.layer_repository = LayerRepository()
         self.geoserver_service = GeoserverService()
-        self.geoserver_service2 = GeoserverService2()
 
     def get_layers(self, user_id: int) -> list:
         layer_infos = self.layer_repository.get_all_for_user(user_id)
-        geo_layers = self.geoserver_service2.get_layers_in_groups()
+        geo_layers = self.geoserver_service.get_layers_in_groups()
         merged_layers = __merge_layers_in_groups__(layer_infos, geo_layers, True)
         return merged_layers
 
@@ -51,7 +49,7 @@ class LayerService:
 
     def get_active_layers(self, user_id: int) -> list:
         layer_infos = self.layer_repository.get_all_active_for_user(user_id)
-        geo_layers = self.geoserver_service.get_layers()
+        geo_layers = self.geoserver_service.get_layers_in_groups()
         merged_layers = __merge_layers__(layer_infos, geo_layers)
         return merged_layers
 

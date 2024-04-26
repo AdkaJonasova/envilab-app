@@ -7,7 +7,7 @@ from src.utils.ConfigReader import load_config
 
 class FileService:
     def __init__(self):
-        config = load_config(section="custom_areas")
+        config = load_config(section="geoserver_areas")
         self.output_folder = config["output_folder"]
 
     def write_geojson_to_geopackage(self, geojson: dict, layer_name: str, file_name: str):

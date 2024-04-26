@@ -2,31 +2,19 @@ from typing import List, Optional
 import datetime
 import os
 
-from src.enums.AreaType import AreaType
 from src.geoserver.GeoserverService import GeoserverService
 from src.models.AreaModels import FavoritePairModel
 from src.repositories.AreaRepository import AreaRepository
 from src.services.FileService import FileService
 from src.utils.ConfigReader import load_config
+from src.utils.JsonHelper import get_json_string_attribute
 
 
 def __merge_area__(geo_area: dict, area_info: dict) -> dict:
-    merged_area = {
-        'name': geo_area["name"],
-        'title': geo_area["title"],
-        'projection': geo_area["projection"],
-        'extent': {
-            'minx': geo_area["minx"],
-            'maxx': geo_area["maxx"],
-            'miny': geo_area["miny"],
-            'maxy': geo_area["maxy"]
-        },
-        'isActive': area_info['isActive'] if area_info else False,
-        'isFavorite': area_info['isFavorite'] if area_info else False,
-        'isCustom': area_info['isCustom'] if area_info else False,
-        'subAreas': geo_area["subAreas"]
-    }
-    return merged_area
+    geo_area['isActive'] = area_info['isActive'] if area_info else False
+    geo_area['isFavorite'] = area_info['isFavorite'] if area_info else False
+    geo_area['isCustom'] = area_info['isCustom'] if area_info else False
+    return geo_area
 
 
 def __has_sub_areas__(geo_area: dict) -> bool:
@@ -54,38 +42,39 @@ class AreaService:
         self.geoserver_service = GeoserverService()
         self.file_service = FileService()
 
-        config = load_config(section="custom_areas")
-        self.workspace = config["workspace"]
+        config = load_config(section="geoserver_areas")
+        self.custom_areas_workspace = config["custom_areas_workspace"]
+        self.custom_areas_native_name = config["custom_area_native_name"]
         self.output_folder = config["output_folder"]
 
     def get_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_areas_for_user(user_id)
-        general_areas = self.geoserver_service.get_areas(AreaType.GeneralArea)
-        custom_areas = self.geoserver_service.get_areas(AreaType.CustomArea, user_id)
+        general_areas = self.geoserver_service.get_areas()
+        custom_areas = self.geoserver_service.get_custom_areas(user_id)
         geo_areas = general_areas + custom_areas
         merged_areas = __merge_areas__(area_infos, geo_areas, True)
         return merged_areas
 
     def get_favorite_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_favorite_areas_for_user(user_id)
-        general_areas = self.geoserver_service.get_areas(AreaType.GeneralArea)
-        custom_areas = self.geoserver_service.get_areas(AreaType.CustomArea, user_id)
+        general_areas = self.geoserver_service.get_areas()
+        custom_areas = self.geoserver_service.get_custom_areas(user_id)
         geo_areas = general_areas + custom_areas
         merged_areas = __merge_areas__(area_infos, geo_areas)
         return merged_areas
 
     def get_active_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_active_areas_for_user(user_id)
-        general_areas = self.geoserver_service.get_areas(AreaType.GeneralArea)
-        custom_areas = self.geoserver_service.get_areas(AreaType.CustomArea, user_id)
+        general_areas = self.geoserver_service.get_areas()
+        custom_areas = self.geoserver_service.get_custom_areas(user_id)
         geo_areas = general_areas + custom_areas
         merged_areas = __merge_areas__(area_infos, geo_areas)
         return merged_areas
 
     def get_custom_areas(self, user_id: int) -> list:
         area_infos = self.area_repository.get_custom_areas_for_user(user_id)
-        general_areas = self.geoserver_service.get_areas(AreaType.GeneralArea)
-        custom_areas = self.geoserver_service.get_areas(AreaType.CustomArea, user_id)
+        general_areas = self.geoserver_service.get_areas()
+        custom_areas = self.geoserver_service.get_custom_areas(user_id)
         geo_areas = general_areas + custom_areas
         merged_areas = __merge_areas__(area_infos, geo_areas)
         return merged_areas
@@ -103,25 +92,19 @@ class AreaService:
             else:
                 self.area_repository.remove_favorite_for_user(area.identificator, user_id)
 
-    def create_custom_area(self, user_id: int, layer_title: str, geojson: dict) -> Optional[dict]:
+    def create_custom_area(self, user_id: int, layer_title: str, projection: str, geojson: dict) -> Optional[dict]:
         timestamp = datetime.datetime.now().strftime("%b_%d_%Y_%H_%M_%S")
 
-        layer_native_name = "customLayer"
         file_name = f"customLayer_{user_id}_{timestamp}.gpkg"
-        self.file_service.write_geojson_to_geopackage(geojson, layer_native_name, file_name)
-
-        store_name = f"customStore_{user_id}_{timestamp}"
-        group_name = f"customAreas_{user_id}"
-        layer_name = f"customLayer_{user_id}_{timestamp}"
         file_path = os.path.join(f"file://{self.output_folder}", file_name)
+        self.file_service.write_geojson_to_geopackage(geojson, self.custom_areas_native_name, file_name)
 
-        self.geoserver_service.create_datastore(file_path, store_name, "geopkg")
-        self.geoserver_service.create_layer(store_name, layer_native_name, layer_name, layer_title)
-        self.geoserver_service.add_layer_to_layer_group(self.workspace, group_name, layer_name)
+        created_area = self.geoserver_service.create_new_area_from_file(file_path, user_id, layer_title,
+                                                                        projection, timestamp)
+        if created_area is not None:
+            created_area_name = get_json_string_attribute(created_area, "name")
+            self.area_repository.add_custom_for_user(created_area_name, user_id)
+            created_area_info = self.area_repository.get_area_by_id_and_user(created_area_name, user_id)[0]
+            created_area = __merge_area__(created_area, created_area_info)
 
-        self.area_repository.add_custom_for_user(layer_name, user_id)
-
-        created_custom_geo_area = self.geoserver_service.get_area(self.workspace, layer_name)
-        created_area_info = self.area_repository.get_area_by_id_and_user(layer_name, user_id)[0]
-        created_area = __merge_area__(created_custom_geo_area, created_area_info)
         return created_area

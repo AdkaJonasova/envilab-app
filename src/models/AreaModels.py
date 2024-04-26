@@ -12,4 +12,5 @@ class AreasFavoriteModel(BaseModel):
 
 class CreateCustomArea(BaseModel):
     title: str
+    projection: str
     geojson: dict

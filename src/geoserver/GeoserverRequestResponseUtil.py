@@ -34,6 +34,11 @@ def transform_layer_group(transformed_layers: list[dict], layer_group_info: dict
     return transformed_layer_group
 
 
+def transform_hierarchical_area(root_layer: dict, hierarchical_content: list) -> dict:
+    root_layer["subAreas"] = hierarchical_content
+    return root_layer
+
+
 def get_create_datastore_request(file_path: str, store_name: str, file_format: str) -> dict:
     return {
         "dataStore": {
