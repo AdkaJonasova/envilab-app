@@ -212,6 +212,14 @@ theme = createTheme(theme, {
         },
       },
     },
+    MuiButtonGroup: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          border: `1px solid ${theme.palette.lightGreen.main}`,
+        },
+      },
+    },
   },
 });
 
