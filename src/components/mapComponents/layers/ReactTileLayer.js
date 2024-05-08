@@ -20,26 +20,6 @@ const ReactTileLayer = ({ source, name, id, zIndex = 0, opacity }) => {
     });
     map.addLayer(tileLayer);
 
-    // map.on("singleclick", function (evt) {
-    //   const viewResolution = map.getView().getResolution();
-    //   console.log("Resolution: ", viewResolution);
-    //   const source = tileLayer.getSource();
-    //   console.log("Source", source);
-    //   const url = source.getFeatureInfoUrl(
-    //     evt.coordinate,
-    //     viewResolution,
-    //     "EPSG:3857",
-    //     {
-    //       INFO_FORMAT: "application/json",
-    //     }
-    //   );
-    //   console.log("Url: ", url);
-    //   if (url) {
-    //     let data = fetch(url).then((response) => response.text());
-    //     console.log("Data: ", data);
-    //   }
-    // });
-
     return () => {
       if (map) {
         map.removeLayer(tileLayer);

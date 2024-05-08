@@ -1,5 +1,6 @@
 import { grey } from "@mui/material/colors";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { alpha } from "@mui/system";
 
 let theme = createTheme({
   palette: {
@@ -150,8 +151,8 @@ theme = createTheme(theme, {
     MuiListSubheader: {
       styleOverrides: {
         root: {
-          backgroundColor: theme.palette.lightGreen.main,
-          color: theme.palette.lightGreen.contrastText,
+          backgroundColor: alpha(theme.palette.darkGreen.main, 0.7),
+          color: theme.palette.darkGreen.contrastText,
           fontSize: "0.9rem",
           textAlign: "left",
           lineHeight: 2,
