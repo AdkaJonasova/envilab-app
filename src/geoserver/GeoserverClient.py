@@ -158,6 +158,7 @@ class GeoserverClient:
                 headers=self.REQUEST_CONTENT_TYPE,
                 auth=self.__get_geoserver_auth__(),
                 json=data
+
             )
             if response.status_code not in (200, 201, 202):
                 self.logger.error(

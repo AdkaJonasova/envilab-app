@@ -4,7 +4,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # fast API
-app = FastAPI()
+app = FastAPI(
+    docs_url="/api-documentation",
+    redoc_url="/redoc-api-documentation",
+    title="EnviMap application",
+    version="0.0.1",
+    description="REST API for working with layers and areas from the GeoServer and an additional information stored "
+                "in the database."
+)
 
 app.add_middleware(
     CORSMiddleware,

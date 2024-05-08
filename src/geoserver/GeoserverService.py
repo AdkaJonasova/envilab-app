@@ -1,8 +1,8 @@
 import logging
 from typing import Optional
 
-from src.geoserver import GeoserverException
 from src.geoserver.GeoserverClient import GeoserverClient
+from src.geoserver.GeoserverException import GeoserverException
 from src.geoserver.GeoserverRequestResponseUtil import transform_resource_info, transform_layer, transform_layer_group, \
     transform_hierarchical_area
 from src.utils.ConfigReader import load_config
@@ -22,6 +22,7 @@ class GeoserverService:
         self.areas_group = config["areas_group"]
         self.native_name = config["custom_area_native_name"]
 
+    # region Layers
     def get_layers_in_groups(self, workspace: Optional[str] = None):
         layer_groups_dict = self.geoserver_client.get_layer_groups(workspace)
         transformed_groups = None
@@ -61,6 +62,9 @@ class GeoserverService:
 
         return transformed_layer
 
+    # endregion
+
+    # region Areas
     def get_areas(self):
         areas = []
 
@@ -96,9 +100,12 @@ class GeoserverService:
 
             # Get created area to return
             created_area = self.get_layer(self.custom_areas_workspace, layer_name)
+            created_area["subAreas"] = []
             return created_area
         except GeoserverException:
             return None
+
+    # endregion
 
     # region Private methods
     def __get_resource_info_for_layer(self, res_name: str, res_url: str, res_class: str) -> Optional[dict]:
