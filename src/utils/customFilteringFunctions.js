@@ -1,3 +1,5 @@
+import { settingsTabs } from "./data";
+
 //#region Layers
 
 export function filterLayersByTitle(layerGroups, filter) {
@@ -157,4 +159,13 @@ export function getFavoriteAreas(areas) {
   });
   return result;
 }
+//#endregion
+
+//#region Tabs
+
+export function getTabIdByType(tab) {
+  let foundTab = settingsTabs.find((t) => t.type === tab);
+  return foundTab ? foundTab.tabId : 0;
+}
+
 //#endregion

@@ -5,7 +5,6 @@ import ReactControls from "./controls/ReactControls";
 import ReactFullScreenControl from "./controls/ReactFullScreenControl";
 import ReactZoomControl from "./controls/ReactZoomControl";
 import ReactLayers from "./layers/ReactLayers";
-import { createLayerByType } from "../../utils/decisionCriteriaHandlers";
 import ReactAreas from "./areas/ReactAreas";
 import ReactClickInteraction from "./interactions/ReactClickInteraction";
 import ReactInteractions from "./interactions/ReactInteractions";
@@ -14,6 +13,7 @@ import { selectActiveLayers } from "../../redux/slices/LayersSlice";
 import { selectActiveAreas } from "../../redux/slices/AreasSlice";
 import { selectMapInfo } from "../../redux/slices/LayoutSlice";
 import ReactArea from "./areas/ReactArea";
+import { createTileLayer } from "../../utils/mapFunctions";
 
 const LayerViewMap = () => {
   const layers = useSelector((state) => selectActiveLayers(state));
@@ -32,7 +32,7 @@ const LayerViewMap = () => {
             source={new OSM()}
             zIndex={0}
           />
-          {layers.map((layer) => createLayerByType(layer))}
+          {layers.map((layer) => createTileLayer(layer))}
         </ReactLayers>
         <ReactAreas>
           {areas.map((area) => {

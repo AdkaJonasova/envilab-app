@@ -2,7 +2,6 @@ import { Layers, Public } from "@mui/icons-material";
 import LayerSettingsPage from "../pages/partials/LayerSettingsPage";
 import AreaSettingsPage from "../pages/partials/AreaSettingsPage";
 import { SidebarTypes } from "./enums";
-// const path = require("path");
 
 // Menu navigation
 const layerViewPage = {

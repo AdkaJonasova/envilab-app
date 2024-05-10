@@ -1,9 +1,3 @@
-export const LayerTypes = {
-  Vector: "VECTOR",
-  Raster: "RASTER",
-  Image: "IMAGE",
-};
-
 export const SidebarTypes = {
   Layers: "layers",
   Areas: "areas",

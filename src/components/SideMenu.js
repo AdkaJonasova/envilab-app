@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import { settingsTabs } from "../utils/data";
 import { useTranslation } from "react-i18next";
-import { getTabIdByType } from "../utils/customFunctions";
 import PropTypes from "prop-types";
+import { getTabIdByType } from "../utils/customFilteringFunctions";
 
 const SideMenu = ({ tab }) => {
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "EnviMap",
+  "name": "EnviMap, part of the EnviLab portal",
   "icons": [
     {
       "src": "favicon.ico",
