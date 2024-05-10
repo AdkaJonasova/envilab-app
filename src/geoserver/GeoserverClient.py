@@ -115,6 +115,11 @@ class GeoserverClient:
                 "layer group"
             )
 
+    def delete_store(self, store_name: str, recurse_delete: bool, workspace: str):
+        url = f"{self.geoserver_rest}/workspaces/{workspace}/datastores/{store_name}"
+        params = {"recurse": recurse_delete}
+        self.__send_delete_request_to_geoserver__(url, params, "layer")
+
     # region Private methods
     def __send_get_request_to_geoserver__(self, url: str, data_fetch_type: str) -> Optional[dict]:
         response_content = None
@@ -144,11 +149,11 @@ class GeoserverClient:
             )
             if response.status_code not in (200, 201, 202):
                 self.logger.error(
-                    f"Unable to create {data_type} request failed with status code {response.status_code}")
+                    f"Unable to create {data_type}, request failed with status code {response.status_code}")
                 raise GeoserverException(response.content, response.status_code)
 
         except Exception as e:
-            self.logger.error(f"Unable to create {data_type} request failed with message {str(e)}")
+            self.logger.error(f"Unable to create {data_type}, request failed with message {str(e)}")
             raise GeoserverException(str(e))
 
     def __send_put_request_to_geoserver__(self, url: str, data: dict, data_type: str):
@@ -158,15 +163,31 @@ class GeoserverClient:
                 headers=self.REQUEST_CONTENT_TYPE,
                 auth=self.__get_geoserver_auth__(),
                 json=data
-
             )
             if response.status_code not in (200, 201, 202):
                 self.logger.error(
-                    f"Unable to update {data_type} request failed with status code {response.status_code}")
+                    f"Unable to update {data_type}, request failed with status code {response.status_code}")
                 raise GeoserverException(response.content, response.status_code)
 
         except Exception as e:
-            self.logger.error(f"Unable to update {data_type} request failed with message {str(e)}")
+            self.logger.error(f"Unable to update {data_type}, request failed with message {str(e)}")
+            raise GeoserverException(str(e))
+
+    def __send_delete_request_to_geoserver__(self, url: str, params: dict, data_type: str):
+        try:
+            response = requests.delete(
+                url=url,
+                headers=self.REQUEST_CONTENT_TYPE,
+                auth=self.__get_geoserver_auth__(),
+                params=params
+            )
+
+            if response.status_code != 200:
+                self.logger.error(
+                    f"Unable to delete {data_type}, request failed with status code {response.status_code}")
+                raise GeoserverException(response.content, response.status_code)
+        except Exception as e:
+            self.logger.error(f"Unable to delete {data_type}, request failed with message {str(e)}")
             raise GeoserverException(str(e))
 
     def __get_geoserver_auth__(self) -> HTTPBasicAuth:

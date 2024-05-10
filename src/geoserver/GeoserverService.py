@@ -105,6 +105,17 @@ class GeoserverService:
         except GeoserverException:
             return None
 
+    def delete_custom_area(self, area_name: str, user_id: int) -> bool:
+        area_name_parts = area_name.split(":")
+        area_identificator = area_name_parts[1]
+        area_identificator_parts = area_identificator.split("_")
+        store_name = f"customStore_{user_id}_{area_identificator_parts[2]}"
+        try:
+            self.geoserver_client.delete_store(store_name, True, area_name_parts[0])
+            return True
+        except GeoserverException:
+            return False
+
     # endregion
 
     # region Private methods

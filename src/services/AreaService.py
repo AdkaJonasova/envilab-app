@@ -93,7 +93,7 @@ class AreaService:
                 self.area_repository.remove_favorite_for_user(area.identificator, user_id)
 
     def create_custom_area(self, user_id: int, layer_title: str, projection: str, geojson: dict) -> Optional[dict]:
-        timestamp = datetime.datetime.now().strftime("%b_%d_%Y_%H_%M_%S")
+        timestamp = datetime.datetime.now().strftime("%b-%d-%Y-%H-%M-%S")
 
         file_name = f"customLayer_{user_id}_{timestamp}.gpkg"
         file_path = os.path.join(f"file://{self.output_folder}", file_name)
@@ -108,3 +108,16 @@ class AreaService:
             created_area = __merge_area__(created_area, created_area_info)
 
         return created_area
+
+    def delete_custom_area(self, user_id, area_name: str) -> bool:
+        area_name_parts = area_name.split(":")
+        area_identificator = area_name_parts[1]
+        area_identificator_parts = area_identificator.split("_")
+        file_name = f"customLayer_{user_id}_{area_identificator_parts[2]}"
+
+        delete_success = self.geoserver_service.delete_custom_area(area_name, user_id)
+
+        if delete_success:
+            self.file_service.delete_geopackage_file(file_name)
+            self.area_repository.remove_area_for_user(area_name, user_id)
+        return delete_success

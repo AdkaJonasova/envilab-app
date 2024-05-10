@@ -171,6 +171,17 @@ class AreaRepository:
 
         self.connection.commit()
 
+    def remove_area_for_user(self, area_name: str, user_id: int):
+        cursor = self.connection.cursor()
+        user_areas = Table(self.USER_AREA_TABLE_NAME)
+
+        user_area_query = (PostgreSQLQuery
+                           .from_(user_areas).delete()
+                           .where(user_areas.areaName == area_name)
+                           .where(user_areas.userID == user_id))
+        cursor.execute(str(user_area_query))
+        self.connection.commit()
+
     # Private methods
     def __create_area_for_user(self, area_name: str, is_active: bool, is_favorite: bool, is_custom: bool, user_id: int):
         cursor = self.connection.cursor()

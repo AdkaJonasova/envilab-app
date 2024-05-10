@@ -45,3 +45,8 @@ def change_favorite_areas_for_user(user_id: int, areas_favorite: AreasFavoriteMo
 @area_router.put('/areas/custom/{user_id}', tags=["Areas"])
 def create_custom_area(user_id: int, custom_area: CreateCustomArea):
     return area_service.create_custom_area(user_id, custom_area.title, custom_area.projection, custom_area.geojson)
+
+
+@area_router.delete('/areas/custom/{user_id}/{area_name}', tags=["Areas"])
+def delete_custom_area(user_id: int, area_name: str):
+    return area_service.delete_custom_area(user_id, area_name)
