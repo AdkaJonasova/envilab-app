@@ -1,4 +1,3 @@
-import logging
 from typing import Optional
 
 from src.geoserver.GeoserverClient import GeoserverClient
@@ -12,7 +11,6 @@ from src.utils.JsonHelper import get_json_list_attribute, get_json_string_attrib
 class GeoserverService:
 
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
         self.geoserver_client = GeoserverClient()
 
         config = load_config(section="geoserver_areas")
@@ -94,8 +92,8 @@ class GeoserverService:
         try:
             # Create datastore, layer for area and add layer to the group
             self.geoserver_client.create_datastore(store_name, file_path, "geopkg")
-            self.geoserver_client.create_layer(self.custom_areas_workspace, store_name, self.native_name, layer_name, area_title,
-                                               projection)
+            self.geoserver_client.create_layer(self.custom_areas_workspace, store_name, self.native_name, layer_name,
+                                               area_title, projection)
             self.geoserver_client.add_layer_to_layer_group(self.custom_areas_workspace, group_name, layer_name)
 
             # Get created area to return

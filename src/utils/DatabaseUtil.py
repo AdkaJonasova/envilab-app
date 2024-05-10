@@ -9,7 +9,7 @@ from src.utils.ConfigReader import load_config
 def connect() -> Optional[psycopg2.connection]:
     connection = None
     try:
-        config = load_config()
+        config = load_config("postgresql")
         connection = psycopg2.connect(
             host=config["host"],
             database=config["database"],
