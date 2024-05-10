@@ -101,18 +101,6 @@ const AreaList = ({ filter }) => {
 
   return (
     <div>
-      <Grid container spacing={1} padding={1}>
-        <Grid item xs={6}>
-          <Button variant="outlined" color="darkGreen" size="small" fullWidth>
-            {t("layerViewSidebar.areaList.createSet")}
-          </Button>
-        </Grid>
-        <Grid item xs={6}>
-          <Button variant="outlined" color="darkGreen" size="small" fullWidth>
-            {t("layerViewSidebar.areaList.chooseSet")}
-          </Button>
-        </Grid>
-      </Grid>
       <List sx={{ width: "100%", bgcolor: "background.paper" }} dense>
         {areas.length === 0
           ? getEmptyListText()

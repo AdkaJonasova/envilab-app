@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import MapContext from "../MapContext";
 import { transformExtent } from "ol/proj";
 import PropTypes from "prop-types";
+import { MapProjections } from "../../../utils/enums";
 
 const ReactArea = ({ area }) => {
   const { map } = useContext(MapContext);
@@ -18,7 +19,7 @@ const ReactArea = ({ area }) => {
     const extent3857 = transformExtent(
       areaExtent,
       area.projection,
-      "EPSG:3857"
+      MapProjections.EPSG3857
     );
 
     map

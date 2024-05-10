@@ -15,6 +15,7 @@ import { clearFeatures, selectFeatures } from "../redux/slices/SelectViewSlice";
 import { createCustomArea } from "../hooks/areaHooks";
 import { userId } from "../data/mockData";
 import { addArea } from "../redux/slices/AreasSlice";
+import { MapProjections } from "../utils/enums";
 
 const SelectViewPage = () => {
   const [savePopupOpened, setSavePopupOpened] = useState(false);
@@ -56,11 +57,13 @@ const SelectViewPage = () => {
       type: "FeatureCollection",
       features: selectedFeatures,
     };
-    createCustomArea(userId, name, "EPSG:3857", geojsonObject).then((r) => {
-      setSavePopupOpened(false);
-      dispatch(addArea({ area: r.data }));
-      dispatch(clearFeatures());
-    });
+    createCustomArea(userId, name, MapProjections.EPSG3857, geojsonObject).then(
+      (r) => {
+        setSavePopupOpened(false);
+        dispatch(addArea({ area: r.data }));
+        dispatch(clearFeatures());
+      }
+    );
   };
 
   return (

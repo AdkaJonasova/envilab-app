@@ -19,7 +19,7 @@ export const viewPages = [layerViewPage, selectViewPage];
 export const settingsPath = "/settings";
 
 // Main menu bar
-export const pageName = "ENVILAB";
+export const pageName = "EnviMap";
 
 // Settings navigation
 const layerSettingsTab = {

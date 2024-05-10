@@ -30,6 +30,7 @@ export function createLayerByType(layer) {
     case LayerTypes.Raster:
       return (
         <ReactTileLayer
+          key={`map-layer-${layer.name}`}
           source={
             new TileWMS({
               url: "http://localhost:9000/geoserver/wms",

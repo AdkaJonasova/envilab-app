@@ -10,6 +10,7 @@ import {
   selectFeatures,
 } from "../../../redux/slices/SelectViewSlice";
 import GeoJSON from "ol/format/GeoJSON.js";
+import { MapProjections } from "../../../utils/enums";
 
 const ReactDrawInteraction = ({ variant }) => {
   const { map } = useContext(MapContext);
@@ -28,7 +29,7 @@ const ReactDrawInteraction = ({ variant }) => {
       crs: {
         type: "name",
         properties: {
-          name: "EPSG:3857",
+          name: MapProjections.EPSG4326,
         },
       },
       features: activeFeatures,

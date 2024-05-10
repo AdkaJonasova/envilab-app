@@ -27,7 +27,11 @@ const LayerViewMap = () => {
         marginBottom={layoutInfo.bottomMargin}
       >
         <ReactLayers>
-          <ReactTileLayer source={new OSM()} zIndex={0} />
+          <ReactTileLayer
+            key={`map-base-layer`}
+            source={new OSM()}
+            zIndex={0}
+          />
           {layers.map((layer) => createLayerByType(layer))}
         </ReactLayers>
         <ReactAreas>

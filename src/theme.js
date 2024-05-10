@@ -77,7 +77,6 @@ theme = createTheme(theme, {
       marginTop: 5,
     },
     pageTitle: {
-      textTransform: "uppercase",
       fontSize: "1rem",
     },
     menuItem: {

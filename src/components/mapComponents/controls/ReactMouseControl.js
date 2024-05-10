@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { MousePosition } from "ol/control";
 import MapContext from "../MapContext";
 import { createStringXY } from "ol/coordinate";
+import { MapProjections } from "../../../utils/enums";
 
 const ReactMouseControl = () => {
   const { map } = useContext(MapContext);
@@ -10,7 +11,7 @@ const ReactMouseControl = () => {
     if (!map) return;
     let mouseControl = new MousePosition({
       coordinateFormat: createStringXY(4),
-      projection: "EPSG:4326",
+      projection: MapProjections.EPSG4326,
       className: "mouse-position",
     });
     map.controls.push(mouseControl);

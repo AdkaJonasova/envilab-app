@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import MapContext from "./MapContext";
 import { Map, View } from "ol";
+import { MapProjections } from "../../utils/enums";
 
 const ReactMap = ({ children, height, marginBottom }) => {
   const mapRef = useRef();
@@ -11,7 +12,7 @@ const ReactMap = ({ children, height, marginBottom }) => {
   useEffect(() => {
     let options = {
       view: new View({
-        projection: "EPSG:3857",
+        projection: MapProjections.EPSG3857,
         center: [0, 0],
         zoom: 2,
       }),

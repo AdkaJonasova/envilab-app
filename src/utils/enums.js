@@ -25,3 +25,8 @@ export const FetchStates = {
   Succeeded: "succeeded",
   Failed: "failed",
 };
+
+export const MapProjections = {
+  EPSG3857: "EPSG:3857",
+  EPSG4326: "EPSG:4326",
+};
