@@ -1,4 +1,10 @@
-import { ExpandLess, ExpandMore, ZoomIn, ZoomOut } from "@mui/icons-material";
+import {
+  Delete,
+  ExpandLess,
+  ExpandMore,
+  ZoomIn,
+  ZoomOut,
+} from "@mui/icons-material";
 import {
   Divider,
   IconButton,
@@ -9,6 +15,10 @@ import {
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { deleteCustomArea } from "../../hooks/areaHooks";
+import { userId } from "../../data/mockData";
+import { deleteArea } from "../../redux/slices/AreasSlice";
 
 const AreaListItem = ({
   area,
@@ -21,7 +31,14 @@ const AreaListItem = ({
 }) => {
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
+  const dispatch = useDispatch();
+
   //#region Methods
+  const handleDeleteArea = (area) => {
+    deleteCustomArea(userId, area.name);
+    dispatch(deleteArea({ areaName: area.name }));
+  };
+
   const addUnzoomArea = (area) => {
     if (area.isActive) {
       return (
@@ -55,6 +72,20 @@ const AreaListItem = ({
       return <LockPersonIcon color="darkGreen" />;
     }
   };
+
+  const addAreaDeleteIcon = (area) => {
+    if (area.isCustom) {
+      return (
+        <IconButton
+          key={`area-list-item-delete-${area.name}`}
+          size="small"
+          onClick={() => handleDeleteArea(area)}
+        >
+          <Delete color="errorRed" />
+        </IconButton>
+      );
+    }
+  };
   //#endregion
 
   return (
@@ -70,6 +101,7 @@ const AreaListItem = ({
           </Typography>
         </ListItemText>
         {addAreaCustomIcon(area)}
+        {addAreaDeleteIcon(area)}
         {addUnzoomArea(area)}
         <IconButton
           key={`area-list-item-zoom-into-${area.name}`}

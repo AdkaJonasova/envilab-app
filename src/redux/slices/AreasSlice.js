@@ -54,6 +54,17 @@ const handleRecursiveFavoriteStatusChange = (areaData, changedAreas) => {
   return result;
 };
 
+const handleDeleteCustomArea = (areaData, areaName) => {
+  for (let i = 0; i < areaData.length; i++) {
+    let area = areaData[i];
+    if (area.name === areaName) {
+      areaData.splice(i, 1);
+    } else if (area.subAreas.length > 0) {
+      handleDeleteCustomArea(area.subAreas, areaName);
+    }
+  }
+};
+
 const initialState = {
   areas: null,
   areasStatus: FetchStates.Idle,
@@ -95,6 +106,11 @@ export const AreasSlice = createSlice({
       const { area } = action.payload;
       state.areas.push(area);
     },
+
+    deleteArea(state, action) {
+      const { areaName } = action.payload;
+      handleDeleteCustomArea(state.areas, areaName);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -135,7 +151,11 @@ export const selectFavoriteAreas = createSelector(
 export const selectAreasStatus = (state) => state.areas.areasStatus;
 export const selectAreasError = (state) => state.areas.areasError;
 
-export const { changeAreaActiveState, changeAreasFavoriteState, addArea } =
-  AreasSlice.actions;
+export const {
+  changeAreaActiveState,
+  changeAreasFavoriteState,
+  addArea,
+  deleteArea,
+} = AreasSlice.actions;
 
 export default AreasSlice.reducer;

@@ -44,3 +44,6 @@ export const createCustomArea = (userId, areaTitle, projection, areaGeojson) =>
     projection: projection,
     geojson: areaGeojson,
   });
+
+export const deleteCustomArea = (userId, areaName) =>
+  apiClient.delete(`/areas/custom/${userId}/${areaName}`);
