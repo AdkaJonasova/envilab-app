@@ -5,7 +5,6 @@ from src.utils.DatabaseUtil import connect
 
 
 class AreaRepository:
-    AREA_TABLE_NAME = "Area"
     USER_AREA_TABLE_NAME = "UserArea"
 
     def __init__(self):
