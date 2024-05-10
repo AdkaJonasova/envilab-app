@@ -25,6 +25,7 @@ const LayerList = ({ filter }) => {
   const dispatch = useDispatch();
 
   //#region Methods
+
   const handleExpandCollapse = (layerGroup) => {
     dispatch(collapseLayerSection(layerGroup.name));
   };

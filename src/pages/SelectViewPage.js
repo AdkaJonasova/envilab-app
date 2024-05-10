@@ -43,6 +43,8 @@ const SelectViewPage = () => {
     };
   }, []);
 
+  //#region Methods
+
   const handleDrawTypeChange = (event) => {
     const newValue = event.target.value;
     setDrawType(newValue);
@@ -70,6 +72,8 @@ const SelectViewPage = () => {
       }
     );
   };
+
+  //#endregion
 
   return (
     <div>

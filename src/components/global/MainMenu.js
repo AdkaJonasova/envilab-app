@@ -18,6 +18,8 @@ import { useTranslation } from "react-i18next";
 const MainMenu = () => {
   const [subMenu, setSubMenu] = React.useState(null);
 
+  //#region Methods
+
   const handleOpenSubMenu = (event) => {
     setSubMenu(event.currentTarget);
   };
@@ -37,6 +39,8 @@ const MainMenu = () => {
   const navigateAction = (path) => {
     navigate(path);
   };
+
+  //#endregion
 
   return (
     <AppBar

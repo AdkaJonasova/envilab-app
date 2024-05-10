@@ -21,6 +21,8 @@ const SideMenu = ({ tab }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  //#region Methods
+
   const handleListItemClick = (_event, tab) => {
     setSelectedItemIndex(tab.tabId);
     navigate(tab.navigation);
@@ -40,6 +42,8 @@ const SideMenu = ({ tab }) => {
       </div>
     );
   };
+
+  //#endregion
 
   return (
     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: ".paper" }}>

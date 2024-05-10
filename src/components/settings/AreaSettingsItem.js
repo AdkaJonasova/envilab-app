@@ -1,4 +1,10 @@
-import { ExpandLess, ExpandMore, Star, StarBorder } from "@mui/icons-material";
+import {
+  ExpandLess,
+  ExpandMore,
+  LockPerson,
+  Star,
+  StarBorder,
+} from "@mui/icons-material";
 import { Divider, IconButton, ListItem, ListItemText } from "@mui/material";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +24,8 @@ const AreaSettingsItem = ({
   const dispatch = useDispatch();
 
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
+
+  //#region Methods
 
   const getStarForArea = (area) => {
     const isMarkedFavorite =
@@ -49,6 +57,14 @@ const AreaSettingsItem = ({
     return null;
   };
 
+  const addCustomAreaItem = (area) => {
+    if (area.isCustom) {
+      return <LockPerson color="darkGreen" />;
+    }
+  };
+
+  //#endregion
+
   return (
     <div key={`settings-area-item-container-${area.name}`}>
       <ListItem
@@ -67,6 +83,7 @@ const AreaSettingsItem = ({
           onClick={() => handleStarClick(area)}
           sx={{ marginLeft: 2 }}
         >
+          {addCustomAreaItem(area)}
           {getStarForArea(area)}
         </IconButton>
       </ListItem>

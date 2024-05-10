@@ -56,10 +56,10 @@ const NewAreaSavePopup = ({ opened, handleSaveArea, handleClose }) => {
   );
 };
 
+export default NewAreaSavePopup;
+
 NewAreaSavePopup.propTypes = {
   opened: PropTypes.bool,
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
 };
-
-export default NewAreaSavePopup;

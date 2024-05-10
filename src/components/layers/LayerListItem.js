@@ -19,6 +19,8 @@ const LayerListItem = ({ layer }) => {
 
   const dispatch = useDispatch();
 
+  //#region Methods
+
   const handleLayerStateSwitch = (layer) => {
     const isActive = layer.isActive;
     dispatch(changeLayerActiveState({ layerName: layer.name }));
@@ -44,6 +46,8 @@ const LayerListItem = ({ layer }) => {
       })
     );
   };
+
+  //#endregion
 
   return (
     <div key={`layer-list-item-container-${layer.name}`}>

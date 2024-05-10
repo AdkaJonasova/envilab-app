@@ -31,6 +31,8 @@ const LayerEdit = ({ layerName }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  //#region Methods
+
   const handleGoBack = () => {
     dispatch(
       changeSidebarType({ type: SidebarTypes.Layers, selectedLayer: undefined })
@@ -47,6 +49,8 @@ const LayerEdit = ({ layerName }) => {
   const handleOpacityChange = (newValue) => {
     setOpacity(newValue);
   };
+
+  //#endregion
 
   return (
     <div>

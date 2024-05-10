@@ -32,6 +32,8 @@ const SelectViewHeader = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  //#region Methods
+
   const handleDeleteSelection = () => {
     dispatch(clearFeatures());
   };
@@ -43,6 +45,8 @@ const SelectViewHeader = ({
   const featuresAreEmpty = () => {
     return selectedFeatures.length === 0;
   };
+
+  //#endregion
 
   return (
     <div>
@@ -104,10 +108,10 @@ const SelectViewHeader = ({
   );
 };
 
+export default SelectViewHeader;
+
 SelectViewHeader.propTypes = {
   drawType: PropTypes.string,
   handleDrawTypeChange: PropTypes.func,
   openSaveAreaPopup: PropTypes.func,
 };
-
-export default SelectViewHeader;

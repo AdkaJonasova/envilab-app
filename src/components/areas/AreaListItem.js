@@ -34,6 +34,7 @@ const AreaListItem = ({
   const dispatch = useDispatch();
 
   //#region Methods
+
   const handleDeleteArea = (area) => {
     deleteCustomArea(userId, area.name);
     dispatch(deleteArea({ areaName: area.name }));
@@ -86,6 +87,7 @@ const AreaListItem = ({
       );
     }
   };
+
   //#endregion
 
   return (

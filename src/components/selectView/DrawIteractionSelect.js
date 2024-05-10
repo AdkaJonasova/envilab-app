@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { drawOptions } from "../../utils/data";
 import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 
 const DrawInteractionSelect = ({ drawInteractionType, onDrawTypeChange }) => {
   const theme = useTheme();
@@ -81,3 +82,8 @@ const DrawInteractionSelect = ({ drawInteractionType, onDrawTypeChange }) => {
 };
 
 export default DrawInteractionSelect;
+
+DrawInteractionSelect.propTypes = {
+  drawInteractionType: PropTypes.string,
+  onDrawTypeChange: PropTypes.func,
+};

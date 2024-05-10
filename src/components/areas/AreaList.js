@@ -25,6 +25,7 @@ const AreaList = ({ filter }) => {
   const dispatch = useDispatch();
 
   //#region Methods
+
   const handleExpandCollapse = (area) => {
     dispatch(collapseAreaSection(area.name));
   };
@@ -97,6 +98,7 @@ const AreaList = ({ filter }) => {
       </Typography>
     );
   };
+
   //#endregion
 
   return (

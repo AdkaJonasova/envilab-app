@@ -16,6 +16,8 @@ const Sidebar = () => {
 
   const [filter, setFilter] = useState("");
 
+  //#region Methods
+
   const getSidebarContentByType = () => {
     switch (sidebar.type) {
       case SidebarTypes.Layers:
@@ -42,6 +44,8 @@ const Sidebar = () => {
       );
     }
   };
+
+  //#endregion Methods
 
   return (
     <Box
