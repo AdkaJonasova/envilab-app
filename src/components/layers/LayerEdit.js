@@ -38,6 +38,7 @@ const LayerEdit = ({ layerName }) => {
   };
 
   const handleSaveEditedLayer = () => {
+    console.log("Layer: ", layer.title);
     dispatch(changeLayerOpacity({ layerName: layer.name, opacity: opacity }));
     setOpacityForLayer(userId, layer.name, opacity);
     setSnackbarOpen(true);

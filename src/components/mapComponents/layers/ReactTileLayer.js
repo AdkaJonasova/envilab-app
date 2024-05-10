@@ -25,7 +25,7 @@ const ReactTileLayer = ({ source, name, id, zIndex = 0, opacity }) => {
         map.removeLayer(tileLayer);
       }
     };
-  }, [map]);
+  }, [map, opacity, zIndex]);
 
   return null;
 };
