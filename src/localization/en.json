@@ -67,8 +67,7 @@
     "drawOptions": {
       "point": "Point",
       "lineString": "Line string",
-      "polygon": "Polygon",
-      "circle": "Circle"
+      "polygon": "Polygon"
     },
     "saveNewAreaPopup": {
       "title": "Save New Area",

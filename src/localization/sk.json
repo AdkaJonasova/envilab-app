@@ -67,8 +67,7 @@
     "drawOptions": {
       "point": "Bod",
       "lineString": "Úsečka",
-      "polygon": "Mnohouholník",
-      "circle": "Kruh"
+      "polygon": "Mnohouholník"
     },
     "saveNewAreaPopup": {
       "title": "Uložiť novú oblasť",

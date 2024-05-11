@@ -66,7 +66,7 @@ const SelectViewHeader = ({
           <Grid item xs={2} container justifyContent={"flex-end"} paddingX={1}>
             <ButtonGroup variant="contained" size="small">
               <IconButton
-                color="darkGreen"
+                color="beigeBrown"
                 variant="outlined"
                 disabled={featuresAreEmpty()}
                 onClick={() => handleUndoSelection()}
@@ -79,7 +79,7 @@ const SelectViewHeader = ({
                 <Undo />
               </IconButton>
               <IconButton
-                color="darkGreen"
+                color="errorRed"
                 variant="outlined"
                 disabled={featuresAreEmpty()}
                 onClick={() => handleDeleteSelection()}
