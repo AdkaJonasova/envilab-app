@@ -82,7 +82,8 @@
       "content": "Pre vytvorenie novej oblasti zadajte názov oblasti a kliknite na tlačidlo Uložiť.",
       "fieldLabel": "Názov oblasti",
       "cancelBtnLabel": "Zrušiť",
-      "saveBtnLabel": "Uložiť"
+      "saveBtnLabel": "Uložiť",
+      "requiredFieldMsg": "Toto pole je povinné!"
     }
   },
   "errorWindow": {

@@ -82,7 +82,8 @@
       "content": "To create a new area, please enter the area name and click Save",
       "fieldLabel": "Area name",
       "cancelBtnLabel": "Cancel",
-      "saveBtnLabel": "Save"
+      "saveBtnLabel": "Save",
+      "requiredFieldMsg": "This field is required!"
     }
   },
   "errorWindow": {

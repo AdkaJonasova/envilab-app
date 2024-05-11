@@ -117,6 +117,15 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           margin: 5,
+          "& label": {
+            color: theme.palette.informationGrey.main,
+          },
+          "& label.Mui-focused": {
+            color: theme.palette.darkGreen.main,
+          },
+          "& .MuiInput-underline:after": {
+            borderBottomColor: theme.palette.darkGreen.main,
+          },
         },
       },
     },
