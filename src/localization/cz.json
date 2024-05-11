@@ -17,8 +17,9 @@
       "areaTab": "Oblasti"
     },
     "areaList": {
-      "createSet": "Vytvořit skupinu oblastí",
-      "chooseSet": "Vybrat skupinu oblastí",
+      "confirmDeleteMessage": "Opravdu chcete smazat oblast",
+      "confirmDeleteYes": "Ano, smazat",
+      "confirmDeleteNo": "Ne, zrušit",
       "noAreas": "Nejsou k dispozici žádné oblasti k zobrazení. Prosím, vyberte oblíbené oblasti v nastaveních."
     },
     "layerList": {

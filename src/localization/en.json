@@ -17,9 +17,10 @@
       "areaTab": "Areas"
     },
     "areaList": {
-      "createSet": "Create area set",
-      "chooseSet": "Choose area set",
-      "noAreas": "There are no areas to display. Please select your favorite areas in settings."
+      "noAreas": "There are no areas to display. Please select your favorite areas in settings.",
+      "confirmDeleteMessage": "Do you really want to delete the area",
+      "confirmDeleteYes": "Yes, delete",
+      "confirmDeleteNo": "No, cancel"
     },
     "layerList": {
       "noLayers": "There are no layers to display. Please select your favorite layers in settings."
