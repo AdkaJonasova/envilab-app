@@ -1,6 +1,6 @@
 import React from "react";
 import List from "@mui/material/List";
-import { Button, Collapse, Grid, Typography } from "@mui/material";
+import { Collapse, Typography } from "@mui/material";
 import AreaListItem from "./AreaListItem";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";

@@ -41,14 +41,6 @@
       "noDetail": "No detailed information available"
     }
   },
-  "selectViewSidebar": {
-    "title": "New area",
-    "selectedPoints": "Selected points",
-    "areaName": "Area name",
-    "save": "Save",
-    "tooltipCoords": "Tooltip coordinates",
-    "addPoint": "New point"
-  },
   "settings": {
     "tabs": {
       "layers": "Layers",

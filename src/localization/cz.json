@@ -41,14 +41,6 @@
       "noDetail": "Žádné detailní informace nejsou k dispozici."
     }
   },
-  "selectViewSidebar": {
-    "title": "Nová oblast",
-    "selectedPoints": "Vybrané body",
-    "areaName": "Název oblasti",
-    "save": "Uložit",
-    "tooltipCoords": "Pozice myši",
-    "addPoint": "Nový bod"
-  },
   "settings": {
     "tabs": {
       "layers": "Vrstvy",
