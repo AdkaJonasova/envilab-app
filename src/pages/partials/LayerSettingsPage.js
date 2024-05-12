@@ -79,15 +79,31 @@ const LayerSettingsPage = () => {
     dispatch(clearChanges());
   };
 
+  const handleAddAllToFavorite = () => {
+    layerGroups.forEach((group) => {
+      group.layers.forEach((layer) => {
+        dispatch(markLayer({ layer: layer, value: true }));
+      });
+    });
+  };
+
+  const handleRemoveAllFromFavorite = () => {
+    layerGroups.forEach((group) => {
+      group.layers.forEach((layer) => {
+        dispatch(markLayer({ layer: layer, value: false }));
+      });
+    });
+  };
+
   const handleStarClick = (layer) => {
-    dispatch(markLayer({ layerName: layer.name, value: !layer.isFavorite }));
+    dispatch(markLayer({ layer: layer, value: !isMarkedFavorite(layer) }));
   };
 
   const isMarkedFavorite = (layer) => {
-    return (
+    let isMarked =
       changedLayers.find((l) => l.name === layer.name)?.value ??
-      layer.isFavorite
-    );
+      layer.isFavorite;
+    return isMarked;
   };
 
   const getLayerItem = (layer) => {
@@ -109,8 +125,12 @@ const LayerSettingsPage = () => {
         title={t("settings.layers.title")}
         annotation={t("settings.layers.annotation")}
         setFilter={setFilter}
+        starTooltip={t("settings.layers.starTooltip")}
+        starBorderTooltip={t("settings.layers.starBorderTooltip")}
         handleSettingsSave={handleSave}
         handleSettingsReset={handleReset}
+        handleAddAllToFavorite={handleAddAllToFavorite}
+        handleRemoveAllFromFavorite={handleRemoveAllFromFavorite}
       />
 
       <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>

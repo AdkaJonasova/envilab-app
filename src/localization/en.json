@@ -48,14 +48,18 @@
     },
     "layers": {
       "title": "Layers settings",
-      "annotation": "Select your favorite layers, which are going to be displayed in the side bar in the Layers' view"
+      "annotation": "Select your favorite layers, which are going to be displayed in the side bar in the Layers' view",
+      "starTooltip": "Mark all layers as favorite",
+      "starBorderTooltip": "Mark all layers as not favorite"
     },
     "areas": {
       "title": "Areas settings",
-      "annotation": "Select your favorite area, which are going to be displayed in the side bar in the Areas' view"
+      "annotation": "Select your favorite area, which are going to be displayed in the side bar in the Areas' view",
+      "starTooltip": "Mark all areas as favorite",
+      "starBorderTooltip": "Mark all areas as not favorite"
     },
-    "save": "Save changes",
-    "reset": "Reset changes",
+    "saveTooltip": "Save changes",
+    "resetTooltip": "Reset changes",
     "snackbarText": "Changes were saved!"
   },
   "selectView": {

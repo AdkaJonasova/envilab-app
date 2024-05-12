@@ -16,6 +16,7 @@ import {
 } from "../../redux/slices/AreasSlice";
 import {
   clearChanges,
+  markArea,
   selectChangedAreas,
   selectCollapsedAreas,
 } from "../../redux/slices/AreaSettingsSlice";
@@ -55,6 +56,18 @@ const AreaSettingsPage = () => {
 
   const handleReset = () => {
     dispatch(clearChanges());
+  };
+
+  const handleAddAllToFavorite = () => {
+    areas.forEach((area) => {
+      dispatch(markArea({ area: area, value: true }));
+    });
+  };
+
+  const handleRemoveAllFromFavorite = () => {
+    areas.forEach((area) => {
+      dispatch(markArea({ area: area, value: false }));
+    });
   };
 
   const isExpanded = (area) => {
@@ -105,8 +118,12 @@ const AreaSettingsPage = () => {
         title={t("settings.areas.title")}
         annotation={t("settings.areas.annotation")}
         setFilter={setFilter}
+        starTooltip={t("settings.areas.starTooltip")}
+        starBorderTooltip={t("settings.areas.starBorderTooltip")}
         handleSettingsSave={handleSave}
         handleSettingsReset={handleReset}
+        handleAddAllToFavorite={handleAddAllToFavorite}
+        handleRemoveAllFromFavorite={handleRemoveAllFromFavorite}
       />
       <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
         {areas.map((area) => getAreaItem(area, 0))}

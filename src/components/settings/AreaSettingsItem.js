@@ -27,11 +27,15 @@ const AreaSettingsItem = ({
 
   //#region Methods
 
-  const getStarForArea = (area) => {
-    const isMarkedFavorite =
+  const isMarkedFavorite = (area) => {
+    return (
       changedAreas.find((a) => a.identificator === area.name)?.value ??
-      area.isFavorite;
-    return isMarkedFavorite ? <Star /> : <StarBorder />;
+      area.isFavorite
+    );
+  };
+
+  const getStarForArea = (area) => {
+    return isMarkedFavorite(area) ? <Star /> : <StarBorder />;
   };
 
   const handleExpandCollapse = (area) => {
@@ -39,7 +43,7 @@ const AreaSettingsItem = ({
   };
 
   const handleStarClick = (area) => {
-    dispatch(markArea({ area: area }));
+    dispatch(markArea({ area: area, value: !isMarkedFavorite(area) }));
   };
 
   const addExpandCollapseItem = (area) => {

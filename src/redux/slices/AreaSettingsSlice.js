@@ -12,6 +12,27 @@ const addToChanged = (area, newChangedAreas) => {
   newChangedAreas.push(changedArea);
 };
 
+const handleRecursiveMarkArea2 = (area, newChangedAreas, value) => {
+  let foundArea = newChangedAreas.find((a) => a.identificator === area.name);
+
+  if (foundArea !== undefined && foundArea.value !== value) {
+    let foundAreaIndex = newChangedAreas.findIndex(
+      (a) => a.identificator === area.name
+    );
+    removeFromChanged(foundAreaIndex, newChangedAreas);
+  } else if (foundArea === undefined && area.isFavorite !== value) {
+    let changedArea = {
+      identificator: area.name,
+      value: value,
+    };
+    newChangedAreas.push(changedArea);
+  }
+
+  area.subAreas.forEach((subArea) =>
+    handleRecursiveMarkArea2(subArea, newChangedAreas, value)
+  );
+};
+
 const handleRecursiveMarkArea = (
   area,
   newChangedAreas,
@@ -78,9 +99,10 @@ const AreaSettingsSlice = createSlice({
     },
 
     markArea(state, action) {
-      const { area } = action.payload;
+      const { area, value } = action.payload;
       let newChangedAreas = [...state.changedAreas];
-      handleRecursiveMarkArea(area, newChangedAreas, area.isFavorite, false);
+      // handleRecursiveMarkArea(area, newChangedAreas, area.isFavorite, false);
+      handleRecursiveMarkArea2(area, newChangedAreas, value);
       state.changedAreas = newChangedAreas;
     },
 

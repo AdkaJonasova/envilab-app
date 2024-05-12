@@ -21,16 +21,17 @@ export const LayerSettingsSlice = createSlice({
     },
 
     markLayer(state, action) {
-      const { layerName, value } = action.payload;
-      let layerIndex = state.changedLayers.findIndex(
-        (layer) => layer.name === layerName
-      );
+      const { layer, value } = action.payload;
+      let foundLayer = state.changedLayers.find((l) => l.name === layer.name);
 
-      if (layerIndex !== -1) {
-        state.changedLayers.splice(layerIndex, 1);
-      } else {
+      if (foundLayer !== undefined && foundLayer.value !== value) {
+        let foundLayerIndex = state.changedLayers.findIndex(
+          (l) => l.name === layer.name
+        );
+        state.changedLayers.splice(foundLayerIndex, 1);
+      } else if (foundLayer === undefined && layer.isFavorite !== value) {
         const changedLayer = {
-          name: layerName,
+          name: layer.name,
           value: value,
         };
         state.changedLayers.push(changedLayer);
