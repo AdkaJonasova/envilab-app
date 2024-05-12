@@ -55,7 +55,7 @@ const NewAreaSavePopup = ({ opened, handleSaveArea, handleClose }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => handleClose()} color="darkGreen">
+        <Button onClick={() => handleClose()} color="errorRed">
           {t("selectView.saveNewAreaPopup.cancelBtnLabel")}
         </Button>
         <Button onClick={() => handleSaveAreaName()} color="darkGreen">

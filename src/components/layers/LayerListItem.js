@@ -5,6 +5,7 @@ import {
   ListItem,
   ListItemText,
   Switch,
+  Tooltip,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
@@ -13,11 +14,13 @@ import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
 import { changeSidebarType } from "../../redux/slices/SidebarSlice";
 import { SidebarTypes } from "../../utils/enums";
+import { useTranslation } from "react-i18next";
 
 const LayerListItem = ({ layer }) => {
   let paddingSize = 4;
 
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   //#region Methods
 
@@ -52,28 +55,40 @@ const LayerListItem = ({ layer }) => {
   return (
     <div key={`layer-list-item-container-${layer.name}`}>
       <ListItem key={`layer-list-item-${layer.name}`} sx={{ pl: paddingSize }}>
-        <ListItemText
-          key={`layer-list-item-name-${layer.name}`}
-          primary={layer.title}
-          onClick={() => handleDisplayLayerInfo(layer)}
-          sx={{ cursor: "pointer" }}
-        />
-        <IconButton
-          key={`layer-list-item-edit-${layer.name}`}
-          size="small"
-          color="beigeBrown"
-          onClick={() => handleEditLayer(layer)}
+        <Tooltip title={t("layerViewSidebar.layerList.layerDetailTooltip")}>
+          <ListItemText
+            key={`layer-list-item-name-${layer.name}`}
+            primary={layer.title}
+            onClick={() => handleDisplayLayerInfo(layer)}
+            sx={{ cursor: "pointer" }}
+          />
+        </Tooltip>
+        <Tooltip title={t("layerViewSidebar.layerList.editLayerTooltip")}>
+          <IconButton
+            key={`layer-list-item-edit-${layer.name}`}
+            size="small"
+            color="beigeBrown"
+            onClick={() => handleEditLayer(layer)}
+          >
+            <Edit />
+          </IconButton>
+        </Tooltip>
+        <Tooltip
+          title={
+            layer.isActive
+              ? t("layerViewSidebar.layerList.removeLayerTooltip")
+              : t("layerViewSidebar.layerList.addLayerTooltip")
+          }
         >
-          <Edit />
-        </IconButton>
-        <Switch
-          key={`layer-list-item-switch-${layer.name}`}
-          edge="end"
-          size="small"
-          color="beigeBrown"
-          onChange={() => handleLayerStateSwitch(layer)}
-          checked={layer.isActive}
-        />
+          <Switch
+            key={`layer-list-item-switch-${layer.name}`}
+            edge="end"
+            size="small"
+            color="beigeBrown"
+            onChange={() => handleLayerStateSwitch(layer)}
+            checked={layer.isActive}
+          />
+        </Tooltip>
       </ListItem>
       <Divider key={`layer-list-divider-${layer.name}`} />
     </div>

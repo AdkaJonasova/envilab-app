@@ -1,5 +1,5 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Grid, IconButton, Typography } from "@mui/material";
+import { Grid, IconButton, Tooltip, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,9 +23,11 @@ const LayerInfo = ({ layerName }) => {
     <div>
       <Grid container marginTop={1} marginBottom={2}>
         <Grid item xs={2}>
-          <IconButton color="darkGreen" onClick={() => handleGoBack()}>
-            <ArrowBack />
-          </IconButton>
+          <Tooltip title={t("layerViewSidebar.layerInfo.backTooltip")}>
+            <IconButton color="darkGreen" onClick={() => handleGoBack()}>
+              <ArrowBack />
+            </IconButton>
+          </Tooltip>
         </Grid>
         <Grid item xs={8}>
           <Typography variant="h2">{layer.title}</Typography>

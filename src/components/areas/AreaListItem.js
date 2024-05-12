@@ -14,6 +14,7 @@ import {
   IconButton,
   ListItem,
   ListItemText,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
@@ -61,28 +62,39 @@ const AreaListItem = ({
   const addUnzoomArea = (area) => {
     if (area.isActive) {
       return (
-        <IconButton
-          key={`area-list-item-unzoom-${area.name}`}
-          size="small"
-          color="beigeBrown"
-          onClick={() => handleUnzoomArea(area)}
-        >
-          <ZoomOut />
-        </IconButton>
+        <Tooltip title={t("layerViewSidebar.areaList.zoomOutTooltip")}>
+          <IconButton
+            key={`area-list-item-unzoom-${area.name}`}
+            size="small"
+            color="beigeBrown"
+            onClick={() => handleUnzoomArea(area)}
+          >
+            <ZoomOut />
+          </IconButton>
+        </Tooltip>
       );
     }
     return null;
   };
 
   const addExpandCollapseItem = (area) => {
+    let isAreaExpanded = isExpanded(area);
     return (
-      <IconButton
-        key={`area-list-item-expand-${area.name}`}
-        size="small"
-        onClick={() => handleExpandCollapse(area)}
+      <Tooltip
+        title={
+          isAreaExpanded
+            ? t("layerViewSidebar.areaList.collapseTooltip")
+            : t("layerViewSidebar.areaList.expandTooltip")
+        }
       >
-        {isExpanded(area) ? <ExpandLess /> : <ExpandMore />}
-      </IconButton>
+        <IconButton
+          key={`area-list-item-expand-${area.name}`}
+          size="small"
+          onClick={() => handleExpandCollapse(area)}
+        >
+          {isExpanded(area) ? <ExpandLess /> : <ExpandMore />}
+        </IconButton>
+      </Tooltip>
     );
   };
 
@@ -95,13 +107,15 @@ const AreaListItem = ({
   const addAreaDeleteIcon = (area) => {
     if (area.isCustom) {
       return (
-        <IconButton
-          key={`area-list-item-delete-${area.name}`}
-          size="small"
-          onClick={() => handleConfirmDialogOpen()}
-        >
-          <Delete color="errorRed" />
-        </IconButton>
+        <Tooltip title={t("layerViewSidebar.areaList.deleteAreaTooltip")}>
+          <IconButton
+            key={`area-list-item-delete-${area.name}`}
+            size="small"
+            onClick={() => handleConfirmDialogOpen()}
+          >
+            <Delete color="errorRed" />
+          </IconButton>
+        </Tooltip>
       );
     }
   };
@@ -123,14 +137,16 @@ const AreaListItem = ({
         {addAreaCustomIcon(area)}
         {addAreaDeleteIcon(area)}
         {addUnzoomArea(area)}
-        <IconButton
-          key={`area-list-item-zoom-into-${area.name}`}
-          size="small"
-          color="beigeBrown"
-          onClick={() => handleZoomToArea(area)}
-        >
-          <ZoomIn />
-        </IconButton>
+        <Tooltip title={t("layerViewSidebar.areaList.zoomInTooltip")}>
+          <IconButton
+            key={`area-list-item-zoom-into-${area.name}`}
+            size="small"
+            color="beigeBrown"
+            onClick={() => handleZoomToArea(area)}
+          >
+            <ZoomIn />
+          </IconButton>
+        </Tooltip>
       </ListItem>
       <Divider key={`area-list-item-divider-${area.name}`} />
       <Dialog

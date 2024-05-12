@@ -9,7 +9,8 @@
     "areaView": "Area editor tool",
     "pageName": "Envilab",
     "views": "Views",
-    "settings": "Settings"
+    "settings": "Settings",
+    "selectLanguageTooltip": "Change language of the application"
   },
   "layerViewSidebar": {
     "tabs": {
@@ -20,21 +21,32 @@
       "noAreas": "There are no areas to display. Please select your favorite areas in settings.",
       "confirmDeleteMessage": "Do you really want to delete the area",
       "confirmDeleteYes": "Yes, delete",
-      "confirmDeleteNo": "No, cancel"
+      "confirmDeleteNo": "No, cancel",
+      "zoomOutTooltip": "Zoom out of the area",
+      "zoomInTooltip": "Zoom into the area",
+      "collapseTooltip": "Collapse the area",
+      "expandTooltip": "Expand the area to display sub areas",
+      "deleteTooltip": "Delete the area"
     },
     "layerList": {
-      "noLayers": "There are no layers to display. Please select your favorite layers in settings."
+      "noLayers": "There are no layers to display. Please select your favorite layers in settings.",
+      "editLayerTooltip": "Edit the layer",
+      "removeLayerTooltip": "Remove the layer from the map",
+      "addLayerTooltip": "Add the layer to the map",
+      "layerDetailTooltip": "Display more information about the layer"
     },
     "layerEdit": {
       "opacity": "Opacity",
       "saveBtn": "Save",
-      "snackbarTextSuccess": "Changes were successfully saved!"
+      "snackbarTextSuccess": "Changes were successfully saved!",
+      "backTooltip": "Back"
     },
     "layerInfo": {
       "name": "Layer name",
       "type": "Layer type",
       "projection": "Layer projection",
-      "description": "Layer description"
+      "description": "Layer description",
+      "backTooltip": "Back"
     },
     "layersDetail": {
       "dialogTitle": "Detailed information",
@@ -73,6 +85,10 @@
       "lineString": "Line string",
       "polygon": "Polygon"
     },
+    "undoTooltip": "Undo drawing",
+    "deleteTooltip": "Delete all drawings",
+    "saveTooltip": "Save selection",
+    "selectInteractionTooltip": "Select interaction type",
     "saveNewAreaPopup": {
       "title": "Save New Area",
       "content": "To create a new area, please enter the area name and click Save",

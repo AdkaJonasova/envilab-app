@@ -7,6 +7,7 @@ import {
   ListItemText,
   Typography,
   ListItemIcon,
+  Tooltip,
 } from "@mui/material";
 import { languages } from "../../utils/data";
 
@@ -36,9 +37,11 @@ const LanguageSelector = () => {
         }}
         renderValue={() => {
           return (
-            <Typography>
-              {languages.find((l) => l.code === language)?.flag}
-            </Typography>
+            <Tooltip title={t("menu.selectLanguageTooltip")}>
+              <Typography>
+                {languages.find((l) => l.code === language)?.flag}
+              </Typography>
+            </Tooltip>
           );
         }}
       >

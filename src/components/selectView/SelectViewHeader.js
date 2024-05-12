@@ -3,6 +3,7 @@ import {
   ButtonGroup,
   Grid,
   IconButton,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -65,41 +66,47 @@ const SelectViewHeader = ({
           <Grid item xs={6} />
           <Grid item xs={2} container justifyContent={"flex-end"} paddingX={1}>
             <ButtonGroup variant="contained" size="small">
-              <IconButton
-                color="beigeBrown"
-                variant="outlined"
-                disabled={featuresAreEmpty()}
-                onClick={() => handleUndoSelection()}
-                size="small"
-                sx={{
-                  borderRight: `1px solid ${theme.palette.lightGreen.main}`,
-                  borderRadius: 0,
-                }}
-              >
-                <Undo />
-              </IconButton>
-              <IconButton
-                color="errorRed"
-                variant="outlined"
-                disabled={featuresAreEmpty()}
-                onClick={() => handleDeleteSelection()}
-                size="small"
-                sx={{
-                  borderRight: `1px solid ${theme.palette.lightGreen.main}`,
-                  borderRadius: 0,
-                }}
-              >
-                <Delete />
-              </IconButton>
-              <IconButton
-                color="darkGreen"
-                variant="outlined"
-                disabled={featuresAreEmpty()}
-                onClick={() => openSaveAreaPopup(true)}
-                size="small"
-              >
-                <Save />
-              </IconButton>
+              <Tooltip title={t("selectView.undoTooltip")}>
+                <IconButton
+                  color="beigeBrown"
+                  variant="outlined"
+                  disabled={featuresAreEmpty()}
+                  onClick={() => handleUndoSelection()}
+                  size="small"
+                  sx={{
+                    borderRight: `1px solid ${theme.palette.lightGreen.main}`,
+                    borderRadius: 0,
+                  }}
+                >
+                  <Undo />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t("selectView.deleteTooltip")}>
+                <IconButton
+                  color="errorRed"
+                  variant="outlined"
+                  disabled={featuresAreEmpty()}
+                  onClick={() => handleDeleteSelection()}
+                  size="small"
+                  sx={{
+                    borderRight: `1px solid ${theme.palette.lightGreen.main}`,
+                    borderRadius: 0,
+                  }}
+                >
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t("selectView.saveTooltip")}>
+                <IconButton
+                  color="darkGreen"
+                  variant="outlined"
+                  disabled={featuresAreEmpty()}
+                  onClick={() => openSaveAreaPopup(true)}
+                  size="small"
+                >
+                  <Save />
+                </IconButton>
+              </Tooltip>
             </ButtonGroup>
           </Grid>
         </Grid>

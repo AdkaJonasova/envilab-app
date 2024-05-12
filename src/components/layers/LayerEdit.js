@@ -5,6 +5,7 @@ import {
   IconButton,
   Slider,
   Snackbar,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -56,9 +57,11 @@ const LayerEdit = ({ layerName }) => {
     <div>
       <Grid container marginTop={1} marginBottom={2}>
         <Grid item xs={2}>
-          <IconButton color="darkGreen" onClick={() => handleGoBack()}>
-            <ArrowBackIcon />
-          </IconButton>
+          <Tooltip title={t("layerViewSidebar.layerEdit.backTooltip")}>
+            <IconButton color="darkGreen" onClick={() => handleGoBack()}>
+              <ArrowBackIcon />
+            </IconButton>
+          </Tooltip>
         </Grid>
         <Grid item xs={8}>
           <Typography variant="h2">{layer.title}</Typography>

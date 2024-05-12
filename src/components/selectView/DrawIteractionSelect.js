@@ -3,6 +3,7 @@ import {
   Grid,
   MenuItem,
   Select,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -38,43 +39,45 @@ const DrawInteractionSelect = ({ drawInteractionType, onDrawTypeChange }) => {
           </Box>
         </Grid>
         <Grid item xs={6}>
-          <Select
-            id="draw-interaction-type-select"
-            value={drawInteractionType}
-            onChange={(e) => onDrawTypeChange(e)}
-            size="small"
-            fullWidth
-            height={20}
-            sx={{
-              borderTopRightRadius: 4,
-              borderBottomRightRadius: 4,
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
-              ".MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.lightGreen.main,
-              },
-              "& .MuiSelect-icon": {
-                color: theme.palette.darkGreen.main,
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.lightGreen.main,
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.lightGreen.main,
-              },
-            }}
-          >
-            {drawOptions.map((option) => {
-              return (
-                <MenuItem
-                  key={`draw-interaction-type-select-item-${option.code}`}
-                  value={option.code}
-                >
-                  {t(option.label)}
-                </MenuItem>
-              );
-            })}
-          </Select>
+          <Tooltip title={t("selectView.selectInteractionTooltip")}>
+            <Select
+              id="draw-interaction-type-select"
+              value={drawInteractionType}
+              onChange={(e) => onDrawTypeChange(e)}
+              size="small"
+              fullWidth
+              height={20}
+              sx={{
+                borderTopRightRadius: 4,
+                borderBottomRightRadius: 4,
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
+                ".MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.lightGreen.main,
+                },
+                "& .MuiSelect-icon": {
+                  color: theme.palette.darkGreen.main,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.lightGreen.main,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.lightGreen.main,
+                },
+              }}
+            >
+              {drawOptions.map((option) => {
+                return (
+                  <MenuItem
+                    key={`draw-interaction-type-select-item-${option.code}`}
+                    value={option.code}
+                  >
+                    {t(option.label)}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </Tooltip>
         </Grid>
       </Grid>
     </div>
