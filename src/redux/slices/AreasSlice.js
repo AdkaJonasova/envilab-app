@@ -42,6 +42,9 @@ const handleRecursiveFavoriteStatusChange = (areaData, changedAreas) => {
     );
     if (changedArea) {
       newArea.isFavorite = changedArea.value;
+      if (!changedArea.value) {
+        newArea.isActive = false;
+      }
     }
     if (area.subAreas.length > 0) {
       newArea.subAreas = handleRecursiveFavoriteStatusChange(

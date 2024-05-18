@@ -52,6 +52,9 @@ export const LayerGroupsSlice = createSlice({
           );
           if (changedLayer) {
             layer.isFavorite = changedLayer.value;
+            if (!changedLayer.value) {
+              layer.isActive = false;
+            }
           }
         });
       });
