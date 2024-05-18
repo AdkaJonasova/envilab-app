@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,10 +14,12 @@ import {
   viewPages,
 } from "../../utils/data";
 import LanguageSelector from "./LanguageSelector";
-import { useTranslation } from "react-i18next";
 
 const MainMenu = () => {
   const [subMenu, setSubMenu] = React.useState(null);
+
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   //#region Methods
 
@@ -27,9 +30,6 @@ const MainMenu = () => {
   const handleCloseSubMenu = () => {
     setSubMenu(null);
   };
-
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const navigateViewAction = (path) => {
     handleCloseSubMenu();

@@ -1,4 +1,7 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Button,
   Collapse,
@@ -7,9 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import LayerListItem from "./LayerListItem";
-import PropTypes from "prop-types";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { collapseLayerSection } from "../../redux/slices/LayerListSectionsSlice";
 import { selectFavoriteLayersByTitle } from "../../redux/slices/LayersSlice";
 

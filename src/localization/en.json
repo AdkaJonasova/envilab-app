@@ -83,7 +83,10 @@
     "drawOptions": {
       "point": "Point",
       "lineString": "Line string",
-      "polygon": "Polygon"
+      "polygon": "Polygon",
+      "pointTooltip": "Point interaction is the best for creating an area for one specific point or including one point outside of polygon.",
+      "lineStringTooltip": "Line string interaction is the best when you want to be more precise while defining a new area.",
+      "polygonTooltip": "Polygon interaction is the most commonly used interaction types for defining new areas."
     },
     "undoTooltip": "Undo drawing",
     "deleteTooltip": "Delete all drawings",

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   ButtonGroup,
   Grid,
@@ -6,10 +8,8 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import SearchBar from "../global/SearchBar";
-import PropTypes from "prop-types";
-import { useTranslation } from "react-i18next";
 import { Replay, Save, Star, StarBorder } from "@mui/icons-material";
+import SearchBar from "../global/SearchBar";
 
 const SettingsHeader = ({
   title,

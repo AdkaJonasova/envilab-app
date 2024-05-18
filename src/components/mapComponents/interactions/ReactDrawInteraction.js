@@ -1,15 +1,15 @@
 import { useContext, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Draw } from "ol/interaction";
 import { Vector as VectorSource } from "ol/source";
-import MapContext from "../MapContext";
 import VectorLayer from "ol/layer/Vector";
+import GeoJSON from "ol/format/GeoJSON.js";
+import MapContext from "../MapContext";
 import { drawInteractionStyle, drawnFeatureStyle } from "../../../utils/data";
-import { useDispatch, useSelector } from "react-redux";
 import {
   addFeature,
   selectFeatures,
 } from "../../../redux/slices/SelectViewSlice";
-import GeoJSON from "ol/format/GeoJSON.js";
 import { MapProjections } from "../../../utils/enums";
 
 const ReactDrawInteraction = ({ variant }) => {

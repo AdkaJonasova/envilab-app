@@ -1,12 +1,12 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import List from "@mui/material/List";
 import { Collapse, Typography } from "@mui/material";
 import AreaListItem from "./AreaListItem";
-import PropTypes from "prop-types";
-import { useTranslation } from "react-i18next";
-import { activateArea, deactivateArea } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
-import { useDispatch, useSelector } from "react-redux";
+import { activateArea, deactivateArea } from "../../hooks/areaHooks";
 import { collapseAreaSection } from "../../redux/slices/AreaListSectionsSlice";
 import {
   changeAreaActiveState,

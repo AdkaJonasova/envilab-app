@@ -83,7 +83,10 @@
     "drawOptions": {
       "point": "Bod",
       "lineString": "Úsečka",
-      "polygon": "Mnohouholník"
+      "polygon": "Mnohouholník",
+      "pointTooltip": "Bodový typ interackcie je najlepší na vytvorenie oblasti pre jeden konkrétny bod alebo na zahrnutie jedného bodu mimo mnohouholník.",
+      "lineStringTooltip": "Úsečkový typ interakcie je najlepší, keď chcete byť pri definovaní novej oblasti čo najprecíznejši.",
+      "polygonTooltip": "Mnohouholníkový typ interakcie je najčastejšie používaným typom interackcie"
     },
     "undoTooltip": "Späť",
     "deleteTooltip": "Vymazať všetko",

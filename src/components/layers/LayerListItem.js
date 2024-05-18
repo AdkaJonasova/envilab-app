@@ -1,3 +1,6 @@
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import { Edit } from "@mui/icons-material";
 import {
   Divider,
@@ -7,14 +10,11 @@ import {
   Switch,
   Tooltip,
 } from "@mui/material";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
 import { changeLayerActiveState } from "../../redux/slices/LayersSlice";
 import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
 import { changeSidebarType } from "../../redux/slices/SidebarSlice";
 import { SidebarTypes } from "../../utils/enums";
-import { useTranslation } from "react-i18next";
 
 const LayerListItem = ({ layer }) => {
   let paddingSize = 4;

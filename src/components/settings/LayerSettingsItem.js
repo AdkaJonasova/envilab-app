@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import { Star, StarBorder } from "@mui/icons-material";
 import { Divider, IconButton, ListItem, ListItemText } from "@mui/material";
-import PropTypes from "prop-types";
 
 const LayerSettingsItem = ({ layer, isMarkedFavorite, handleStarClick }) => {
   const getStarForLayer = (layer) => {

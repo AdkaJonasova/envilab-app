@@ -59,9 +59,21 @@ export const selectViewHeaderPadding = 5;
 
 // Draw selector
 export const drawOptions = [
-  { code: "Point", label: "selectView.drawOptions.point" },
-  { code: "LineString", label: "selectView.drawOptions.lineString" },
-  { code: "Polygon", label: "selectView.drawOptions.polygon" },
+  {
+    code: "Point",
+    label: "selectView.drawOptions.point",
+    tooltip: "selectView.drawOptions.pointTooltip",
+  },
+  {
+    code: "LineString",
+    label: "selectView.drawOptions.lineString",
+    tooltip: "selectView.drawOptions.lineStringTooltip",
+  },
+  {
+    code: "Polygon",
+    label: "selectView.drawOptions.polygon",
+    tooltip: "selectView.drawOptions.polygonTooltip",
+  },
 ];
 
 // Draw styles

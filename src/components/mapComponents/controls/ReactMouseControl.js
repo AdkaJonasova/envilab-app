@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { MousePosition } from "ol/control";
-import MapContext from "../MapContext";
 import { createStringXY } from "ol/coordinate";
+import MapContext from "../MapContext";
 import { MapProjections } from "../../../utils/enums";
 
 const ReactMouseControl = () => {

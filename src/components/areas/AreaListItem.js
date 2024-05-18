@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Delete,
   ExpandLess,
@@ -18,14 +22,9 @@ import {
   Typography,
 } from "@mui/material";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
-
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
 import { deleteCustomArea } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
 import { deleteArea } from "../../redux/slices/AreasSlice";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const AreaListItem = ({
   area,

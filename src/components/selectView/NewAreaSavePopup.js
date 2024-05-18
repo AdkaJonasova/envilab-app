@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
@@ -7,15 +10,14 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import PropTypes from "prop-types";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const NewAreaSavePopup = ({ opened, handleSaveArea, handleClose }) => {
   const [areaName, setAreaName] = useState("");
   const [error, setError] = useState(false);
 
   const { t } = useTranslation();
+
+  //#region Methods
 
   const handleAreaNameChange = (event) => {
     setAreaName(event.target.value);
@@ -30,6 +32,8 @@ const NewAreaSavePopup = ({ opened, handleSaveArea, handleClose }) => {
       setAreaName("");
     }
   };
+
+  //#endregion
 
   return (
     <Dialog open={opened} style={{ display: opened ? "block" : "none" }}>

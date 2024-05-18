@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
-import MapContext from "../MapContext";
+import { useDispatch } from "react-redux";
 import TileLayer from "ol/layer/Tile";
 import { TileWMS } from "ol/source";
-import { useDispatch } from "react-redux";
+import MapContext from "../MapContext";
 import {
   addDetailedData,
   openDetailedPopup,

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import SideBarTabs from "./SideBarTabs";
 import SearchBar from "./global/SearchBar";
@@ -7,7 +8,6 @@ import LayerList from "./layers/LayerList";
 import { SidebarTypes } from "../utils/enums";
 import LayerEdit from "./layers/LayerEdit";
 import LayerInfo from "./layers/LayerInfo";
-import { useSelector } from "react-redux";
 import { selectSidebarInfo } from "../redux/slices/LayoutSlice";
 
 const Sidebar = () => {

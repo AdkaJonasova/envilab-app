@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -8,14 +12,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import PropTypes from "prop-types";
+import { Close, ArrowBack } from "@mui/icons-material";
 import { setOpacityForLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
-import { Close } from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
 import { changeSidebarType } from "../../redux/slices/SidebarSlice";
 import { SidebarTypes } from "../../utils/enums";
 import {
@@ -41,7 +40,6 @@ const LayerEdit = ({ layerName }) => {
   };
 
   const handleSaveEditedLayer = () => {
-    console.log("Layer: ", layer.title);
     dispatch(changeLayerOpacity({ layerName: layer.name, opacity: opacity }));
     setOpacityForLayer(userId, layer.name, opacity);
     setSnackbarOpen(true);
@@ -59,7 +57,7 @@ const LayerEdit = ({ layerName }) => {
         <Grid item xs={2}>
           <Tooltip title={t("layerViewSidebar.layerEdit.backTooltip")}>
             <IconButton color="darkGreen" onClick={() => handleGoBack()}>
-              <ArrowBackIcon />
+              <ArrowBack />
             </IconButton>
           </Tooltip>
         </Grid>

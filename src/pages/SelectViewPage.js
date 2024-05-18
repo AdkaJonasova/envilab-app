@@ -46,6 +46,7 @@ const SelectViewPage = () => {
   //#region Methods
 
   const handleDrawTypeChange = (event) => {
+    console.log("Changing draw type: ", event.target.value);
     const newValue = event.target.value;
     setDrawType(newValue);
   };

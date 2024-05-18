@@ -1,5 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Box,
   List,
@@ -9,8 +11,6 @@ import {
   Divider,
 } from "@mui/material";
 import { settingsTabs } from "../utils/data";
-import { useTranslation } from "react-i18next";
-import PropTypes from "prop-types";
 import { getTabIdByType } from "../utils/customFilteringFunctions";
 
 const SideMenu = ({ tab }) => {

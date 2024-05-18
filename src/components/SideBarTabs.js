@@ -1,10 +1,10 @@
 import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import { SidebarTypes } from "../utils/enums";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { changeSidebarType } from "../redux/slices/SidebarSlice";
 
 const SideBarTabs = () => {

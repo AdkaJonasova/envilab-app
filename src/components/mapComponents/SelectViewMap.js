@@ -1,3 +1,4 @@
+import { OSM } from "ol/source";
 import ReactMap from "./ReactMap";
 import ReactControls from "./controls/ReactControls";
 import ReactFullScreenControl from "./controls/ReactFullScreenControl";
@@ -7,7 +8,6 @@ import ReactInteractions from "./interactions/ReactInteractions";
 import ReactDrawInteraction from "./interactions/ReactDrawInteraction";
 import ReactLayers from "./layers/ReactLayers";
 import ReactTileLayer from "./layers/ReactTileLayer";
-import { OSM } from "ol/source";
 
 const SelectViewMap = ({ height, marginBottom, drawType }) => {
   return (

@@ -1,6 +1,6 @@
-import { Box, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
+import { Box, Grid, Typography } from "@mui/material";
 
 const ErrorWindow = ({ errorMessage }) => {
   const { t } = useTranslation();

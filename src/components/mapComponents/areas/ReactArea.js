@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-import MapContext from "../MapContext";
-import { transformExtent } from "ol/proj";
 import PropTypes from "prop-types";
+import { transformExtent } from "ol/proj";
+import MapContext from "../MapContext";
 import { MapProjections } from "../../../utils/enums";
 
 const ReactArea = ({ area }) => {

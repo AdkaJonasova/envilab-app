@@ -1,8 +1,8 @@
 // This code was sourced from: https://medium.com/swlh/how-to-incorporate-openlayers-maps-into-react-65b411985744 and modified if necessary
 
 import React, { useRef, useState, useEffect } from "react";
-import MapContext from "./MapContext";
 import { Map, View } from "ol";
+import MapContext from "./MapContext";
 import { MapProjections } from "../../utils/enums";
 
 const ReactMap = ({ children, height, marginBottom }) => {

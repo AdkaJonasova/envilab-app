@@ -1,18 +1,17 @@
-import ReactMap from "./ReactMap";
+import { useSelector } from "react-redux";
 import { OSM } from "ol/source";
+import ReactMap from "./ReactMap";
 import ReactTileLayer from "./layers/ReactTileLayer";
 import ReactControls from "./controls/ReactControls";
-import ReactFullScreenControl from "./controls/ReactFullScreenControl";
 import ReactZoomControl from "./controls/ReactZoomControl";
 import ReactLayers from "./layers/ReactLayers";
 import ReactAreas from "./areas/ReactAreas";
+import ReactArea from "./areas/ReactArea";
 import ReactClickInteraction from "./interactions/ReactClickInteraction";
 import ReactInteractions from "./interactions/ReactInteractions";
-import { useSelector } from "react-redux";
 import { selectActiveLayers } from "../../redux/slices/LayersSlice";
 import { selectActiveAreas } from "../../redux/slices/AreasSlice";
 import { selectMapInfo } from "../../redux/slices/LayoutSlice";
-import ReactArea from "./areas/ReactArea";
 import { createTileLayer } from "../../utils/mapFunctions";
 
 const LayerViewMap = () => {
@@ -40,7 +39,6 @@ const LayerViewMap = () => {
           })}
         </ReactAreas>
         <ReactControls>
-          <ReactFullScreenControl />
           <ReactZoomControl />
         </ReactControls>
         <ReactInteractions>

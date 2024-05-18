@@ -1,3 +1,5 @@
+import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import {
   ExpandLess,
   ExpandMore,
@@ -6,8 +8,6 @@ import {
   StarBorder,
 } from "@mui/icons-material";
 import { Divider, IconButton, ListItem, ListItemText } from "@mui/material";
-import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
 import {
   collapseAreaSettingsArea,
   markArea,
@@ -20,10 +20,10 @@ const AreaSettingsItem = ({
   isExpandable,
   isExpanded,
 }) => {
+  let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
+
   const changedAreas = useSelector(selectChangedAreas);
   const dispatch = useDispatch();
-
-  let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
   //#region Methods
 

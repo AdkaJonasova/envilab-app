@@ -83,7 +83,10 @@
     "drawOptions": {
       "point": "Bod",
       "lineString": "Úsečka",
-      "polygon": "Mnohoúhelník"
+      "polygon": "Mnohoúhelník",
+      "pointTooltip": "Bodová interakce je nejlepší pro vytvoření oblasti pro jeden konkrétní bod nebo pro zahrnutí jednoho bodu mimo mnohoúhelník.",
+      "lineStringTooltip": "Úsečková interakce je nejlepší, když chcete být při definování nové oblasti co nejpřesnější.",
+      "polygonTooltip": "Mnohoúhelníková interakce je nejčastěji používaným typem interakce."
     },
     "undoTooltip": "Zpět",
     "deleteTooltip": "Smazat všechno",

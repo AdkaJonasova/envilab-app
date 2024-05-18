@@ -1,8 +1,8 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import { ArrowBack } from "@mui/icons-material";
 import { Grid, IconButton, Tooltip, Typography } from "@mui/material";
-import PropTypes from "prop-types";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { changeSidebarType } from "../../redux/slices/SidebarSlice";
 import { SidebarTypes } from "../../utils/enums";
 import { selectLayerByName } from "../../redux/slices/LayersSlice";
