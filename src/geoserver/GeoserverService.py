@@ -21,9 +21,9 @@ class GeoserverService:
         self.native_name = config["custom_area_native_name"]
 
     # region Layers
-    def get_layers_in_groups(self, workspace: Optional[str] = None):
+    def get_layers_in_groups(self, workspace: Optional[str] = None) -> list:
         layer_groups_dict = self.geoserver_client.get_layer_groups(workspace)
-        transformed_groups = None
+        transformed_groups = []
         if layer_groups_dict is not None:
             layer_groups = get_json_list_attribute(layer_groups_dict, "layerGroups.layerGroup")
             if type(layer_groups) is not list:
@@ -55,7 +55,7 @@ class GeoserverService:
             resource_url = get_json_string_attribute(layer_dict, "layer.resource.href")
             resource_class = get_json_string_attribute(layer_dict, "layer.resource.@class")
 
-            transformed_res_info = self.__get_resource_info_for_layer(resource_name, resource_url, resource_class)
+            transformed_res_info = self.__get_resource_info_for_layer__(resource_name, resource_url, resource_class)
             transformed_layer = transform_layer(transformed_res_info, layer_dict)
 
         return transformed_layer
@@ -63,7 +63,7 @@ class GeoserverService:
     # endregion
 
     # region Areas
-    def get_areas(self):
+    def get_areas(self) -> list:
         areas = []
 
         transformed_area_group = self.__get__transformed_hierarchical_group__(self.areas_group, self.areas_workspace)
@@ -72,7 +72,7 @@ class GeoserverService:
 
         return areas
 
-    def get_custom_areas(self, user_id: int):
+    def get_custom_areas(self, user_id: int) -> list:
         areas = []
 
         custom_areas_group_for_user = f"{self.custom_areas_group}_{user_id}"
@@ -117,7 +117,7 @@ class GeoserverService:
     # endregion
 
     # region Private methods
-    def __get_resource_info_for_layer(self, res_name: str, res_url: str, res_class: str) -> Optional[dict]:
+    def __get_resource_info_for_layer__(self, res_name: str, res_url: str, res_class: str) -> Optional[dict]:
         res_info_dict = self.geoserver_client.get_resource_information(res_url)
         resource_information = None
 
@@ -126,7 +126,7 @@ class GeoserverService:
 
         return resource_information
 
-    def __get_transformed_groups__(self, layer_groups: list[dict], workspace: Optional[str] = None):
+    def __get_transformed_groups__(self, layer_groups: list[dict], workspace: Optional[str] = None) -> list:
         transformed_layer_groups = []
         for layer_group in layer_groups:
             layer_group_name = get_json_string_attribute(layer_group, "name")
@@ -135,7 +135,7 @@ class GeoserverService:
                 transformed_layer_groups.append(transformed_layer_group)
         return transformed_layer_groups
 
-    def __get_transformed_layers__(self, layers: list[dict]):
+    def __get_transformed_layers__(self, layers: list[dict]) -> list:
         transformed_layers = []
         for layer in layers:
             layer_name = get_json_string_attribute(layer, "name")
@@ -149,8 +149,8 @@ class GeoserverService:
 
         return transformed_layers
 
-    def __get__transformed_hierarchical_group__(self, layer_group_name: str, workspace: Optional[str] = None):
-        transformed_hierarchical_group = []
+    def __get__transformed_hierarchical_group__(self, layer_group_name: str, workspace: Optional[str] = None) -> dict:
+        transformed_hierarchical_group = None
         area_layer_group_dict = self.geoserver_client.get_layer_group(layer_group_name, workspace)
         if area_layer_group_dict is not None:
             area_layers = get_json_list_attribute(area_layer_group_dict, "layerGroup.publishables.published")
@@ -169,7 +169,7 @@ class GeoserverService:
 
         return transformed_hierarchical_group
 
-    def __get_transformed_hierarchical_group_content__(self, publishables: list):
+    def __get_transformed_hierarchical_group_content__(self, publishables: list) -> list:
         transformed_content = []
         for publishable_dict in publishables:
             area_layer_type = get_json_string_attribute(publishable_dict, "@type")
