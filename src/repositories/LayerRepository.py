@@ -61,14 +61,14 @@ class LayerRepository:
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(
+            self.__update_layer__(
                 found_layer.get("layerName"),
                 True,
                 found_layer.get("isFavorite"),
                 found_layer.get("opacity"),
                 found_layer.get("userID"))
         else:
-            self.__insert_layer(layer_name, True, True, 100, user_id)
+            self.__insert_layer__(layer_name, True, True, 100, user_id)
 
         self.connection.commit()
 
@@ -76,14 +76,14 @@ class LayerRepository:
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(
+            self.__update_layer__(
                 found_layer.get("layerName"),
                 False,
                 found_layer.get("isFavorite"),
                 found_layer.get("opacity"),
                 found_layer.get("userID"))
         else:
-            self.__insert_layer(layer_name, False, True, 100, user_id)
+            self.__insert_layer__(layer_name, False, True, 100, user_id)
 
         self.connection.commit()
 
@@ -91,14 +91,14 @@ class LayerRepository:
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(
+            self.__update_layer__(
                 found_layer.get("layerName"),
                 found_layer.get("isActive"),
                 True,
                 found_layer.get("opacity"),
                 found_layer.get("userID"))
         else:
-            self.__insert_layer(layer_name, False, True, 100, user_id)
+            self.__insert_layer__(layer_name, False, True, 100, user_id)
 
         self.connection.commit()
 
@@ -106,15 +106,15 @@ class LayerRepository:
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(
+            self.__update_layer__(
                 found_layer.get("layerName"),
-                found_layer.get("isActive"),
+                False,
                 False,
                 found_layer.get("opacity"),
                 found_layer.get("userID")
             )
         else:
-            self.__insert_layer(layer_name, False, False, 100, user_id)
+            self.__insert_layer__(layer_name, False, False, 100, user_id)
 
         self.connection.commit()
 
@@ -122,7 +122,7 @@ class LayerRepository:
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
-            self.__update_layer(
+            self.__update_layer__(
                 found_layer.get("layerName"),
                 found_layer.get("isActive"),
                 found_layer.get("isFavorite"),
@@ -130,10 +130,10 @@ class LayerRepository:
                 found_layer.get("userID")
             )
         else:
-            self.__insert_layer(layer_name, False, True, opacity, user_id)
+            self.__insert_layer__(layer_name, False, True, opacity, user_id)
 
     # Private methods
-    def __insert_layer(self, layer_name: str, is_active: bool, is_favorite: bool, opacity: int, user_id: int):
+    def __insert_layer__(self, layer_name: str, is_active: bool, is_favorite: bool, opacity: int, user_id: int):
         cursor = self.connection.cursor()
 
         user_layers = Table(self.TABLE_NAME)
@@ -144,7 +144,7 @@ class LayerRepository:
 
         cursor.execute(str(query))
 
-    def __update_layer(self, layer_name: str, is_active: bool, is_favorite: bool, opacity: int, user_id: int):
+    def __update_layer__(self, layer_name: str, is_active: bool, is_favorite: bool, opacity: int, user_id: int):
         cursor = self.connection.cursor()
 
         user_layers = Table(self.TABLE_NAME)

@@ -14,7 +14,9 @@ def connect() -> Optional[psycopg2.connection]:
             host=config["host"],
             database=config["database"],
             user=config["user"],
-            password=config["password"])
+            password=config["password"],
+            port="5432"
+        )
 
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)

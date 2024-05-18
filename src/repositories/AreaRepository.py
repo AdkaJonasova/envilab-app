@@ -78,7 +78,7 @@ class AreaRepository:
         areas = self.get_area_by_id_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
-            self.__update_area_for_user(
+            self.__update_area_for_user__(
                 area_name,
                 True,
                 found_area.get("isFavorite"),
@@ -86,7 +86,7 @@ class AreaRepository:
                 user_id
             )
         else:
-            self.__create_area_for_user(area_name, True, True, False, user_id)
+            self.__create_area_for_user__(area_name, True, True, False, user_id)
 
         self.connection.commit()
 
@@ -94,7 +94,7 @@ class AreaRepository:
         areas = self.get_area_by_id_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
-            self.__update_area_for_user(
+            self.__update_area_for_user__(
                 area_name,
                 False,
                 found_area.get("isFavorite"),
@@ -102,7 +102,7 @@ class AreaRepository:
                 user_id
             )
         else:
-            self.__create_area_for_user(area_name, False, True, False, user_id)
+            self.__create_area_for_user__(area_name, False, True, False, user_id)
 
         self.connection.commit()
 
@@ -110,7 +110,7 @@ class AreaRepository:
         areas = self.get_area_by_id_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
-            self.__update_area_for_user(
+            self.__update_area_for_user__(
                 area_name,
                 found_area.get("isActive"),
                 True,
@@ -118,7 +118,7 @@ class AreaRepository:
                 user_id
             )
         else:
-            self.__create_area_for_user(area_name, False, True, False, user_id)
+            self.__create_area_for_user__(area_name, False, True, False, user_id)
 
         self.connection.commit()
 
@@ -126,15 +126,15 @@ class AreaRepository:
         areas = self.get_area_by_id_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
-            self.__update_area_for_user(
+            self.__update_area_for_user__(
                 area_name,
-                found_area.get("isActive"),
+                False,
                 False,
                 found_area.get("isCustom"),
                 user_id
             )
         else:
-            self.__create_area_for_user(area_name, False, False, False, user_id)
+            self.__create_area_for_user__(area_name, False, False, False, user_id)
 
         self.connection.commit()
 
@@ -142,7 +142,7 @@ class AreaRepository:
         areas = self.get_area_by_id_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
-            self.__update_area_for_user(
+            self.__update_area_for_user__(
                 area_name,
                 found_area.get("isActive"),
                 found_area.get("isFavorite"),
@@ -150,7 +150,7 @@ class AreaRepository:
                 user_id
             )
         else:
-            self.__create_area_for_user(area_name, False, False, True, user_id)
+            self.__create_area_for_user__(area_name, False, False, True, user_id)
 
         self.connection.commit()
 
@@ -158,7 +158,7 @@ class AreaRepository:
         areas = self.get_area_by_id_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
-            self.__update_area_for_user(
+            self.__update_area_for_user__(
                 area_name,
                 found_area.get("isActive"),
                 found_area.get("isFavorite"),
@@ -166,7 +166,7 @@ class AreaRepository:
                 user_id
             )
         else:
-            self.__create_area_for_user(area_name, False, False, False, user_id)
+            self.__create_area_for_user__(area_name, False, False, False, user_id)
 
         self.connection.commit()
 
@@ -182,7 +182,7 @@ class AreaRepository:
         self.connection.commit()
 
     # Private methods
-    def __create_area_for_user(self, area_name: str, is_active: bool, is_favorite: bool, is_custom: bool, user_id: int):
+    def __create_area_for_user__(self, area_name: str, is_active: bool, is_favorite: bool, is_custom: bool, user_id: int):
         cursor = self.connection.cursor()
         user_areas = Table(self.USER_AREA_TABLE_NAME)
 
@@ -191,7 +191,7 @@ class AreaRepository:
                            .insert(area_name, is_active, is_favorite, is_custom, user_id))
         cursor.execute(str(user_area_query))
 
-    def __update_area_for_user(self, area_name: str, is_active: bool, is_favorite: bool, is_custom: bool, user_id: int):
+    def __update_area_for_user__(self, area_name: str, is_active: bool, is_favorite: bool, is_custom: bool, user_id: int):
         cursor = self.connection.cursor()
         user_areas = Table(self.USER_AREA_TABLE_NAME)
 
