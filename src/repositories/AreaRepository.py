@@ -5,12 +5,31 @@ from src.utils.DatabaseUtil import connect
 
 
 class AreaRepository:
+    """
+    A class used for manipulation of area data in the database.
+    Attributes
+    ----------
+    connection
+        opened connection to the database
+    """
     USER_AREA_TABLE_NAME = "UserArea"
 
     def __init__(self):
         self.connection = connect()
 
-    def get_area_by_id_and_user(self, area_name: str, user_id: int) -> list[RealDictRow]:
+    def get_area_by_name_and_user(self, area_name: str, user_id: int) -> list[RealDictRow]:
+        """ Retrieves an area with the area_name for a user with the user_id from the database.
+        Parameters
+        ----------
+        area_name : str
+            unique identifier of the area
+        user_id : int
+            ID of the user
+        Returns
+        ----------
+        list
+            list of areas with the given identifier and user ID
+        """
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
@@ -24,6 +43,16 @@ class AreaRepository:
         return cursor.fetchall()
 
     def get_areas_for_user(self, user_id: int) -> list[RealDictRow]:
+        """ Retrieves all areas for a user with the user_id from the database.
+        Parameters
+        ----------
+        user_id : int
+            ID of the user
+        Returns
+        ----------
+        list
+            list of areas with the given user ID
+        """
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
@@ -36,6 +65,16 @@ class AreaRepository:
         return cursor.fetchall()
 
     def get_active_areas_for_user(self, user_id: int) -> list[RealDictRow]:
+        """ Retrieves all areas for a user with the user_id that have a column isActive set to True from the database.
+        Parameters
+        ----------
+        user_id : int
+            ID of the user
+        Returns
+        ----------
+        list
+            list of areas with the given user ID and with a isActive column set to True
+        """
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
@@ -49,6 +88,16 @@ class AreaRepository:
         return cursor.fetchall()
 
     def get_favorite_areas_for_user(self, user_id: int) -> list[RealDictRow]:
+        """ Retrieves all areas for a user with the user_id that have a column isFavorite set to True from the database.
+        Parameters
+        ----------
+        user_id : int
+            ID of the user
+        Returns
+        ----------
+        list
+            list of areas with the given user ID and with a isFavorite column set to True
+        """
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
@@ -62,6 +111,16 @@ class AreaRepository:
         return cursor.fetchall()
 
     def get_custom_areas_for_user(self, user_id: int) -> list[RealDictRow]:
+        """ Retrieves all areas for a user with the user_id that have a column isCustom set to True from the database.
+        Parameters
+        ----------
+        user_id : int
+            ID of the user
+        Returns
+        ----------
+        list
+            list of areas with the given user ID and with a isCustom column set to True
+        """
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_areas = Table(self.USER_AREA_TABLE_NAME)
@@ -75,7 +134,16 @@ class AreaRepository:
         return cursor.fetchall()
 
     def activate_area_for_user(self, area_name: str, user_id: int):
-        areas = self.get_area_by_id_and_user(area_name, user_id)
+        """ Sets the isActive column to True for an area with the area_name and user with the user_id in the database.
+        If no such an area exists, create a new record for the area.
+        Parameters
+        ----------
+        area_name : str
+            unique identifier of the area
+        user_id : int
+            ID of the user
+        """
+        areas = self.get_area_by_name_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
             self.__update_area_for_user__(
@@ -91,7 +159,16 @@ class AreaRepository:
         self.connection.commit()
 
     def deactivate_area_for_user(self, area_name, user_id: int):
-        areas = self.get_area_by_id_and_user(area_name, user_id)
+        """ Sets the isActive column to False for an area with the area_name and user with the user_id in the database.
+        If no such an area exists, create a new record for the area.
+        Parameters
+        ----------
+        area_name : str
+            unique identifier of the area
+        user_id : int
+            ID of the user
+        """
+        areas = self.get_area_by_name_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
             self.__update_area_for_user__(
@@ -107,7 +184,16 @@ class AreaRepository:
         self.connection.commit()
 
     def add_favorite_for_user(self, area_name: str, user_id: int):
-        areas = self.get_area_by_id_and_user(area_name, user_id)
+        """ Sets the isFavorite column to True for an area with the area_name and user with the user_id in the database.
+        If no such an area exists, create a new record for the area.
+        Parameters
+        ----------
+        area_name : str
+            unique identifier of the area
+        user_id : int
+            ID of the user
+        """
+        areas = self.get_area_by_name_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
             self.__update_area_for_user__(
@@ -123,7 +209,16 @@ class AreaRepository:
         self.connection.commit()
 
     def remove_favorite_for_user(self, area_name: str, user_id: int):
-        areas = self.get_area_by_id_and_user(area_name, user_id)
+        """ Sets the isFavorite and isActive columns to False for an area with the area_name and user with the user_id.
+        in the database. If no such an area exists, create a new record for the area.
+        Parameters
+        ----------
+        area_name : str
+            unique identifier of the area
+        user_id : int
+            ID of the user
+        """
+        areas = self.get_area_by_name_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
             self.__update_area_for_user__(
@@ -139,7 +234,16 @@ class AreaRepository:
         self.connection.commit()
 
     def add_custom_for_user(self, area_name: str, user_id: int):
-        areas = self.get_area_by_id_and_user(area_name, user_id)
+        """ Sets the isCustom column to True for an area with the area_name and user with the user_id in the database.
+        If no such an area exists, create a new record for the area.
+        Parameters
+        ----------
+        area_name : str
+            unique identifier of the area
+        user_id : int
+            ID of the user
+        """
+        areas = self.get_area_by_name_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
             self.__update_area_for_user__(
@@ -155,7 +259,16 @@ class AreaRepository:
         self.connection.commit()
 
     def remove_custom_for_user(self, area_name: str, user_id: int):
-        areas = self.get_area_by_id_and_user(area_name, user_id)
+        """ Sets the isCustom column to False for an area with the area_name and user with the user_id in the database.
+        If no such an area exists, create a new record for the area.
+        Parameters
+        ----------
+        area_name : str
+            unique identifier of the area
+        user_id : int
+            ID of the user
+        """
+        areas = self.get_area_by_name_and_user(area_name, user_id)
         if areas:
             found_area = areas[0]
             self.__update_area_for_user__(
@@ -171,6 +284,14 @@ class AreaRepository:
         self.connection.commit()
 
     def remove_area_for_user(self, area_name: str, user_id: int):
+        """ Delete an area with the area_name for a user with the user_id from the database
+        Parameters
+        ----------
+        area_name : str
+            unique identifier of the area
+        user_id : int
+            ID of the user
+        """
         cursor = self.connection.cursor()
         user_areas = Table(self.USER_AREA_TABLE_NAME)
 
@@ -182,7 +303,8 @@ class AreaRepository:
         self.connection.commit()
 
     # Private methods
-    def __create_area_for_user__(self, area_name: str, is_active: bool, is_favorite: bool, is_custom: bool, user_id: int):
+    def __create_area_for_user__(self, area_name: str, is_active: bool, is_favorite: bool, is_custom: bool,
+                                 user_id: int):
         cursor = self.connection.cursor()
         user_areas = Table(self.USER_AREA_TABLE_NAME)
 
@@ -191,7 +313,8 @@ class AreaRepository:
                            .insert(area_name, is_active, is_favorite, is_custom, user_id))
         cursor.execute(str(user_area_query))
 
-    def __update_area_for_user__(self, area_name: str, is_active: bool, is_favorite: bool, is_custom: bool, user_id: int):
+    def __update_area_for_user__(self, area_name: str, is_active: bool, is_favorite: bool, is_custom: bool,
+                                 user_id: int):
         cursor = self.connection.cursor()
         user_areas = Table(self.USER_AREA_TABLE_NAME)
 

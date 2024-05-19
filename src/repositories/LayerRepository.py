@@ -5,47 +5,31 @@ from src.utils.DatabaseUtil import connect
 
 
 class LayerRepository:
+    """
+    A class used for manipulation of layer data in the database.
+    Attributes
+    ----------
+    connection
+        opened connection to the database
+    """
     TABLE_NAME = "UserLayer"
 
     def __init__(self):
         self.connection = connect()
 
-    def get_all_favorite_for_user(self, user_id: int) -> list[RealDictRow]:
-        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
-
-        user_layer = Table(self.TABLE_NAME)
-        query = (PostgreSQLQuery.from_(user_layer)
-                 .select(user_layer.layerName, user_layer.isActive, user_layer.isFavorite, user_layer.opacity, user_layer.userID)
-                 .where(user_layer.userID == user_id)
-                 .where(user_layer.isFavorite == True))
-
-        cursor.execute(str(query))
-        return cursor.fetchall()
-
-    def get_all_active_for_user(self, user_id: int) -> list[RealDictRow]:
-        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
-
-        user_layer = Table(self.TABLE_NAME)
-        query = (PostgreSQLQuery.from_(user_layer)
-                 .select(user_layer.layerName, user_layer.isActive, user_layer.isFavorite, user_layer.opacity, user_layer.userID)
-                 .where(user_layer.userID == user_id)
-                 .where(user_layer.isActive == True))
-
-        cursor.execute(str(query))
-        return cursor.fetchall()
-
-    def get_all_for_user(self, user_id: int) -> list[RealDictRow]:
-        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
-
-        user_layer = Table(self.TABLE_NAME)
-        query = (PostgreSQLQuery.from_(user_layer)
-                 .select(user_layer.layerName, user_layer.isActive, user_layer.isFavorite, user_layer.opacity, user_layer.userID)
-                 .where(user_layer.userID == user_id))
-
-        cursor.execute(str(query))
-        return cursor.fetchall()
-
     def get_layer_by_name_and_user(self, layer_name: str, user_id: int) -> list[RealDictRow]:
+        """ Retrieves a layer with the layer_name for a user with the user_id from the database.
+        Parameters
+        ----------
+        layer_name : str
+            unique identifier of the layer
+        user_id : int
+            ID of the user
+        Returns
+        ----------
+        list
+            list of layers with the given identifier and user ID
+        """
         cursor = self.connection.cursor(cursor_factory=RealDictCursor)
 
         user_layer = Table(self.TABLE_NAME)
@@ -57,7 +41,82 @@ class LayerRepository:
         cursor.execute(str(query))
         return cursor.fetchall()
 
+    def get_layers_for_user(self, user_id: int) -> list[RealDictRow]:
+        """ Retrieves all layers for a user from the database.
+        Parameters
+        ----------
+        user_id : int
+            ID of the user
+        Returns
+        ----------
+        list
+            list of layers with the given user ID
+        """
+        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
+
+        user_layer = Table(self.TABLE_NAME)
+        query = (PostgreSQLQuery.from_(user_layer)
+                 .select(user_layer.layerName, user_layer.isActive, user_layer.isFavorite, user_layer.opacity, user_layer.userID)
+                 .where(user_layer.userID == user_id))
+
+        cursor.execute(str(query))
+        return cursor.fetchall()
+
+    def get_favorite_layers_for_user(self, user_id: int) -> list[RealDictRow]:
+        """ Retrieves all layers for a user with the user_id that have a column isFavorite set to True from the
+        database.
+        Parameters
+        ----------
+        user_id : int
+            ID of the user
+        Returns
+        ----------
+        list
+            list of layers with the given user ID and with a isFavorite column set to True
+        """
+        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
+
+        user_layer = Table(self.TABLE_NAME)
+        query = (PostgreSQLQuery.from_(user_layer)
+                 .select(user_layer.layerName, user_layer.isActive, user_layer.isFavorite, user_layer.opacity, user_layer.userID)
+                 .where(user_layer.userID == user_id)
+                 .where(user_layer.isFavorite == True))
+
+        cursor.execute(str(query))
+        return cursor.fetchall()
+
+    def get_active_layers_for_user(self, user_id: int) -> list[RealDictRow]:
+        """ Retrieves all layers for a user with the user_id that have a column isActive set to True from the database.
+        Parameters
+        ----------
+        user_id : int
+            ID of the user
+        Returns
+        ----------
+        list
+            list of layers with the given user ID and with a isActive column set to True
+        """
+        cursor = self.connection.cursor(cursor_factory=RealDictCursor)
+
+        user_layer = Table(self.TABLE_NAME)
+        query = (PostgreSQLQuery.from_(user_layer)
+                 .select(user_layer.layerName, user_layer.isActive, user_layer.isFavorite, user_layer.opacity, user_layer.userID)
+                 .where(user_layer.userID == user_id)
+                 .where(user_layer.isActive == True))
+
+        cursor.execute(str(query))
+        return cursor.fetchall()
+
     def activate_layer_for_user(self, layer_name: str, user_id: int):
+        """ Sets the isActive column to True for a layer with the layer_name and user with the user_id in the database.
+        If no such a layer exists, create a new record for the layer.
+        Parameters
+        ----------
+        layer_name : str
+            unique identifier of the layer
+        user_id : int
+            ID of the user
+        """
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
@@ -73,6 +132,15 @@ class LayerRepository:
         self.connection.commit()
 
     def deactivate_layer_for_user(self, layer_name: str, user_id: int):
+        """ Sets the isActive column to False for a layer with the layer_name and user with the user_id in the database.
+        If no such a layer exists, create a new record for the layer.
+        Parameters
+        ----------
+        layer_name : str
+            unique identifier of the layer
+        user_id : int
+            ID of the user
+        """
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
@@ -88,6 +156,15 @@ class LayerRepository:
         self.connection.commit()
 
     def add_layer_to_favorites_for_user(self, layer_name: str, user_id: int):
+        """ Sets the isFavorite column to True for a layer with the layer_name and user with the user_id in the database.
+        If no such a layer exists, create a new record for the layer.
+        Parameters
+        ----------
+        layer_name : str
+            unique identifier of the layer
+        user_id : int
+            ID of the user
+        """
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
@@ -103,6 +180,15 @@ class LayerRepository:
         self.connection.commit()
 
     def remove_layer_from_favorites_for_user(self, layer_name: str, user_id: int):
+        """ Sets the isFavorite, isActive columns to True for a layer with the layer_name and user with the user_id in
+        the database. If no such a layer exists, create a new record for the layer.
+        Parameters
+        ----------
+        layer_name : str
+            unique identifier of the layer
+        user_id : int
+            ID of the user
+        """
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]
@@ -119,6 +205,17 @@ class LayerRepository:
         self.connection.commit()
 
     def set_opacity_of_layer_for_user(self, layer_name: str, user_id: int, opacity: int):
+        """ Sets the opacity column to given opacity for a layer with the layer_name and user with the user_id in the
+        database. If no such a layer exists, create a new record for the layer.
+        Parameters
+        ----------
+        layer_name : str
+            unique identifier of the layer
+        user_id : int
+            ID of the user
+        opacity: int
+            new opacity that should be set
+        """
         layers = self.get_layer_by_name_and_user(layer_name, user_id)
         if layers:
             found_layer = layers[0]

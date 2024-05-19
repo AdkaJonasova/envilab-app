@@ -3,7 +3,19 @@ import logging
 logger = logging.getLogger()
 
 
-def get_json_string_attribute(json_data, attribute_path: str):
+def get_json_string_attribute(json_data: dict, attribute_path: str):
+    """ Tries to get an attribute with the attribute_path from given JSON data.
+    Parameters
+    ----------
+    json_data : dict
+        JSON data string
+    attribute_path: str
+        path to the attribute which should be retrieved - attribute names are divided by dots
+    Returns
+    -------
+    str
+        a value of the attribute or empty if no such an attribute was found
+    """
     value = ""
     keys = attribute_path.split('.')
 
@@ -19,6 +31,18 @@ def get_json_string_attribute(json_data, attribute_path: str):
 
 
 def get_json_list_attribute(json_data: dict, attribute_path: str) -> list:
+    """ Tries to get an attribute with the attribute_path from given JSON data.
+    Parameters
+    ----------
+    json_data : dict
+        JSON data string
+    attribute_path: str
+        path to the attribute which should be retrieved - attribute names are divided by dots
+    Returns
+    -------
+    list
+        a value of the attribute or empty if no such an attribute was found
+    """
     value = []
     keys = attribute_path.split('.')
 
