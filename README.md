@@ -33,42 +33,35 @@ GeoServer.
    representing a parent area and add all sub areas into this group. This group should then be added to the previously 
    mentioned _areas_ group.
 
-## Backend set-up
-To set up the backend part of the application, you have 2 options - you can use the _docker-compose_ file or set it up 
-manually. Please note that if you opt for using docker, you need to set up GeoServer first and add it to the 
-_docker-compose_ file yourself. The project can be downloaded at https://github.com/AdkaJonasova/envilab-app-be.git 
-(master branch). Before starting the set-up, please update the _configuration.ini_ file to fit your needs.
+## Application set-up
+To set up the application, you have 2 options - you can use docker or set it up manually.  Please note that if you opt 
+for using docker, you need to set up GeoServer first and add it to the _docker-compose_ file yourself. The project can 
+be downloaded at https://github.com/AdkaJonasova/envilab-app.git (master branch). Before starting the set-up, please 
+update the _configuration.ini_ file to fit your needs.
 
 ### Without docker
 Before starting the set-up, please make sure that you have Python 3.10 installed, then proceed with these instructions:
-1. Install all necessary libraries by calling _pip install <library_name>_. List of necessary libraries can be found in 
+1. Create a PostgreSQL database and initialize it with the script from the file _init.sql_.
+2. Go to the _envilab-be_ folder
+3. Install all necessary libraries by calling _pip install <library_name>_. List of necessary libraries can be found in 
 the _requirements.txt_ file.
-2. Create a PostgreSQL database and initialize it with the script from the file _init.sql_.
-3. Run _python -m src.main_
+4. Run _python -m src.main_
+5. Go to the _envilab-fe_ folder
+6. Run _npm install_
+7. Run _npm start_
 
 ### With docker
 Before starting the set-up please make sure that you installed and have your Docker running, then process with these 
 instructions:
 1. Change host in postgresql section in the _configuration.ini_ file to _database_
-2. Run _docker build -t envilab_backend ._
-3. Run _docker-compose up -d_
+2. Go to the _envilab-be_ folder
+3. Run _docker build -t envilab_backend ._
+4. Run _docker-compose up -d_
+5. Go to the _envilab-fe_ folder
+6. Run _docker build -t envilab_frontend ._
+7. Run _docker run -p 3000:3000 --name=envilab_fe_con envilab_frontend_
 
-## Frontend set-up
-Similarly to the backend part, to set up the frontend part of the application, you have 2 options - you can use the 
-docker or set it up manually. The project can be downloaded The project can be downloaded at 
-https://github.com/AdkaJonasova/envilab-app.git (master branch).
-
-### Without docker
-1. Run _npm install_.
-2. Run _npm start_.
-
-### With docker
-Before starting the set-up please make sure that you installed and have your Docker running, then process with these 
-instructions:
-1. Run _docker build -t envilab_frontend ._
-2. Run _docker run -p 3000:3000 --name=envilab_fe_con envilab_frontend_ 
-
-## Application
+## Running the application
 After completing these instructions the application will be running at http://localhost:3000/.
 
 To view the Swagger, you can go to http://localhost:8000/api-documentation.
