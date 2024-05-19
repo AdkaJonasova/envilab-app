@@ -1,0 +1,8 @@
+psycopg2~=2.9.9
+pydantic~=2.5.2
+uvicorn~=0.24.0.post1
+geopandas~=0.14.3
+shapely~=2.0.4
+requests~=2.31.0
+fastapi~=0.105.0
+PyPika~=0.48.9

@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# How to run the EnviMap application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Geoserver set-up
+The application fetches the data from GeoServer, so in order to run properly you need to either provide an already
+existing instance of GeoServer or set up a local instance. To set up your local instance, follow these instructions:
+1. Download GeoServer from https://geoserver.org/download/.
+2. During the installation, set your local instance to run on http://localhost:9000/ and select your username and 
+password.
 
-## Available Scripts
+After downloading GeoServer, going to http://localhost:9000/ and logging in, you will see that there are already circa
+12 layers that you can work with. However, to be able to use this instance, you will need to set it up even further:
+1. Delete all already existing layer groups.
+2. Create your own layer groups under no specific workspace and divide the already provided layers into them however
+you see a fit. Be careful, layers that do not belong to any layer group will not be accessible in the application.
+3. Crete a new workspace and name it _customAreas_. In this workspace there will be all custom areas created through the
+application.
+4. Create a folder on your PC in the _C://_ folder and name it _geoserverCustomData_. In this folder there will be source
+   files for custom areas created through the application.
+5. Create a new workspace and name it _areas_. In this workspace there will be all areas created directly through 
+GeoServer.
+6. Create some example areas in GeoServer:
+   1. Crete a folder on your PC in the _C://_ folder and name it _geoserverData_. In this folder you will store source
+   files for areas. To get some source data, you can visit https://hub.arcgis.com/ or 
+   https://gadm.org/download_country.html#google_vignette and download the Shapefiles.
+   2. Create a store under the _areas_ workspace (type - Directory of spatial files) in GeoServer and point a path to the
+   created directory.
+   3. Create layers under the _areas_ workspace. Select a corresponding source from the created store and make sure that 
+   Declared SRS in set to EPSG:4326 projection.
+   4. Create a new layer groups under the _areas_ workspace, name it _areas_ and add all top-level areas into this 
+   group.
+   5. To achieve a hierarchical structure, create a new layer group under the _areas_ workspace for each layer that 
+   should have sub areas. Set the mode of the group to Earth Observation Tree, set root layer to be the layer 
+   representing a parent area and add all sub areas into this group. This group should then be added to the previously 
+   mentioned _areas_ group.
 
-In the project directory, you can run:
+## Application set-up
+To set up the application, you have 2 options - you can use docker or set it up manually.  Please note that if you opt 
+for using docker, you need to set up GeoServer first and add it to the _docker-compose_ file yourself. The project can 
+be downloaded at https://github.com/AdkaJonasova/envilab-app.git (master branch). Before starting the set-up, please 
+update the _configuration.ini_ file to fit your needs.
 
-### `npm start`
+### Without docker
+Before starting the set-up, please make sure that you have Python 3.10 installed, then proceed with these instructions:
+1. Create a PostgreSQL database and initialize it with the script from the file _init.sql_.
+2. Go to the _envilab-be_ folder
+3. Install all necessary libraries by calling _pip install <library_name>_. List of necessary libraries can be found in 
+the _requirements.txt_ file.
+4. Run _python -m src.main_
+5. Go to the _envilab-fe_ folder
+6. Run _npm install_
+7. Run _npm start_
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### With docker
+Before starting the set-up please make sure that you installed and have your Docker running, then process with these 
+instructions:
+1. Change host in postgresql section in the _configuration.ini_ file to _database_
+2. Go to the _envilab-be_ folder
+3. Run _docker build -t envilab_backend ._
+4. Run _docker-compose up -d_
+5. Go to the _envilab-fe_ folder
+6. Run _docker build -t envilab_frontend ._
+7. Run _docker run -p 3000:3000 --name=envilab_fe_con envilab_frontend_
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Running the application
+After completing these instructions the application will be running at http://localhost:3000/.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+To view the Swagger, you can go to http://localhost:8000/api-documentation.
