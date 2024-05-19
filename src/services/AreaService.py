@@ -224,9 +224,9 @@ class AreaService:
             True if deleting the area was successful, False otherwise
         """
         area_name_parts = area_name.split(":")
-        area_identificator = area_name_parts[1]
-        area_identificator_parts = area_identificator.split("_")
-        file_name = f"customLayer_{user_id}_{area_identificator_parts[2]}"
+        area_identifier = area_name_parts[1]
+        area_identifier_parts = area_identifier.split("_")
+        file_name = f"customLayer_{user_id}_{area_identifier_parts[2]}"
 
         delete_success = self.geoserver_service.delete_custom_area(area_name, user_id)
 
