@@ -22,11 +22,12 @@
       "confirmDeleteYes": "Ano, smazat",
       "confirmDeleteNo": "Ne, zrušit",
       "noAreas": "Nejsou k dispozici žádné oblasti k zobrazení. Prosím, vyberte oblíbené oblasti v nastaveních.",
-      "zoomOutTooltip": "Oddálit z oblasti.",
-      "zoomInTooltip": "Přiblížit na oblast.",
-      "collapseTooltip": "Sbalit oblast.",
-      "expandTooltip": "Rozbalit oblast a zobrazit podoblasti.",
-      "deleteTooltip": "Smazat oblast."
+      "zoomOutTooltip": "Oddálit z oblasti",
+      "zoomInTooltip": "Přiblížit na oblast",
+      "collapseTooltip": "Sbalit oblast",
+      "expandTooltip": "Rozbalit oblast a zobrazit podoblasti",
+      "deleteTooltip": "Smazat oblast",
+      "customTooltip": "Tuto oblast jsi vytvořil ty sám"
     },
     "layerList": {
       "noLayers": "Nejsou k dispozici žádné vrstvy k zobrazení. Prosím, vyberte oblíbené vrstvy v nastaveních.",
@@ -56,19 +57,25 @@
   "settings": {
     "tabs": {
       "layers": "Vrstvy",
-      "areas": "Oblasti"
+      "areas": "Oblasti",
+      "layersTooltip": "Přejít na nastavení vrstev",
+      "areasTooltip": "Přejít na nastavení oblastí"
     },
     "layers": {
       "title": "Nastavení vrstev",
       "annotation": "Vyberte své oblíbené vrstvy, které budou zobrazeny v bočním panelu při práci s vrstvami.",
       "starTooltip": "Označit všechny vrstvy jako oblíbené",
-      "starBorderTooltip": "Označit všechny vrstvy jako neoblíbené"
+      "starBorderTooltip": "Označit všechny vrstvy jako neoblíbené",
+      "singleStarTooltip": "Tato vrstva je aktuálně označena jako oblíbená, kliknutím ji odstraníte z oblíbených.",
+      "singleStarBorderTooltip": "Tato vrstva není aktuálně označena jako oblíbená, kliknutím ji přidáte do oblíbených."
     },
     "areas": {
       "title": "Nastavení oblastí",
       "annotation": "Vyberte své oblíbené oblasti, které budou zobrazeny v bočním panelu při práci s oblastmi.",
       "starTooltip": "Označit všechny oblasti jako oblíbené",
-      "starBorderTooltip": "Označit všechny oblasti jako neoblíbené"
+      "starBorderTooltip": "Označit všechny oblasti jako neoblíbené",
+      "singleStarTooltip": "Tato oblast je aktuálně označena jako oblíbená, kliknutím ji odstraníte z oblíbených.",
+      "singleStarBorderTooltip": "Tato oblast není aktuálně označena jako oblíbená, kliknutím ji přidáte do oblíbených."
     },
     "saveTooltip": "Uložit změny",
     "resetTooltip": "Vrátit změny",

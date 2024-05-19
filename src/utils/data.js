@@ -27,6 +27,7 @@ const layerSettingsTab = {
   tabName: "settings.tabs.layers",
   icon: <Layers />,
   navigation: "/settings/layers",
+  tooltip: "settings.tabs.layersTooltip",
 };
 const areaSettingsTab = {
   tabId: 1,
@@ -34,6 +35,7 @@ const areaSettingsTab = {
   tabName: "settings.tabs.areas",
   icon: <Public />,
   navigation: "/settings/areas",
+  tooltip: "settings.tabs.areasTooltip",
 };
 export const settingsTabs = [layerSettingsTab, areaSettingsTab];
 

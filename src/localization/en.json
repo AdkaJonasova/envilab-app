@@ -26,7 +26,8 @@
       "zoomInTooltip": "Zoom into the area",
       "collapseTooltip": "Collapse the area",
       "expandTooltip": "Expand the area to display sub areas",
-      "deleteTooltip": "Delete the area"
+      "deleteTooltip": "Delete the area",
+      "customTooltip": "This is your custom area"
     },
     "layerList": {
       "noLayers": "There are no layers to display. Please select your favorite layers in settings.",
@@ -56,19 +57,25 @@
   "settings": {
     "tabs": {
       "layers": "Layers",
-      "areas": "Areas"
+      "areas": "Areas",
+      "layersTooltip": "Go to layers settings",
+      "areasTooltip": "Go to areas settings"
     },
     "layers": {
       "title": "Layers settings",
       "annotation": "Select your favorite layers, which are going to be displayed in the side bar in the Layers' view",
       "starTooltip": "Mark all layers as favorite",
-      "starBorderTooltip": "Mark all layers as not favorite"
+      "starBorderTooltip": "Mark all layers as not favorite",
+      "singleStarTooltip": "This layer is currently marked as favorite, click to remove it from favorites.",
+      "singleStarBorderTooltip": "This layer is currently not marked as favorite, click to add it to favorites."
     },
     "areas": {
       "title": "Areas settings",
       "annotation": "Select your favorite area, which are going to be displayed in the side bar in the Areas' view",
       "starTooltip": "Mark all areas as favorite",
-      "starBorderTooltip": "Mark all areas as not favorite"
+      "starBorderTooltip": "Mark all areas as not favorite",
+      "singleStarTooltip": "This area is currently marked as favorite, click to remove it from favorites.",
+      "singleStarBorderTooltip": "This area is currently not marked as favorite, click to add it to favorites."
     },
     "saveTooltip": "Save changes",
     "resetTooltip": "Reset changes",

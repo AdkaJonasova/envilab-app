@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
+  Tooltip,
 } from "@mui/material";
 import { settingsTabs } from "../utils/data";
 import { getTabIdByType } from "../utils/customFilteringFunctions";
@@ -31,13 +32,15 @@ const SideMenu = ({ tab }) => {
   const getSideMenuItem = (tab) => {
     return (
       <div key={`side-menu-list-item${tab.tabId}`}>
-        <ListItemButton
-          selected={selectedItemIndex === tab.tabId}
-          onClick={(event) => handleListItemClick(event, tab)}
-        >
-          <ListItemIcon>{tab.icon}</ListItemIcon>
-          <ListItemText primary={t(tab.tabName)} />
-        </ListItemButton>
+        <Tooltip title={t(tab.tooltip)} placement="right-start">
+          <ListItemButton
+            selected={selectedItemIndex === tab.tabId}
+            onClick={(event) => handleListItemClick(event, tab)}
+          >
+            <ListItemIcon>{tab.icon}</ListItemIcon>
+            <ListItemText primary={t(tab.tabName)} />
+          </ListItemButton>
+        </Tooltip>
         <Divider />
       </div>
     );

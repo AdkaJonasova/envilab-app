@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import {
   ExpandLess,
@@ -7,7 +8,13 @@ import {
   Star,
   StarBorder,
 } from "@mui/icons-material";
-import { Divider, IconButton, ListItem, ListItemText } from "@mui/material";
+import {
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemText,
+  Tooltip,
+} from "@mui/material";
 import {
   collapseAreaSettingsArea,
   markArea,
@@ -23,7 +30,9 @@ const AreaSettingsItem = ({
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
   const changedAreas = useSelector(selectChangedAreas);
+
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   //#region Methods
 
@@ -35,7 +44,25 @@ const AreaSettingsItem = ({
   };
 
   const getStarForArea = (area) => {
-    return isMarkedFavorite(area) ? <Star /> : <StarBorder />;
+    if (isMarkedFavorite(area)) {
+      return (
+        <Tooltip
+          title={t("settings.areas.singleStarTooltip")}
+          placement="left-start"
+        >
+          <Star />
+        </Tooltip>
+      );
+    } else {
+      return (
+        <Tooltip
+          title={t("settings.areas.singleStarBorderTooltip")}
+          placement="left-start"
+        >
+          <StarBorder />
+        </Tooltip>
+      );
+    }
   };
 
   const handleExpandCollapse = (area) => {
@@ -54,7 +81,15 @@ const AreaSettingsItem = ({
           size="small"
           onClick={() => handleExpandCollapse(area)}
         >
-          {isExpanded(area) ? <ExpandLess /> : <ExpandMore />}
+          {isExpanded(area) ? (
+            <Tooltip title={t("layerViewSidebar.areaList.collapseTooltip")}>
+              <ExpandLess />
+            </Tooltip>
+          ) : (
+            <Tooltip title={t("layerViewSidebar.areaList.expandTooltip")}>
+              <ExpandMore />
+            </Tooltip>
+          )}
         </IconButton>
       );
     }
@@ -63,7 +98,14 @@ const AreaSettingsItem = ({
 
   const addCustomAreaItem = (area) => {
     if (area.isCustom) {
-      return <LockPerson color="darkGreen" />;
+      return (
+        <Tooltip
+          title={t("layerViewSidebar.areaList.customTooltip")}
+          placement="left-start"
+        >
+          <LockPerson color="darkGreen" />
+        </Tooltip>
+      );
     }
   };
 

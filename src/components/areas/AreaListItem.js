@@ -99,14 +99,18 @@ const AreaListItem = ({
 
   const addAreaCustomIcon = (area) => {
     if (area.isCustom) {
-      return <LockPersonIcon color="darkGreen" />;
+      return (
+        <Tooltip title={t("layerViewSidebar.areaList.customTooltip")}>
+          <LockPersonIcon color="darkGreen" />
+        </Tooltip>
+      );
     }
   };
 
   const addAreaDeleteIcon = (area) => {
     if (area.isCustom) {
       return (
-        <Tooltip title={t("layerViewSidebar.areaList.deleteAreaTooltip")}>
+        <Tooltip title={t("layerViewSidebar.areaList.deleteTooltip")}>
           <IconButton
             key={`area-list-item-delete-${area.name}`}
             size="small"
