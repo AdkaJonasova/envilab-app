@@ -14,10 +14,12 @@ After downloading GeoServer, going to http://localhost:9000/ and logging in, you
 you see a fit. Be careful, layers that do not belong to any layer group will not be accessible in the application.
 3. Crete a new workspace and name it _customAreas_. In this workspace there will be all custom areas created through the
 application.
-4. Create a new workspace and name it _areas_. In this workspace there will be all areas created directly through 
+4. Create a folder on your PC in the _C://_ folder and name it _geoserverCustomData_. In this folder there will be source
+   files for custom areas created through the application.
+5. Create a new workspace and name it _areas_. In this workspace there will be all areas created directly through 
 GeoServer.
-5. Create some example areas in GeoServer:
-   1. Crete a folder on you PC in the _C://_ folder and name it _geoserverData_. In this folder you will store source
+6. Create some example areas in GeoServer:
+   1. Crete a folder on your PC in the _C://_ folder and name it _geoserverData_. In this folder you will store source
    files for areas. To get some source data, you can visit https://hub.arcgis.com/ or 
    https://gadm.org/download_country.html#google_vignette and download the Shapefiles.
    2. Create a store under the _areas_ workspace (type - Directory of spatial files) in GeoServer and point a path to the
