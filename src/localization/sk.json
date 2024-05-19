@@ -110,5 +110,14 @@
   },
   "errorWindow": {
     "errorMessage": "Niečo sa pokazilo! Ospravedlňujeme sa, skúste to prosím neskôr alebo kontaktujte vášho administrátora."
+  },
+  "errorSnackbar": {
+    "errorDelete": "Nie je možné odstrániť oblasť",
+    "errorCreate": "Nie je možné vytvoriť novú oblasť",
+    "errorUnzoom": "Nie je možné oddialiť z oblasti",
+    "errorLayerActive": "Nie je možné pridať alebo odstrániť vrstvu z mapy.",
+    "errorLayerFavorite": "Nie je možné uložiť nové obľúbené vrstvy",
+    "errorAreaFavorite": "Nie je možné uložiť nové obľúbené oblasti",
+    "errorEditLayer": "Nie je možné uložiť zmeny"
   }
 }
