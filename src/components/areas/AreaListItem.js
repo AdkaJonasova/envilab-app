@@ -10,6 +10,7 @@ import {
   ZoomOut,
 } from "@mui/icons-material";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -18,6 +19,7 @@ import {
   IconButton,
   ListItem,
   ListItemText,
+  Snackbar,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -38,6 +40,7 @@ const AreaListItem = ({
   let paddingSize = isExpandable ? hierarchyLevel * 2 : hierarchyLevel * 2 + 4;
 
   const [confirmDialogOpened, setConfirmDialogOpened] = useState(false);
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -53,9 +56,20 @@ const AreaListItem = ({
   };
 
   const handleConfirmDialogYes = () => {
-    deleteCustomArea(userId, area.name);
-    dispatch(deleteArea({ areaName: area.name }));
-    setConfirmDialogOpened(false);
+    deleteCustomArea(userId, area.name)
+      .then((r) => {
+        if (r.data) {
+          dispatch(deleteArea({ areaName: area.name }));
+          setConfirmDialogOpened(false);
+        } else {
+          setConfirmDialogOpened(false);
+          setErrorSnackbarOpen(true);
+        }
+      })
+      .catch((_e) => {
+        setConfirmDialogOpened(false);
+        setErrorSnackbarOpen(true);
+      });
   };
 
   const addUnzoomArea = (area) => {
@@ -177,6 +191,20 @@ const AreaListItem = ({
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={errorSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setErrorSnackbarOpen(false)}
+      >
+        <Alert
+          onClose={() => setErrorSnackbarOpen(false)}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {t("errorSnackbar.errorDelete")}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

@@ -110,5 +110,14 @@
   },
   "errorWindow": {
     "errorMessage": "Něco se pokazilo! Velmi se omlouváme, zkuste to prosím později znovu nebo kontaktujte svého administrátora."
+  },
+  "errorSnackbar": {
+    "errorDelete": "Nelze odstranit oblast",
+    "errorCreate": "Nelze vytvořit novou oblast",
+    "errorUnzoom": "Nelze oddálit z oblasti",
+    "errorLayerActive": "Nelze přidat nebo odebrat vrstvu z mapy.",
+    "errorLayerFavorite": "Nelze uložit nové oblíbené vrstvy",
+    "errorAreaFavorite": "Nelze uložit nové oblíbené oblasti",
+    "errorEditLayer": "Nelze uložit změny"
   }
 }

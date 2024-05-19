@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
 import {
+  Alert,
   Button,
   Collapse,
   IconButton,
@@ -34,6 +35,7 @@ import {
 const LayerSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
   const layerGroups = useSelector((state) =>
     selectLayersByTitle(state, filter)
@@ -69,10 +71,15 @@ const LayerSettingsPage = () => {
   };
 
   const handleSave = () => {
-    dispatch(changeLayerFavorites({ changes: changedLayers }));
-    changeFavoriteLayers(userId, changedLayers);
-    dispatch(clearChanges());
-    setSnackbarOpen(true);
+    changeFavoriteLayers(userId, changedLayers)
+      .then((_r) => {
+        dispatch(changeLayerFavorites({ changes: changedLayers }));
+        dispatch(clearChanges());
+        setSnackbarOpen(true);
+      })
+      .catch((_e) => {
+        setErrorSnackbarOpen(true);
+      });
   };
 
   const handleReset = () => {
@@ -160,6 +167,7 @@ const LayerSettingsPage = () => {
         })}
       </List>
       <Snackbar
+        key="success-snackbar"
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
@@ -174,6 +182,21 @@ const LayerSettingsPage = () => {
           </IconButton>
         }
       />
+      <Snackbar
+        key="error-snackbar"
+        open={errorSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setErrorSnackbarOpen(false)}
+      >
+        <Alert
+          onClose={() => setErrorSnackbarOpen(false)}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {t("errorSnackbar.errorLayerFavorite")}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

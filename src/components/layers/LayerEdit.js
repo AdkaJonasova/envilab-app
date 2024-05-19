@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import {
+  Alert,
   Box,
   Button,
   Grid,
@@ -27,6 +28,7 @@ const LayerEdit = ({ layerName }) => {
 
   const [opacity, setOpacity] = useState(layer.opacity);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -40,9 +42,16 @@ const LayerEdit = ({ layerName }) => {
   };
 
   const handleSaveEditedLayer = () => {
-    dispatch(changeLayerOpacity({ layerName: layer.name, opacity: opacity }));
-    setOpacityForLayer(userId, layer.name, opacity);
-    setSnackbarOpen(true);
+    setOpacityForLayer(userId, layer.name, opacity)
+      .then((_r) => {
+        dispatch(
+          changeLayerOpacity({ layerName: layer.name, opacity: opacity })
+        );
+        setSnackbarOpen(true);
+      })
+      .catch((_e) => {
+        setErrorSnackbarOpen(true);
+      });
   };
 
   const handleOpacityChange = (newValue) => {
@@ -99,6 +108,7 @@ const LayerEdit = ({ layerName }) => {
         </Button>
       </Box>
       <Snackbar
+        key="success-snackbar"
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
@@ -113,6 +123,21 @@ const LayerEdit = ({ layerName }) => {
           </IconButton>
         }
       />
+      <Snackbar
+        key="error-snackbar"
+        open={errorSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setErrorSnackbarOpen(false)}
+      >
+        <Alert
+          onClose={() => setErrorSnackbarOpen(false)}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {t("errorSnackbar.errorEditLayer")}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

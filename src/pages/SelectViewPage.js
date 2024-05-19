@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Box, IconButton, Snackbar } from "@mui/material";
+import { Alert, Box, IconButton, Snackbar } from "@mui/material";
 import SelectViewMap from "../components/mapComponents/SelectViewMap";
 import {
   betweenElementsMargin,
@@ -26,6 +26,7 @@ const SelectViewPage = () => {
   );
   const [savePopupOpened, setSavePopupOpened] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
   const selectedFeatures = useSelector(selectFeatures);
   const dispatch = useDispatch();
@@ -46,7 +47,6 @@ const SelectViewPage = () => {
   //#region Methods
 
   const handleDrawTypeChange = (event) => {
-    console.log("Changing draw type: ", event.target.value);
     const newValue = event.target.value;
     setDrawType(newValue);
   };
@@ -64,14 +64,17 @@ const SelectViewPage = () => {
       type: "FeatureCollection",
       features: selectedFeatures,
     };
-    createCustomArea(userId, name, MapProjections.EPSG3857, geojsonObject).then(
-      (r) => {
+    createCustomArea(userId, name, MapProjections.EPSG3857, geojsonObject)
+      .then((r) => {
         setSavePopupOpened(false);
         dispatch(addArea({ area: r.data }));
         dispatch(clearFeatures());
         setSnackbarOpen(true);
-      }
-    );
+      })
+      .catch((_e) => {
+        setSavePopupOpened(false);
+        setErrorSnackbarOpen(true);
+      });
   };
 
   //#endregion
@@ -96,6 +99,7 @@ const SelectViewPage = () => {
         />
       </Box>
       <Snackbar
+        key="success-snackbar"
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
@@ -110,6 +114,21 @@ const SelectViewPage = () => {
           </IconButton>
         }
       />
+      <Snackbar
+        key="error-snackbar"
+        open={errorSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setErrorSnackbarOpen(false)}
+      >
+        <Alert
+          onClose={() => setErrorSnackbarOpen(false)}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {t("errorSnackbar.errorCreate")}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

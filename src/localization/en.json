@@ -110,5 +110,14 @@
   },
   "errorWindow": {
     "errorMessage": "Something went wrong! We are very sorry, please try again later or contact your administrator."
+  },
+  "errorSnackbar": {
+    "errorDelete": "Unable to delete the area",
+    "errorCreate": "Unable to create a new area",
+    "errorUnzoom": "Unable to unzoom from the area",
+    "errorLayerActive": "Unable to add or remove the layer from the map.",
+    "errorLayerFavorite": "Unable to save new favorite layers",
+    "errorAreaFavorite": "Unable to save new favorite areas",
+    "errorEditLayer": "Unable to save changes"
   }
 }

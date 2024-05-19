@@ -5,7 +5,7 @@ import { changeFavoriteAreas } from "../../hooks/areaHooks";
 import { userId } from "../../data/mockData";
 import Loading from "../../components/global/Loading";
 import { Close } from "@mui/icons-material";
-import { Collapse, IconButton, List, Snackbar } from "@mui/material";
+import { Alert, Collapse, IconButton, List, Snackbar } from "@mui/material";
 import AreaSettingsItem from "../../components/settings/AreaSettingsItem";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -26,6 +26,7 @@ import ErrorWindow from "../../components/global/ErrorWindow";
 const AreaSettingsPage = () => {
   const [filter, setFilter] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
   const areas = useSelector((state) => selectAreasByTitle(state, filter));
   const areasStatus = useSelector(selectAreasStatus);
@@ -48,10 +49,15 @@ const AreaSettingsPage = () => {
   //#region Helper methods
 
   const handleSave = () => {
-    dispatch(changeAreasFavoriteState({ changes: changedAreas }));
-    changeFavoriteAreas(userId, changedAreas);
-    dispatch(clearChanges());
-    setSnackbarOpen(true);
+    changeFavoriteAreas(userId, changedAreas)
+      .then((_r) => {
+        dispatch(changeAreasFavoriteState({ changes: changedAreas }));
+        dispatch(clearChanges());
+        setSnackbarOpen(true);
+      })
+      .catch((_e) => {
+        setErrorSnackbarOpen(true);
+      });
   };
 
   const handleReset = () => {
@@ -129,6 +135,7 @@ const AreaSettingsPage = () => {
         {areas.map((area) => getAreaItem(area, 0))}
       </List>
       <Snackbar
+        key="success-snackbar"
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
@@ -143,6 +150,21 @@ const AreaSettingsPage = () => {
           </IconButton>
         }
       />
+      <Snackbar
+        key="error-snackbar"
+        open={errorSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setErrorSnackbarOpen(false)}
+      >
+        <Alert
+          onClose={() => setErrorSnackbarOpen(false)}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {t("errorSnackbar.errorAreaFavorite")}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

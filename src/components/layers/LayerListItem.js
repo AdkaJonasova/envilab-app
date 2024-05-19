@@ -3,10 +3,12 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { Edit } from "@mui/icons-material";
 import {
+  Alert,
   Divider,
   IconButton,
   ListItem,
   ListItemText,
+  Snackbar,
   Switch,
   Tooltip,
 } from "@mui/material";
@@ -15,9 +17,12 @@ import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
 import { changeSidebarType } from "../../redux/slices/SidebarSlice";
 import { SidebarTypes } from "../../utils/enums";
+import { useState } from "react";
 
 const LayerListItem = ({ layer }) => {
   let paddingSize = 4;
+
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -26,10 +31,23 @@ const LayerListItem = ({ layer }) => {
 
   const handleLayerStateSwitch = (layer) => {
     const isActive = layer.isActive;
-    dispatch(changeLayerActiveState({ layerName: layer.name }));
-    isActive
-      ? deactivateLayer(userId, layer.name)
-      : activateLayer(userId, layer.name);
+    if (isActive) {
+      deactivateLayer(userId, layer.name)
+        .then((_r) => {
+          dispatch(changeLayerActiveState({ layerName: layer.name }));
+        })
+        .catch((_e) => {
+          setErrorSnackbarOpen(true);
+        });
+    } else {
+      activateLayer(userId, layer.name)
+        .then((_r) => {
+          dispatch(changeLayerActiveState({ layerName: layer.name }));
+        })
+        .catch((_e) => {
+          setErrorSnackbarOpen(true);
+        });
+    }
   };
 
   const handleEditLayer = (layer) => {
@@ -91,6 +109,20 @@ const LayerListItem = ({ layer }) => {
         </Tooltip>
       </ListItem>
       <Divider key={`layer-list-divider-${layer.name}`} />
+      <Snackbar
+        open={errorSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setErrorSnackbarOpen(false)}
+      >
+        <Alert
+          onClose={() => setErrorSnackbarOpen(false)}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {t("errorSnackbar.errorLayerActive")}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import List from "@mui/material/List";
-import { Collapse, Typography } from "@mui/material";
+import { Alert, Collapse, Snackbar, Typography } from "@mui/material";
 import AreaListItem from "./AreaListItem";
 import { userId } from "../../data/mockData";
 import { activateArea, deactivateArea } from "../../hooks/areaHooks";
@@ -15,6 +15,8 @@ import {
 } from "../../redux/slices/AreasSlice";
 
 const AreaList = ({ filter }) => {
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+
   const areas = useSelector((state) =>
     selectFavoriteAreasByTitle(state, filter)
   );
@@ -44,9 +46,15 @@ const AreaList = ({ filter }) => {
   };
 
   const handleUnzoomArea = (area) => {
-    deactivateArea(userId, area.name);
-
-    dispatch(changeAreaActiveState({ areaName: area.name, activate: false }));
+    deactivateArea(userId, area.name)
+      .then((_r) => {
+        dispatch(
+          changeAreaActiveState({ areaName: area.name, activate: false })
+        );
+      })
+      .catch((_e) => {
+        setErrorSnackbarOpen(true);
+      });
   };
 
   const getAreaItem = (area, level) => {
@@ -108,6 +116,20 @@ const AreaList = ({ filter }) => {
           ? getEmptyListText()
           : areas.map((area) => getAreaItem(area, 0))}
       </List>
+      <Snackbar
+        open={errorSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setErrorSnackbarOpen(false)}
+      >
+        <Alert
+          onClose={() => setErrorSnackbarOpen(false)}
+          severity="error"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {t("errorSnackbar.errorUnzoom")}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
