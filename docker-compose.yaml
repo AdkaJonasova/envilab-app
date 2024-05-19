@@ -1,0 +1,20 @@
+services:
+  database:
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Aj20Dip23
+      POSTGRES_DB: postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  adminer:
+    image: envilab_backend
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - 8000:8000
