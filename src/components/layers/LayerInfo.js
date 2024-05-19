@@ -1,18 +1,33 @@
-import { ArrowBack } from "@mui/icons-material";
-import { Grid, IconButton, Typography } from "@mui/material";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
+import { ArrowBack } from "@mui/icons-material";
+import { Grid, IconButton, Tooltip, Typography } from "@mui/material";
+import { changeSidebarType } from "../../redux/slices/SidebarSlice";
+import { SidebarTypes } from "../../utils/enums";
+import { selectLayerByName } from "../../redux/slices/LayersSlice";
 
-const LayerInfo = ({ layer, handleGoBack }) => {
+const LayerInfo = ({ layerName }) => {
+  const layer = useSelector((state) => selectLayerByName(state, layerName));
+
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const handleGoBack = () => {
+    dispatch(
+      changeSidebarType({ type: SidebarTypes.Layers, selectedLayer: undefined })
+    );
+  };
 
   return (
     <div>
       <Grid container marginTop={1} marginBottom={2}>
         <Grid item xs={2}>
-          <IconButton color="darkGreen" onClick={() => handleGoBack()}>
-            <ArrowBack />
-          </IconButton>
+          <Tooltip title={t("layerViewSidebar.layerInfo.backTooltip")}>
+            <IconButton color="darkGreen" onClick={() => handleGoBack()}>
+              <ArrowBack />
+            </IconButton>
+          </Tooltip>
         </Grid>
         <Grid item xs={8}>
           <Typography variant="h2">{layer.title}</Typography>
@@ -68,6 +83,5 @@ const LayerInfo = ({ layer, handleGoBack }) => {
 export default LayerInfo;
 
 LayerInfo.propTypes = {
-  layer: PropTypes.object,
-  handleGoBack: PropTypes.func,
+  layerName: PropTypes.string,
 };

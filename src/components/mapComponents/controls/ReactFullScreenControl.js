@@ -1,6 +1,6 @@
 // This code was sourced from: https://medium.com/swlh/how-to-incorporate-openlayers-maps-into-react-65b411985744 and modified is necessary
 
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { FullScreen } from "ol/control";
 import MapContext from "../MapContext";
 

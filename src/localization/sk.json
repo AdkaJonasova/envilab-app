@@ -9,7 +9,8 @@
     "areaView": "Práca s oblasťami",
     "pageName": "Envilab",
     "views": "Módy",
-    "settings": "Nastavenia"
+    "settings": "Nastavenia",
+    "selectLanguageTooltip": "Zmeniť jazyk aplikácie"
   },
   "layerViewSidebar": {
     "tabs": {
@@ -17,48 +18,67 @@
       "areaTab": "Oblasti"
     },
     "areaList": {
-      "createSet": "Vytvoriť skupinu oblastí",
-      "chooseSet": "Vybrať skupinu oblastí",
-      "noAreas": "Nie sú dostupné žiadne oblasti na zobrazenie. Prosím vyberte obľúbené oblasti v nastaveniach."
+      "confirmDeleteMessage": "Naozaj chcete zmazať oblasť",
+      "confirmDeleteYes": "Áno, zmazať",
+      "confirmDeleteNo": "Nie, zrušiť",
+      "noAreas": "Nie sú dostupné žiadne oblasti na zobrazenie. Prosím vyberte obľúbené oblasti v nastaveniach.",
+      "zoomOutTooltip": "Oddialiť z oblasti",
+      "zoomInTooltip": "Priblížiť na oblasť",
+      "collapseTooltip": "Zbaliť oblasť",
+      "expandTooltip": "Rozbaliť oblasť a zobraziť podoblasti",
+      "deleteTooltip": "Vymazať oblasť",
+      "customTooltip": "Túto oblasť si si vytvoril ty sám"
     },
     "layerList": {
-      "noLayers": "Nie sú dostupné žiadne vrstvy na zobrazenie. Prosím vyberte obľúbené vrstvy v nastaveniach."
+      "noLayers": "Nie sú dostupné žiadne vrstvy na zobrazenie. Prosím vyberte obľúbené vrstvy v nastaveniach.",
+      "editLayerTooltip": "Upraviť vrstvu",
+      "removeLayerTooltip": "Odstrániť vrstvu z mapy",
+      "addLayerTooltip": "Pridať vrstvu na mapu",
+      "layerDetailTooltip": "Zobraziť viac informácií o vrstve"
     },
     "layerEdit": {
       "opacity": "Priehľadnosť",
       "saveBtn": "Uložiť",
-      "snackbarTextSuccess": "Zmeny boli úspešne uložené!"
+      "snackbarTextSuccess": "Zmeny boli úspešne uložené!",
+      "backTooltip": "Späť"
     },
     "layerInfo": {
       "name": "Názov vrstvy",
       "type": "Typ vrstvy",
       "projection": "Projekcia",
-      "description": "Popis vrstvy"
+      "description": "Popis vrstvy",
+      "backTooltip": "Späť"
+    },
+    "layersDetail": {
+      "dialogTitle": "Podrobné informácie",
+      "noDetail": "Žiadne podrobné informácie nie sú k dispozícii."
     }
-  },
-  "selectViewSidebar": {
-    "title": "Nová oblasť",
-    "selectedPoints": "Vybrané body",
-    "areaName": "Názov oblasti",
-    "save": "Uložiť",
-    "tooltipCoords": "Súradnice myši",
-    "addPoint": "Nový bod"
   },
   "settings": {
     "tabs": {
       "layers": "Vrstvy",
-      "areas": "Oblasti"
+      "areas": "Oblasti",
+      "layersTooltip": "Prejsť na nastavenia vrstiev",
+      "areasTooltip": "Prejsť na nastavenia oblastí"
     },
     "layers": {
       "title": "Nastavenia vrstiev",
-      "annotation": "Vyberte svoje obľúbené vrstvy, ktoré budú zobrazované v bočnom panely pri práci s vrstvami."
+      "annotation": "Vyberte svoje obľúbené vrstvy, ktoré budú zobrazované v bočnom panely pri práci s vrstvami.",
+      "starTooltip": "Označiť všetky vrstvy ako obľúbené",
+      "starBorderTooltip": "Označiť všetky vrstvy ako neobľúbené",
+      "singleStarTooltip": "Táto vrstva je momentálne označená ako obľúbená, kliknutím ju odstránite z obľúbených.",
+      "singleStarBorderTooltip": "Táto vrstva nie je momentálne označená ako obľúbená, kliknutím ju pridáte do obľúbených."
     },
     "areas": {
       "title": "Nastavenia oblastí",
-      "annotation": "Vyberte svoje obľúbené oblasti, ktoré budú zobrazované v bočnom panely pri práci s oblasťami."
+      "annotation": "Vyberte svoje obľúbené oblasti, ktoré budú zobrazované v bočnom panely pri práci s oblasťami.",
+      "starTooltip": "Označiť všetky oblasti ako obľúbené",
+      "starBorderTooltip": "Označiť všetky oblasti ako neobľúbené",
+      "singleStarTooltip": "Táto oblasť je momentálne označená ako obľúbená, kliknutím ju odstránite z obľúbených.",
+      "singleStarBorderTooltip": "Táto oblasť nie je momentálne označená ako obľúbená, kliknutím ju pridáte do obľúbených."
     },
-    "save": "Uložiť zmeny",
-    "reset": "Vrátiť zmeny",
+    "saveTooltip": "Uložiť zmeny",
+    "resetTooltip": "Vrátiť zmeny",
     "snackbarText": "Zmeny boli uložené!"
   },
   "selectView": {
@@ -71,14 +91,24 @@
       "point": "Bod",
       "lineString": "Úsečka",
       "polygon": "Mnohouholník",
-      "circle": "Kruh"
+      "pointTooltip": "Bodový typ interackcie je najlepší na vytvorenie oblasti pre jeden konkrétny bod alebo na zahrnutie jedného bodu mimo mnohouholník.",
+      "lineStringTooltip": "Úsečkový typ interakcie je najlepší, keď chcete byť pri definovaní novej oblasti čo najprecíznejši.",
+      "polygonTooltip": "Mnohouholníkový typ interakcie je najčastejšie používaným typom interackcie"
     },
+    "undoTooltip": "Späť",
+    "deleteTooltip": "Vymazať všetko",
+    "saveTooltip": "Uložiť výber",
+    "selectInteractionTooltip": "Vybrať typ interakcie",
     "saveNewAreaPopup": {
       "title": "Uložiť novú oblasť",
       "content": "Pre vytvorenie novej oblasti zadajte názov oblasti a kliknite na tlačidlo Uložiť.",
       "fieldLabel": "Názov oblasti",
       "cancelBtnLabel": "Zrušiť",
-      "saveBtnLabel": "Uložiť"
+      "saveBtnLabel": "Uložiť",
+      "requiredFieldMsg": "Toto pole je povinné!"
     }
+  },
+  "errorWindow": {
+    "errorMessage": "Niečo sa pokazilo! Ospravedlňujeme sa, skúste to prosím neskôr alebo kontaktujte vášho administrátora."
   }
 }

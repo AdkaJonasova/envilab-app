@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Box,
   Grid,
@@ -7,7 +9,6 @@ import {
   useTheme,
 } from "@mui/material";
 import { drawOptions } from "../../utils/data";
-import { useTranslation } from "react-i18next";
 
 const DrawInteractionSelect = ({ drawInteractionType, onDrawTypeChange }) => {
   const theme = useTheme();
@@ -68,6 +69,7 @@ const DrawInteractionSelect = ({ drawInteractionType, onDrawTypeChange }) => {
                 <MenuItem
                   key={`draw-interaction-type-select-item-${option.code}`}
                   value={option.code}
+                  title={t(option.tooltip)}
                 >
                   {t(option.label)}
                 </MenuItem>
@@ -81,3 +83,8 @@ const DrawInteractionSelect = ({ drawInteractionType, onDrawTypeChange }) => {
 };
 
 export default DrawInteractionSelect;
+
+DrawInteractionSelect.propTypes = {
+  drawInteractionType: PropTypes.string,
+  onDrawTypeChange: PropTypes.func,
+};

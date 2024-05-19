@@ -37,3 +37,13 @@ export const addCustomArea = (userId, areaId) =>
 
 export const removeCustomArea = (userId, areaId) =>
   apiClient.post(`/areas/removeCustom/${userId}/${areaId}`);
+
+export const createCustomArea = (userId, areaTitle, projection, areaGeojson) =>
+  apiClient.put(`/areas/custom/${userId}`, {
+    title: areaTitle,
+    projection: projection,
+    geojson: areaGeojson,
+  });
+
+export const deleteCustomArea = (userId, areaName) =>
+  apiClient.delete(`/areas/custom/${userId}/${areaName}`);

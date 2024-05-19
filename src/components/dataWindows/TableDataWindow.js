@@ -8,21 +8,20 @@ import {
   TableRow,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { selectTableInfo } from "../../redux/slices/LayoutSlice";
 
-export default function TableDataWindow({
-  headers,
-  data,
-  height,
-  marginBottom,
-}) {
+const TableDataWindow = ({ headers, data }) => {
+  const layoutInfo = useSelector(selectTableInfo);
+
   return (
     <div>
       <TableContainer
         component={Paper}
         style={{
-          maxHeight: `${height}px`,
+          height: `${layoutInfo.height}px`,
           overflow: "auto",
-          marginBottom: `${marginBottom}px`,
+          marginBottom: `${layoutInfo.bottomMargin}px`,
         }}
       >
         <Table size="small" stickyHeader>
@@ -53,11 +52,11 @@ export default function TableDataWindow({
       </TableContainer>
     </div>
   );
-}
+};
+
+export default TableDataWindow;
 
 TableDataWindow.propTypes = {
   headers: PropTypes.array,
   data: PropTypes.array,
-  height: PropTypes.number,
-  marginBottom: PropTypes.number,
 };

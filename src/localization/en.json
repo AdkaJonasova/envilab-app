@@ -9,7 +9,8 @@
     "areaView": "Area editor tool",
     "pageName": "Envilab",
     "views": "Views",
-    "settings": "Settings"
+    "settings": "Settings",
+    "selectLanguageTooltip": "Change language of the application"
   },
   "layerViewSidebar": {
     "tabs": {
@@ -17,48 +18,67 @@
       "areaTab": "Areas"
     },
     "areaList": {
-      "createSet": "Create area set",
-      "chooseSet": "Choose area set",
-      "noAreas": "There are no areas to display. Please select your favorite areas in settings."
+      "noAreas": "There are no areas to display. Please select your favorite areas in settings.",
+      "confirmDeleteMessage": "Do you really want to delete the area",
+      "confirmDeleteYes": "Yes, delete",
+      "confirmDeleteNo": "No, cancel",
+      "zoomOutTooltip": "Zoom out of the area",
+      "zoomInTooltip": "Zoom into the area",
+      "collapseTooltip": "Collapse the area",
+      "expandTooltip": "Expand the area to display sub areas",
+      "deleteTooltip": "Delete the area",
+      "customTooltip": "This is your custom area"
     },
     "layerList": {
-      "noLayers": "There are no layers to display. Please select your favorite layers in settings."
+      "noLayers": "There are no layers to display. Please select your favorite layers in settings.",
+      "editLayerTooltip": "Edit the layer",
+      "removeLayerTooltip": "Remove the layer from the map",
+      "addLayerTooltip": "Add the layer to the map",
+      "layerDetailTooltip": "Display more information about the layer"
     },
     "layerEdit": {
       "opacity": "Opacity",
       "saveBtn": "Save",
-      "snackbarTextSuccess": "Changes were successfully saved!"
+      "snackbarTextSuccess": "Changes were successfully saved!",
+      "backTooltip": "Back"
     },
     "layerInfo": {
       "name": "Layer name",
       "type": "Layer type",
       "projection": "Layer projection",
-      "description": "Layer description"
+      "description": "Layer description",
+      "backTooltip": "Back"
+    },
+    "layersDetail": {
+      "dialogTitle": "Detailed information",
+      "noDetail": "No detailed information available"
     }
-  },
-  "selectViewSidebar": {
-    "title": "New area",
-    "selectedPoints": "Selected points",
-    "areaName": "Area name",
-    "save": "Save",
-    "tooltipCoords": "Tooltip coordinates",
-    "addPoint": "New point"
   },
   "settings": {
     "tabs": {
       "layers": "Layers",
-      "areas": "Areas"
+      "areas": "Areas",
+      "layersTooltip": "Go to layers settings",
+      "areasTooltip": "Go to areas settings"
     },
     "layers": {
       "title": "Layers settings",
-      "annotation": "Select your favorite layers, which are going to be displayed in the side bar in the Layers' view"
+      "annotation": "Select your favorite layers, which are going to be displayed in the side bar in the Layers' view",
+      "starTooltip": "Mark all layers as favorite",
+      "starBorderTooltip": "Mark all layers as not favorite",
+      "singleStarTooltip": "This layer is currently marked as favorite, click to remove it from favorites.",
+      "singleStarBorderTooltip": "This layer is currently not marked as favorite, click to add it to favorites."
     },
     "areas": {
       "title": "Areas settings",
-      "annotation": "Select your favorite area, which are going to be displayed in the side bar in the Areas' view"
+      "annotation": "Select your favorite area, which are going to be displayed in the side bar in the Areas' view",
+      "starTooltip": "Mark all areas as favorite",
+      "starBorderTooltip": "Mark all areas as not favorite",
+      "singleStarTooltip": "This area is currently marked as favorite, click to remove it from favorites.",
+      "singleStarBorderTooltip": "This area is currently not marked as favorite, click to add it to favorites."
     },
-    "save": "Save changes",
-    "reset": "Reset changes",
+    "saveTooltip": "Save changes",
+    "resetTooltip": "Reset changes",
     "snackbarText": "Changes were saved!"
   },
   "selectView": {
@@ -71,14 +91,24 @@
       "point": "Point",
       "lineString": "Line string",
       "polygon": "Polygon",
-      "circle": "Circle"
+      "pointTooltip": "Point interaction is the best for creating an area for one specific point or including one point outside of polygon.",
+      "lineStringTooltip": "Line string interaction is the best when you want to be more precise while defining a new area.",
+      "polygonTooltip": "Polygon interaction is the most commonly used interaction types for defining new areas."
     },
+    "undoTooltip": "Undo drawing",
+    "deleteTooltip": "Delete all drawings",
+    "saveTooltip": "Save selection",
+    "selectInteractionTooltip": "Select interaction type",
     "saveNewAreaPopup": {
       "title": "Save New Area",
       "content": "To create a new area, please enter the area name and click Save",
       "fieldLabel": "Area name",
       "cancelBtnLabel": "Cancel",
-      "saveBtnLabel": "Save"
+      "saveBtnLabel": "Save",
+      "requiredFieldMsg": "This field is required!"
     }
+  },
+  "errorWindow": {
+    "errorMessage": "Something went wrong! We are very sorry, please try again later or contact your administrator."
   }
 }

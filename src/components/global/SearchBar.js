@@ -1,10 +1,11 @@
+import { useTheme } from "@emotion/react";
+import PropTypes from "prop-types";
 import { Box, InputAdornment, OutlinedInput } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import PropTypes from "prop-types";
-import { useTheme } from "@emotion/react";
 
-export default function SearchBar({ setFilter }) {
+const SearchBar = ({ setFilter }) => {
   const theme = useTheme();
+
   return (
     <Box padding={1}>
       <OutlinedInput
@@ -30,7 +31,9 @@ export default function SearchBar({ setFilter }) {
       ></OutlinedInput>
     </Box>
   );
-}
+};
+
+export default SearchBar;
 
 SearchBar.propTypes = {
   setFilter: PropTypes.func,

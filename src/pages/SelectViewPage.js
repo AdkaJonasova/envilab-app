@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Box } from "@mui/material";
+import { Box, IconButton, Snackbar } from "@mui/material";
 import SelectViewMap from "../components/mapComponents/SelectViewMap";
 import {
   betweenElementsMargin,
@@ -8,16 +8,28 @@ import {
   pageTopMargin,
 } from "../utils/data";
 import SelectViewHeader from "../components/selectView/SelectViewHeader";
-import { getSelectViewMapHeight } from "../utils/customFunctions";
-import { getCoordsObjectForDrawType } from "../utils/decisionCriteriaHandlers";
+import { getSelectViewMapHeight } from "../utils/customLayoutFunctions";
 import NewAreaSavePopup from "../components/selectView/NewAreaSavePopup";
+import { useDispatch, useSelector } from "react-redux";
+import { clearFeatures, selectFeatures } from "../redux/slices/SelectViewSlice";
+import { createCustomArea } from "../hooks/areaHooks";
+import { userId } from "../data/mockData";
+import { addArea } from "../redux/slices/AreasSlice";
+import { MapProjections } from "../utils/enums";
+import { Close } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const SelectViewPage = () => {
-  const [savePopupOpened, setSavePopupOpened] = useState(false);
   const [drawType, setDrawType] = useState(drawOptions[0].code);
   const [mapHeight, setMapHeight] = useState(
     getSelectViewMapHeight(window.innerHeight)
   );
+  const [savePopupOpened, setSavePopupOpened] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const selectedFeatures = useSelector(selectFeatures);
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,14 +43,12 @@ const SelectViewPage = () => {
     };
   }, []);
 
+  //#region Methods
+
   const handleDrawTypeChange = (event) => {
+    console.log("Changing draw type: ", event.target.value);
     const newValue = event.target.value;
     setDrawType(newValue);
-  };
-
-  const handleDrawEnd = (feature) => {
-    const geometry = feature.getGeometry();
-    const coordsObject = getCoordsObjectForDrawType(geometry);
   };
 
   const handleSavePopupOpen = () => {
@@ -50,8 +60,21 @@ const SelectViewPage = () => {
   };
 
   const handleAreaSave = (name) => {
-    setSavePopupOpened(false);
+    const geojsonObject = {
+      type: "FeatureCollection",
+      features: selectedFeatures,
+    };
+    createCustomArea(userId, name, MapProjections.EPSG3857, geojsonObject).then(
+      (r) => {
+        setSavePopupOpened(false);
+        dispatch(addArea({ area: r.data }));
+        dispatch(clearFeatures());
+        setSnackbarOpen(true);
+      }
+    );
   };
+
+  //#endregion
 
   return (
     <div>
@@ -65,7 +88,6 @@ const SelectViewPage = () => {
           height={mapHeight}
           marginBottom={betweenElementsMargin}
           drawType={drawType}
-          handleDrawEnd={handleDrawEnd}
         />
         <NewAreaSavePopup
           opened={savePopupOpened}
@@ -73,6 +95,21 @@ const SelectViewPage = () => {
           handleClose={handleSavePopupCancel}
         />
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        message={t("settings.snackbarText")}
+        action={
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={() => setSnackbarOpen(false)}
+          >
+            <Close fontSize="small" />
+          </IconButton>
+        }
+      />
     </div>
   );
 };

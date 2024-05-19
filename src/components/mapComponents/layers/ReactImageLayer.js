@@ -1,14 +1,18 @@
 import { useContext, useEffect } from "react";
-import MapContext from "../MapContext";
 import ImageLayer from "ol/layer/Image";
+import MapContext from "../MapContext";
 
-const ReactImageLayer = ({ source, name = "", id = -1 }) => {
+const ReactImageLayer = ({ source, name, id, zIndex = 0, opacity }) => {
   const { map } = useContext(MapContext);
 
   useEffect(() => {
     if (!map) return;
+
+    let transformedOpacity = opacity / 100;
     let imageLayer = new ImageLayer({
       source: source,
+      opacity: transformedOpacity,
+      zIndex: zIndex,
       name: name,
       id: id,
     });

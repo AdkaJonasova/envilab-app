@@ -1,57 +1,59 @@
-import React, { useState } from "react";
-import List from "@mui/material/List";
-import { Button, Collapse, Grid, Typography } from "@mui/material";
-import AreaListItem from "./AreaListItem";
-import PropTypes from "prop-types";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { activateArea, deactivateArea } from "../../hooks/areaHooks";
+import PropTypes from "prop-types";
+import List from "@mui/material/List";
+import { Collapse, Typography } from "@mui/material";
+import AreaListItem from "./AreaListItem";
 import { userId } from "../../data/mockData";
-import { getZoomedToAreas } from "../../utils/customFunctions";
+import { activateArea, deactivateArea } from "../../hooks/areaHooks";
+import { collapseAreaSection } from "../../redux/slices/AreaListSectionsSlice";
+import {
+  changeAreaActiveState,
+  selectActiveAreas,
+  selectFavoriteAreasByTitle,
+} from "../../redux/slices/AreasSlice";
 
-export default function AreaList({ areas, refetch }) {
-  const [expandedAreas, setExpandedAreas] = useState([]);
+const AreaList = ({ filter }) => {
+  const areas = useSelector((state) =>
+    selectFavoriteAreasByTitle(state, filter)
+  );
+  const zoomedAreas = useSelector((state) => selectActiveAreas(state));
+  const collapsedAreas = useSelector((state) => state.collapsedAreaSections);
+
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   //#region Methods
-  const zoomToArea = async (area) => {
-    let zoomedToAreas = getZoomedToAreas(areas);
-    for (let i = 0; i < zoomedToAreas.length; i++) {
-      const zoomedAreaId = zoomedToAreas[i];
-      deactivateArea(userId, zoomedAreaId);
-    }
-    await activateArea(userId, area.areaId);
-  };
-
-  const handleZoomToArea = (area) => {
-    zoomToArea(area).then(() => refetch());
-  };
-
-  const handleUnzoomArea = (area) => {
-    deactivateArea(userId, area.areaId).then(() => refetch());
-  };
 
   const handleExpandCollapse = (area) => {
-    const currentIndex = expandedAreas.indexOf(area.areaId);
-    const newExpanded = [...expandedAreas];
-
-    if (currentIndex === -1) {
-      newExpanded.push(area.areaId);
-    } else {
-      newExpanded.splice(currentIndex, 1);
-    }
-
-    setExpandedAreas(newExpanded);
+    dispatch(collapseAreaSection(area.name));
   };
 
   const isAreaExpanded = (area) => {
-    return expandedAreas.indexOf(area.areaId) !== -1;
+    return !collapsedAreas.includes(area.name);
+  };
+
+  const handleZoomToArea = (area) => {
+    zoomedAreas.forEach((area) => {
+      deactivateArea(userId, area.name);
+    });
+    activateArea(userId, area.name);
+
+    dispatch(changeAreaActiveState({ areaName: area.name, activate: true }));
+  };
+
+  const handleUnzoomArea = (area) => {
+    deactivateArea(userId, area.name);
+
+    dispatch(changeAreaActiveState({ areaName: area.name, activate: false }));
   };
 
   const getAreaItem = (area, level) => {
-    if (area.geoArea.subAreas.length === 0) {
+    if (area.subAreas.length === 0) {
       return (
         <AreaListItem
-          key={`area-list-item-component-${area.areaId}`}
+          key={`area-list-item-component-${area.name}`}
           area={area}
           hierarchyLevel={level}
           isExpandable={false}
@@ -63,9 +65,9 @@ export default function AreaList({ areas, refetch }) {
       );
     } else {
       return (
-        <div key={`area-list-item-outer-container-${area.areaId}`}>
+        <div key={`area-list-item-outer-container-${area.name}`}>
           <AreaListItem
-            key={`area-list-item-component-${area.areaId}`}
+            key={`area-list-item-component-${area.name}`}
             area={area}
             hierarchyLevel={level}
             isExpandable={true}
@@ -75,15 +77,13 @@ export default function AreaList({ areas, refetch }) {
             isExpanded={isAreaExpanded}
           />
           <Collapse
-            key={`area-list-item-collapsable-${area.areaId}`}
-            in={expandedAreas.indexOf(area.areaId) !== -1}
+            key={`area-list-item-collapsable-${area.name}`}
+            in={isAreaExpanded(area)}
             timeout={"auto"}
             unmountOnExit
           >
             <List disablePadding>
-              {area.geoArea.subAreas.map((subArea) =>
-                getAreaItem(subArea, level + 1)
-              )}
+              {area.subAreas.map((subArea) => getAreaItem(subArea, level + 1))}
             </List>
           </Collapse>
         </div>
@@ -98,22 +98,11 @@ export default function AreaList({ areas, refetch }) {
       </Typography>
     );
   };
+
   //#endregion
 
   return (
     <div>
-      <Grid container spacing={1} padding={1}>
-        <Grid item xs={6}>
-          <Button variant="outlined" color="darkGreen" size="small" fullWidth>
-            {t("layerViewSidebar.areaList.createSet")}
-          </Button>
-        </Grid>
-        <Grid item xs={6}>
-          <Button variant="outlined" color="darkGreen" size="small" fullWidth>
-            {t("layerViewSidebar.areaList.chooseSet")}
-          </Button>
-        </Grid>
-      </Grid>
       <List sx={{ width: "100%", bgcolor: "background.paper" }} dense>
         {areas.length === 0
           ? getEmptyListText()
@@ -121,9 +110,10 @@ export default function AreaList({ areas, refetch }) {
       </List>
     </div>
   );
-}
+};
+
+export default AreaList;
 
 AreaList.propTypes = {
-  areas: PropTypes.array,
-  refetch: PropTypes.func,
+  filter: PropTypes.string,
 };

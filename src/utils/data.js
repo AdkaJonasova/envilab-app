@@ -2,7 +2,6 @@ import { Layers, Public } from "@mui/icons-material";
 import LayerSettingsPage from "../pages/partials/LayerSettingsPage";
 import AreaSettingsPage from "../pages/partials/AreaSettingsPage";
 import { SidebarTypes } from "./enums";
-// const path = require("path");
 
 // Menu navigation
 const layerViewPage = {
@@ -19,7 +18,7 @@ export const viewPages = [layerViewPage, selectViewPage];
 export const settingsPath = "/settings";
 
 // Main menu bar
-export const pageName = "ENVILAB";
+export const pageName = "EnviMap";
 
 // Settings navigation
 const layerSettingsTab = {
@@ -28,6 +27,7 @@ const layerSettingsTab = {
   tabName: "settings.tabs.layers",
   icon: <Layers />,
   navigation: "/settings/layers",
+  tooltip: "settings.tabs.layersTooltip",
 };
 const areaSettingsTab = {
   tabId: 1,
@@ -35,6 +35,7 @@ const areaSettingsTab = {
   tabName: "settings.tabs.areas",
   icon: <Public />,
   navigation: "/settings/areas",
+  tooltip: "settings.tabs.areasTooltip",
 };
 export const settingsTabs = [layerSettingsTab, areaSettingsTab];
 
@@ -60,10 +61,21 @@ export const selectViewHeaderPadding = 5;
 
 // Draw selector
 export const drawOptions = [
-  { code: "Point", label: "selectView.drawOptions.point" },
-  { code: "LineString", label: "selectView.drawOptions.lineString" },
-  { code: "Polygon", label: "selectView.drawOptions.polygon" },
-  { code: "Circle", label: "selectView.drawOptions.circle" },
+  {
+    code: "Point",
+    label: "selectView.drawOptions.point",
+    tooltip: "selectView.drawOptions.pointTooltip",
+  },
+  {
+    code: "LineString",
+    label: "selectView.drawOptions.lineString",
+    tooltip: "selectView.drawOptions.lineStringTooltip",
+  },
+  {
+    code: "Polygon",
+    label: "selectView.drawOptions.polygon",
+    tooltip: "selectView.drawOptions.polygonTooltip",
+  },
 ];
 
 // Draw styles

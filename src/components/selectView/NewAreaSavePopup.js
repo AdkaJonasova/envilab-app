@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
@@ -7,23 +10,30 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import PropTypes from "prop-types";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const NewAreaSavePopup = ({ opened, handleSaveArea, handleClose }) => {
   const [areaName, setAreaName] = useState("");
+  const [error, setError] = useState(false);
 
   const { t } = useTranslation();
 
+  //#region Methods
+
+  const handleAreaNameChange = (event) => {
+    setAreaName(event.target.value);
+    setError(false);
+  };
+
   const handleSaveAreaName = () => {
     if (areaName.trim() === "") {
-      alert("Please enter a name!");
-      return;
+      setError(true);
+    } else {
+      handleSaveArea(areaName);
+      setAreaName("");
     }
-    handleSaveArea(areaName);
-    setAreaName("");
   };
+
+  //#endregion
 
   return (
     <Dialog open={opened} style={{ display: opened ? "block" : "none" }}>
@@ -41,14 +51,18 @@ const NewAreaSavePopup = ({ opened, handleSaveArea, handleClose }) => {
           label={t("selectView.saveNewAreaPopup.fieldLabel")}
           fullWidth
           variant="standard"
-          onChange={(e) => setAreaName(e.target.value)}
+          onChange={(e) => handleAreaNameChange(e)}
+          error={error}
+          helperText={
+            error ? t("selectView.saveNewAreaPopup.requiredFieldMsg") : ""
+          }
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="darkGreen">
+        <Button onClick={() => handleClose()} color="errorRed">
           {t("selectView.saveNewAreaPopup.cancelBtnLabel")}
         </Button>
-        <Button onClick={handleSaveAreaName} color="darkGreen">
+        <Button onClick={() => handleSaveAreaName()} color="darkGreen">
           {t("selectView.saveNewAreaPopup.saveBtnLabel")}
         </Button>
       </DialogActions>
@@ -56,10 +70,10 @@ const NewAreaSavePopup = ({ opened, handleSaveArea, handleClose }) => {
   );
 };
 
+export default NewAreaSavePopup;
+
 NewAreaSavePopup.propTypes = {
   opened: PropTypes.bool,
-  onOpen: PropTypes.func,
-  onClose: PropTypes.func,
+  handleSaveArea: PropTypes.func,
+  handleClose: PropTypes.func,
 };
-
-export default NewAreaSavePopup;

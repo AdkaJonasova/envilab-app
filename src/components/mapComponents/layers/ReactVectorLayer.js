@@ -1,8 +1,8 @@
 // This code was sourced from: https://medium.com/swlh/how-to-incorporate-openlayers-maps-into-react-65b411985744 and modified is necessary
 
 import { useContext, useEffect } from "react";
-import MapContext from "../MapContext";
 import VectorLayer from "ol/layer/Vector";
+import MapContext from "../MapContext";
 
 const ReactVectorLayer = ({ source, name, id, zIndex = 0, opacity }) => {
   const { map } = useContext(MapContext);

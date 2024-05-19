@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -5,39 +9,57 @@ import {
   IconButton,
   Slider,
   Snackbar,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import PropTypes from "prop-types";
+import { Close, ArrowBack } from "@mui/icons-material";
 import { setOpacityForLayer } from "../../hooks/layerHooks";
 import { userId } from "../../data/mockData";
-import { Close } from "@mui/icons-material";
+import { changeSidebarType } from "../../redux/slices/SidebarSlice";
+import { SidebarTypes } from "../../utils/enums";
+import {
+  changeLayerOpacity,
+  selectLayerByName,
+} from "../../redux/slices/LayersSlice";
 
-const LayerEdit = ({ layer, handleGoBack }) => {
+const LayerEdit = ({ layerName }) => {
+  const layer = useSelector((state) => selectLayerByName(state, layerName));
+
   const [opacity, setOpacity] = useState(layer.opacity);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  //#region Methods
+
+  const handleGoBack = () => {
+    dispatch(
+      changeSidebarType({ type: SidebarTypes.Layers, selectedLayer: undefined })
+    );
+  };
 
   const handleSaveEditedLayer = () => {
-    setOpacityForLayer(userId, layer.name, opacity).then(() =>
-      setSnackbarOpen(true)
-    );
+    dispatch(changeLayerOpacity({ layerName: layer.name, opacity: opacity }));
+    setOpacityForLayer(userId, layer.name, opacity);
+    setSnackbarOpen(true);
   };
 
   const handleOpacityChange = (newValue) => {
     setOpacity(newValue);
   };
 
+  //#endregion
+
   return (
     <div>
       <Grid container marginTop={1} marginBottom={2}>
         <Grid item xs={2}>
-          <IconButton color="darkGreen" onClick={() => handleGoBack()}>
-            <ArrowBackIcon />
-          </IconButton>
+          <Tooltip title={t("layerViewSidebar.layerEdit.backTooltip")}>
+            <IconButton color="darkGreen" onClick={() => handleGoBack()}>
+              <ArrowBack />
+            </IconButton>
+          </Tooltip>
         </Grid>
         <Grid item xs={8}>
           <Typography variant="h2">{layer.title}</Typography>
@@ -98,6 +120,5 @@ const LayerEdit = ({ layer, handleGoBack }) => {
 export default LayerEdit;
 
 LayerEdit.propTypes = {
-  layer: PropTypes.object,
-  handleGoBack: PropTypes.func,
+  layerName: PropTypes.string,
 };

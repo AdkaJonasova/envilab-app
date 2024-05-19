@@ -1,18 +1,19 @@
-// This code was sourced from: https://medium.com/swlh/how-to-incorporate-openlayers-maps-into-react-65b411985744 and modified is necessary
+// This code was sourced from: https://medium.com/swlh/how-to-incorporate-openlayers-maps-into-react-65b411985744 and modified if necessary
 
 import React, { useRef, useState, useEffect } from "react";
-import MapContext from "./MapContext";
 import { Map, View } from "ol";
+import MapContext from "./MapContext";
+import { MapProjections } from "../../utils/enums";
 
-const ReactMap = ({ children, center, height, marginBottom }) => {
+const ReactMap = ({ children, height, marginBottom }) => {
   const mapRef = useRef();
   const [map, setMap] = useState(null);
 
   useEffect(() => {
     let options = {
       view: new View({
-        projection: "EPSG:3857",
-        center: center,
+        projection: MapProjections.EPSG3857,
+        center: [0, 0],
         zoom: 2,
       }),
       layers: [],
@@ -25,11 +26,6 @@ const ReactMap = ({ children, center, height, marginBottom }) => {
     setMap(mapObject);
     return () => mapObject.setTarget(undefined);
   }, []);
-
-  useEffect(() => {
-    if (!map) return;
-    map.getView().setCenter(center);
-  }, [center]);
 
   return (
     <MapContext.Provider value={{ map }}>

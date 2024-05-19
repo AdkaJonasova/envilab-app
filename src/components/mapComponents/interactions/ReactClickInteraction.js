@@ -1,10 +1,17 @@
 import { useContext, useEffect } from "react";
-import MapContext from "../MapContext";
+import { useDispatch } from "react-redux";
 import TileLayer from "ol/layer/Tile";
 import { TileWMS } from "ol/source";
+import MapContext from "../MapContext";
+import {
+  addDetailedData,
+  openDetailedPopup,
+  selectLayer,
+} from "../../../redux/slices/DetailedDataSlice";
 
 const ReactClickInteraction = () => {
   const { map } = useContext(MapContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!map) return;
@@ -20,40 +27,48 @@ const ReactClickInteraction = () => {
     let viewResolution = map.getView().getResolution();
     let viewProjection = map.getView().getProjection();
 
-    let layers = map.getLayers().getArray().slice().reverse();
-    const clickedLayer = layers.filter((layer) => {
-      if (
+    const layers = map.getLayers().getArray();
+    const infoLayers = layers.filter(
+      (layer) =>
         layer instanceof TileLayer &&
         layer.getVisible() &&
         layer.getSource() instanceof TileWMS
-      ) {
-        return true;
-      }
-      return false;
+    );
+
+    let shouldSelectLayer = true;
+    infoLayers.forEach((layer) => {
+      const layerProperties = layer.getProperties();
+      let url = layer
+        .getSource()
+        .getFeatureInfoUrl(event.coordinate, viewResolution, viewProjection, {
+          info_format: "application/json",
+        });
+      fetch(url)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          const features = data.features;
+          if (features.length > 0) {
+            const layerData = features[0].properties;
+            dispatch(
+              addDetailedData({
+                identificator: layerProperties.id,
+                title: layerProperties.name,
+                data: layerData,
+              })
+            );
+            if (shouldSelectLayer) {
+              dispatch(selectLayer({ identificator: layerProperties.id }));
+              shouldSelectLayer = false;
+            }
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
     });
-
-    console.log("Clicked layers: ", clickedLayer);
-    let layer = clickedLayer[0];
-    console.log("Layer: ", layer);
-
-    let properties = layer.getProperties();
-    console.log("Properties: ", properties);
-
-    let url = layer
-      .getSource()
-      .getFeatureInfoUrl(event.coordinate, viewResolution, viewProjection, {
-        INFO_FORMAT: "application/json",
-      });
-    console.log("Url: ", url);
-
-    fetch(url)
-      .then((response) => {
-        console.log("Response: ", response);
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-      });
+    dispatch(openDetailedPopup());
   };
 
   return null;

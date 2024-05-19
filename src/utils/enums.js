@@ -1,9 +1,3 @@
-export const LayerTypes = {
-  Vector: "VECTOR",
-  Raster: "RASTER",
-  Image: "IMAGE",
-};
-
 export const SidebarTypes = {
   Layers: "layers",
   Areas: "areas",
@@ -17,4 +11,16 @@ export const LayoutWindows = {
   TableData: "tableData",
   GraphData: "graphData",
   TextData: "textData",
+};
+
+export const FetchStates = {
+  Idle: "idle",
+  Loading: "loading",
+  Succeeded: "succeeded",
+  Failed: "failed",
+};
+
+export const MapProjections = {
+  EPSG3857: "EPSG:3857",
+  EPSG4326: "EPSG:4326",
 };

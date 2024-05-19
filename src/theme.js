@@ -1,5 +1,6 @@
 import { grey } from "@mui/material/colors";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { alpha } from "@mui/system";
 
 let theme = createTheme({
   palette: {
@@ -19,6 +20,10 @@ let theme = createTheme({
 
     informationGrey: {
       main: grey[400],
+    },
+
+    errorRed: {
+      main: "#D55B5B",
     },
   },
 });
@@ -64,8 +69,14 @@ theme = createTheme(theme, {
       marginBottom: 5,
       marginTop: 5,
     },
+    error: {
+      fontSize: "0.9rem",
+      color: theme.palette.errorRed.main,
+      textAlign: "center",
+      marginBottom: 5,
+      marginTop: 5,
+    },
     pageTitle: {
-      textTransform: "uppercase",
       fontSize: "1rem",
     },
     menuItem: {
@@ -106,6 +117,15 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           margin: 5,
+          "& label": {
+            color: theme.palette.informationGrey.main,
+          },
+          "& label.Mui-focused": {
+            color: theme.palette.darkGreen.main,
+          },
+          "& .MuiInput-underline:after": {
+            borderBottomColor: theme.palette.darkGreen.main,
+          },
         },
       },
     },
@@ -139,7 +159,7 @@ theme = createTheme(theme, {
     MuiListSubheader: {
       styleOverrides: {
         root: {
-          backgroundColor: theme.palette.darkGreen.main,
+          backgroundColor: alpha(theme.palette.darkGreen.main, 0.7),
           color: theme.palette.darkGreen.contrastText,
           fontSize: "0.9rem",
           textAlign: "left",
@@ -198,6 +218,24 @@ theme = createTheme(theme, {
           "& .MuiSlider-valueLabel": {
             backgroundColor: theme.palette.beigeBrown.main,
           },
+        },
+      },
+    },
+    MuiButtonGroup: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          border: `1px solid ${theme.palette.lightGreen.main}`,
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: "white",
+          color: "rgba(0, 0, 0, 0.87)",
+          fontSize: "0.7em",
+          border: `1px solid rgba(0, 0, 0, 0.87)`,
         },
       },
     },

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,10 +14,14 @@ import {
   viewPages,
 } from "../../utils/data";
 import LanguageSelector from "./LanguageSelector";
-import { useTranslation } from "react-i18next";
 
-export default function MainMenu() {
+const MainMenu = () => {
   const [subMenu, setSubMenu] = React.useState(null);
+
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  //#region Methods
 
   const handleOpenSubMenu = (event) => {
     setSubMenu(event.currentTarget);
@@ -26,9 +31,6 @@ export default function MainMenu() {
     setSubMenu(null);
   };
 
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-
   const navigateViewAction = (path) => {
     handleCloseSubMenu();
     navigate(path);
@@ -37,6 +39,8 @@ export default function MainMenu() {
   const navigateAction = (path) => {
     navigate(path);
   };
+
+  //#endregion
 
   return (
     <AppBar
@@ -102,4 +106,6 @@ export default function MainMenu() {
       </Toolbar>
     </AppBar>
   );
-}
+};
+
+export default MainMenu;

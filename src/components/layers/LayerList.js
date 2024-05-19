@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import PropTypes from "prop-types";
 import {
   Button,
   Collapse,
@@ -7,48 +10,28 @@ import {
   Typography,
 } from "@mui/material";
 import LayerListItem from "./LayerListItem";
-import PropTypes from "prop-types";
-import { activateLayer, deactivateLayer } from "../../hooks/layerHooks";
-import { userId } from "../../data/mockData";
-import { useTranslation } from "react-i18next";
+import { collapseLayerSection } from "../../redux/slices/LayerListSectionsSlice";
+import { selectFavoriteLayersByTitle } from "../../redux/slices/LayersSlice";
 
-export default function LayerList({
-  layers,
-  refetch,
-  handleEditLayer,
-  handleDisplayLayerInfo,
-}) {
-  const [opened, setOpened] = useState(
-    layers.map((layerGroup) => layerGroup.name)
+const LayerList = ({ filter }) => {
+  const layerGroups = useSelector((state) =>
+    selectFavoriteLayersByTitle(state, filter)
   );
+  const collapsedSections = useSelector(
+    (state) => state.collapsedLayerSections
+  );
+
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   //#region Methods
-  const handleLayerStateSwitch = (layer) => {
-    if (layer.isActive) {
-      deactivateLayer(userId, layer.name).then(() => {
-        refetch();
-      });
-    } else {
-      activateLayer(userId, layer.name).then(() => {
-        refetch();
-      });
-    }
-  };
 
   const handleExpandCollapse = (layerGroup) => {
-    let newOpened = [...opened];
-    const layerGroupIndex = newOpened.indexOf(layerGroup.name);
-    if (layerGroupIndex !== -1) {
-      newOpened.splice(layerGroupIndex, 1);
-    } else {
-      newOpened.push(layerGroup.name);
-    }
-    setOpened(newOpened);
+    dispatch(collapseLayerSection(layerGroup.name));
   };
 
   const isSectionExpanded = (layerGroup) => {
-    return opened.indexOf(layerGroup.name) !== -1;
+    return !collapsedSections.includes(layerGroup.name);
   };
 
   const getLayerItem = (layer) => {
@@ -56,24 +39,18 @@ export default function LayerList({
       <LayerListItem
         key={`layer-list-item-component-${layer.name}`}
         layer={layer}
-        handleLayerStateSwitch={handleLayerStateSwitch}
-        handleEditLayer={handleEditLayer}
-        handleDisplayLayerInfo={handleDisplayLayerInfo}
       />
     );
   };
 
-  const getEmptyListText = () => {
+  //#endregion
+
+  if (layerGroups.length === 0) {
     return (
       <Typography variant="information">
         {t("layerViewSidebar.layerList.noLayers")}
       </Typography>
     );
-  };
-  //#endregion
-
-  if (layers.length === 0) {
-    return getEmptyListText();
   }
 
   return (
@@ -82,7 +59,7 @@ export default function LayerList({
       sx={{ width: "100%", bgcolor: "background.paper" }}
       dense
     >
-      {layers.map((layerGroup) => {
+      {layerGroups.map((layerGroup) => {
         return (
           <div key={`layer-list-section-${layerGroup.name}`}>
             <Button
@@ -108,11 +85,10 @@ export default function LayerList({
       })}
     </List>
   );
-}
+};
+
+export default LayerList;
 
 LayerList.propTypes = {
-  layers: PropTypes.array,
-  refetch: PropTypes.func,
-  handleEditLayer: PropTypes.func,
-  handleDisplayLayerInfo: PropTypes.func,
+  filter: PropTypes.string,
 };
