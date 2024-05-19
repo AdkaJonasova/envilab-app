@@ -1,23 +1,23 @@
 from fastapi import APIRouter
 
-from src.models.LayerModels import LayerFavoritesModel, LayerUpdateModel
+from src.models.LayerModels import LayerFavoritesModel, LayerUpdateModel, LayerGroupsResponseModel
 from src.services.LayerService import LayerService
 
 layer_router = APIRouter()
 layer_service = LayerService()
 
 
-@layer_router.get('/layers/{user_id}', tags=["Layers"])
+@layer_router.get('/layers/{user_id}', tags=["Layers"], response_model=list[LayerGroupsResponseModel])
 def get_layers_for_user(user_id: int):
     return layer_service.get_layers(user_id)
 
 
-@layer_router.get('/layers/favorite/{user_id}', tags=["Layers"])
+@layer_router.get('/layers/favorite/{user_id}', tags=["Layers"], response_model=list[LayerGroupsResponseModel])
 def get_favorite_layers_for_user(user_id: int):
     return layer_service.get_favorite_layers(user_id)
 
 
-@layer_router.get('/layers/active/{user_id}', tags=["Layers"])
+@layer_router.get('/layers/active/{user_id}', tags=["Layers"], response_model=list[LayerGroupsResponseModel])
 def get_active_layers_for_user(user_id: int):
     return layer_service.get_active_layers(user_id)
 
